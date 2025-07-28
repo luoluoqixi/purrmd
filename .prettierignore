@@ -17,3 +17,6 @@ pnpm-lock.yaml
 pnpm-lock.json
 
 *.yaml
+
+.changeset/
+.husky/

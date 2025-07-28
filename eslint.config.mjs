@@ -12,7 +12,7 @@ export default [
   prettierRecommended,
   prettierConfig,
   {
-    ignores: ['**/dist', '**/node_modules'],
+    ignores: ['**/dist', '**/node_modules', 'commitlint.config.cjs'],
   },
   {
     files: [

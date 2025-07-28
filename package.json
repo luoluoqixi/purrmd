@@ -9,18 +9,26 @@
   "author": "luoluoqixi",
   "license": "MIT",
   "scripts": {
+    "build": "pnpm run lint && vite build",
     "format": "prettier --write .",
-    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
-    "build": "vite build",
+    "lint": "eslint ./src --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky",
+    "prepublishOnly": "pnpm run build",
+    "release": "npm publish",
     "watch": "vite build --watch"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.5",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^24.1.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
     "prettier": "^3.6.2",
     "sass-embedded": "^1.89.2",
     "typescript": "^5.8.3",
@@ -65,12 +73,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/luoluoqixi/purrmd.git"
+    "url": "https://github.com/luoluoqixi/purrmd"
   },
   "bugs": {
     "url": "https://github.com/luoluoqixi/purrmd/issues"
   },
-  "homepage": "https://github.com/luoluoqixi/purrmd",
+  "homepage": "https://github.com/luoluoqixi/purrmd#readme",
   "files": [
     "dist",
     "src",
