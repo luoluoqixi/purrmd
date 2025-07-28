@@ -1,0 +1,82 @@
+{
+  "name": "purrmd",
+  "version": "0.0.1",
+  "description": "purrmd",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "types": "dist/index.d.ts",
+  "style": "dist/style.css",
+  "author": "luoluoqixi",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^24.1.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "sass-embedded": "^1.89.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0",
+    "vite": "^7.0.6",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-externalize-deps": "^0.9.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./styles/base.css": {
+      "import": "./dist/styles/base.css",
+      "default": "./dist/styles/base.css"
+    },
+    "./styles/base.scss": {
+      "import": "./dist/styles/base.scss",
+      "default": "./dist/styles/base.scss"
+    },
+    "./dist/*": {
+      "types": "./dist/*",
+      "default": "./dist/*"
+    }
+  },
+  "keywords": [
+    "markdown",
+    "codemirror",
+    "wysiwyg"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luoluoqixi/purrmd.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luoluoqixi/purrmd/issues"
+  },
+  "homepage": "https://github.com/luoluoqixi/purrmd",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "packageManager": "pnpm@9.15.0",
+  "node": ">=20.0.0"
+}
