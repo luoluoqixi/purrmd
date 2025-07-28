@@ -2,10 +2,10 @@
   "name": "purrmd-demo",
   "description": "purrmd-demo",
   "type": "module",
+  "private": true,
   "main": "src/index.ts",
   "scripts": {
-    "dev": "vite",
-    "reinit": "pnpm -C ../ build && pnpm i"
+    "dev": "vite"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@codemirror/view": "^6.38.1",
     "codemirror": "^6.0.2",
-    "purrmd": "file:../"
+    "purrmd": "workspace:*"
   },
   "packageManager": "pnpm@9.15.0",
   "node": ">=20.0.0"

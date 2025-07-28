@@ -1,19 +1,7 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "allowSyntheticDefaultImports": true,
-    "composite": true,
-    "emitDeclarationOnly": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
-    "rootDir": "src",
-    "skipLibCheck": true,
-    "target": "esnext",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src"],
-  "extends": ["./tsconfig.node.json"],
+  "files": [],
+  "references": [
+    { "path": "./packages/core/tsconfig.json" },
+    { "path": "./app/demo/tsconfig.json" },
+  ]
 }

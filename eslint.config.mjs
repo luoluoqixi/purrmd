@@ -16,8 +16,8 @@ export default [
   },
   {
     files: [
-      'src/**/*.{js,ts,jsx,tsx}',
-      'demo/**/*.{js,ts,jsx,tsx}',
+      'packages/**/*.{js,ts,jsx,tsx}',
+      'app/**/*.{js,ts,jsx,tsx}',
       'eslint.config.mjs',
       'vite.config.ts',
     ],

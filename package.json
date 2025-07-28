@@ -3,29 +3,20 @@
   "version": "0.0.1",
   "description": "purrmd",
   "type": "module",
-  "main": "dist/index.cjs",
-  "types": "dist/index.d.ts",
-  "style": "dist/style.css",
+  "private": true,
   "author": "luoluoqixi",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm run lint && vite build",
+    "build": "pnpm run lint && pnpm --filter=purrmd run build",
+    "dev": "pnpm watch & pnpm dev-demo",
+    "dev-demo": "pnpm --filter=purrmd-demo run dev",
+    "watch": "pnpm --filter=purrmd run watch",
     "format": "prettier --write .",
-    "lint": "eslint ./src --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "lint": "eslint ./packages --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "prepublishOnly": "pnpm run build",
-    "release": "npm publish",
-    "watch": "vite build --watch"
-  },
-  "peerDependencies": {
-    "@codemirror/autocomplete": "^6.18.6",
-    "@codemirror/commands": "^6.8.1",
-    "@codemirror/language": "^6.11.2",
-    "@codemirror/language-data": "^6.5.1",
-    "@codemirror/search": "^6.5.11",
-    "@codemirror/state": "^6.5.2",
-    "@codemirror/view": "^6.38.1"
+    "release": "npm publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.5",
@@ -46,54 +37,6 @@
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-externalize-deps": "^0.9.0"
   },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.cjs"
-      }
-    },
-    "./styles/base.css": {
-      "import": "./dist/styles/base.css",
-      "default": "./dist/styles/base.css"
-    },
-    "./styles/base.scss": {
-      "import": "./dist/styles/base.scss",
-      "default": "./dist/styles/base.scss"
-    },
-    "./dist/*": {
-      "types": "./dist/*",
-      "default": "./dist/*"
-    }
-  },
-  "keywords": [
-    "markdown",
-    "codemirror",
-    "wysiwyg"
-  ],
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/luoluoqixi/purrmd"
-  },
-  "bugs": {
-    "url": "https://github.com/luoluoqixi/purrmd/issues"
-  },
-  "homepage": "https://github.com/luoluoqixi/purrmd#readme",
-  "files": [
-    "dist",
-    "src",
-    "README.md",
-    "LICENSE"
-  ],
   "packageManager": "pnpm@9.15.0",
   "node": ">=20.0.0"
 }
