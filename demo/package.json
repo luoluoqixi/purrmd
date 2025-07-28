@@ -14,6 +14,8 @@
     "vite": "^7.0.6"
   },
   "dependencies": {
+    "@codemirror/view": "^6.38.1",
+    "codemirror": "^6.0.2",
     "purrmd": "file:../"
   },
   "packageManager": "pnpm@9.15.0",

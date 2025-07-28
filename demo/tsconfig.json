@@ -12,7 +12,8 @@
     "target": "esnext",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["vite/client", "./typings"]
   },
   "include": ["src"],
   "extends": ["./tsconfig.node.json"],
