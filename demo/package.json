@@ -1,0 +1,21 @@
+{
+  "name": "purrmd-demo",
+  "description": "purrmd-demo",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "vite",
+    "reinit": "pnpm -C ../ build && pnpm i"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0",
+    "vite": "^7.0.6"
+  },
+  "dependencies": {
+    "purrmd": "file:../"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "node": ">=20.0.0"
+}

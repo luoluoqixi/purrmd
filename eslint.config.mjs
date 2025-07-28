@@ -15,7 +15,12 @@ export default [
     ignores: ['**/dist', '**/node_modules'],
   },
   {
-    files: ['src/**/*.{js,ts,jsx,tsx}', 'eslint.config.mjs', 'vite.config.ts'],
+    files: [
+      'src/**/*.{js,ts,jsx,tsx}',
+      'demo/**/*.{js,ts,jsx,tsx}',
+      'eslint.config.mjs',
+      'vite.config.ts',
+    ],
     plugins: {},
     languageOptions: {
       globals: {
