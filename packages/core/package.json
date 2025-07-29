@@ -30,7 +30,6 @@
     "@codemirror/view": "^6.38.1",
     "@lezer/markdown": "^1.4.3"
   },
-  "devDependencies": {},
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -80,5 +79,8 @@
     "LICENSE"
   ],
   "packageManager": "pnpm@9.15.0",
-  "node": ">=20.0.0"
+  "node": ">=20.0.0",
+  "dependencies": {
+    "ts-deepmerge": "^7.0.3"
+  }
 }
