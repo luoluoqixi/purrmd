@@ -9,6 +9,7 @@ This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 **Combined *formatting*** with `code` inside.
 
 ## Headers
+
 # H1
 ## H2
 ### H3

@@ -1,6 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
 import { purrmd } from 'purrmd';
+import 'purrmd/default.css';
 
 import './index.css';
 

@@ -6,7 +6,7 @@
   "private": false,
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
-  "style": "dist/style.css",
+  "style": "dist/light.css",
   "author": "luoluoqixi",
   "license": "MIT",
   "scripts": {
@@ -42,14 +42,10 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./styles/base.css": {
-      "import": "./dist/styles/base.css",
-      "default": "./dist/styles/base.css"
-    },
-    "./styles/base.scss": {
-      "import": "./dist/styles/base.scss",
-      "default": "./dist/styles/base.scss"
-    },
+    "./base.css": "./dist/base.css",
+    "./base.scss": "./dist/base.scss",
+    "./default.css": "./dist/default.css",
+    "./default.scss": "./dist/default.scss",
     "./dist/*": {
       "types": "./dist/*",
       "default": "./dist/*"
@@ -82,5 +78,8 @@
   "node": ">=20.0.0",
   "dependencies": {
     "ts-deepmerge": "^7.0.3"
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.3"
   }
 }

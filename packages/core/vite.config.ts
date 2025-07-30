@@ -1,3 +1,4 @@
+import chokidar from 'chokidar';
 import fs from 'fs';
 import path from 'path';
 import * as sass from 'sass-embedded';
@@ -8,9 +9,9 @@ import { externalizeDeps } from 'vite-plugin-externalize-deps';
 
 const outDir = 'dist';
 
-const styleFiles = ['src/styles/base.scss'];
+const styleFiles = ['src/styles/base.scss', 'src/styles/default.scss'];
 const styleTargetFiles = styleFiles.map(
-  (f) => `${f.substring('src/'.length, f.length - '.scss'.length)}.css`,
+  (f) => `${f.substring('src/styles/'.length, f.length - '.scss'.length)}.css`,
 );
 
 async function compileScss() {
@@ -37,6 +38,24 @@ const scssBuildPlugin: PluginOption = {
     console.log('[scss] Compiling scss with sass-embedded...');
     await compileScss();
     console.log('[scss] Done.');
+  },
+
+  buildStart() {
+    console.log('[scss] Watching SCSS files for changes...');
+
+    const watcher = chokidar.watch(
+      styleFiles.map((f) => path.resolve(__dirname, f)),
+      {
+        persistent: true,
+        ignoreInitial: true, // 忽略初始文件变动
+      },
+    );
+
+    watcher.on('change', async (changedPath) => {
+      console.log(`[scss] Detected change in: ${changedPath}`);
+      await compileScss();
+      console.log('[scss] SCSS recompiled successfully!');
+    });
   },
 };
 
