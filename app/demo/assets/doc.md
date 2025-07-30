@@ -3,6 +3,7 @@
 ![PurrMD](./logo.png)
 
 ## Text Formatting
+
 This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 
 **Combined *formatting*** with `code` inside.
@@ -18,6 +19,7 @@ This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 ## Lists
 
 ### Unordered
+
 - Item 1
 - Item 2
   - Nested item 2.1
@@ -27,6 +29,7 @@ This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
   * Nested item 3.2
 
 ### Ordered
+
 1. First item
 2. Second item
   1. Nested ordered 2.1
@@ -36,9 +39,11 @@ This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 ## Code Blocks
 
 ### Inline
+
 Use `console.log('Hello')` for debugging.
 
 ### Block
+
 ```javascript
 function hello() {
   console.log('Hello PurrMD!');

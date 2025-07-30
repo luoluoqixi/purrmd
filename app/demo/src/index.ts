@@ -4,8 +4,11 @@ import { purrmd } from 'purrmd';
 
 import './index.css';
 
+const language = navigator.language;
+const documentText = language === 'zh-CN' ? __INIT_DOCUMENT_ZH : __INIT_DOCUMENT;
+
 const view = new EditorView({
-  doc: __INIT_DOCUMENT,
+  doc: documentText,
   parent: document.getElementById('root')!,
   extensions: [basicSetup, EditorView.lineWrapping, purrmd()],
 });
