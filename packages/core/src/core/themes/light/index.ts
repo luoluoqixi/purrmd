@@ -2,7 +2,9 @@ import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
 import { base } from '../base';
+import { emphasisLightTheme } from './markdown/emphasis';
 import { headingLightTheme } from './markdown/heading';
+import { strongLightTheme } from './markdown/strong';
 
 export const light = (config: { primaryColor: string }): Extension => {
   const lightTheme = EditorView.theme(
@@ -16,5 +18,5 @@ export const light = (config: { primaryColor: string }): Extension => {
       dark: false,
     },
   );
-  return [base(), lightTheme, headingLightTheme()];
+  return [base(), lightTheme, emphasisLightTheme(), headingLightTheme(), strongLightTheme()];
 };

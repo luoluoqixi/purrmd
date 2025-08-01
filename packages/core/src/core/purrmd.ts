@@ -3,7 +3,7 @@ import { type Extension } from '@codemirror/state';
 import { merge } from 'ts-deepmerge';
 
 import { defaultConfig, defaultThemeConfig } from './common/config';
-import { heading } from './markdown';
+import { emphasis, heading, strong } from './markdown';
 import { base, dark, light } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 
@@ -12,7 +12,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
   const mergedConfig = config
     ? merge.withOptions({ mergeArrays: false }, defaultMdConfig, config)
     : defaultMdConfig;
-  return [markdown(mergedConfig.markdownExtConfig), heading()];
+  return [markdown(mergedConfig.markdownExtConfig), emphasis(), heading(), strong()];
 }
 
 export function purrmdTheme(config?: PurrMDThemeConfig): Extension {
