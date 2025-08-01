@@ -1,29 +1,17 @@
 import { markdown } from '@codemirror/lang-markdown';
-import { languages } from '@codemirror/language-data';
 import { type Extension } from '@codemirror/state';
-import { GFM } from '@lezer/markdown';
 import { merge } from 'ts-deepmerge';
 
+import { defaultConfig, defaultThemeConfig } from './common/config';
 import { heading } from './markdown';
 import { base, dark, light } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 
-export const defaultConfig = (): PurrMDConfig => ({
-  markdownExtConfig: {
-    codeLanguages: languages,
-    extensions: [GFM],
-  },
-});
-
-export const defaultThemeConfig = (): PurrMDThemeConfig => ({
-  mode: 'light',
-  primaryColor: '#84acf0',
-});
-
 export function purrmd(config?: PurrMDConfig): Extension {
+  const defaultMdConfig = defaultConfig();
   const mergedConfig = config
-    ? merge.withOptions({ mergeArrays: false }, defaultConfig(), config)
-    : defaultConfig();
+    ? merge.withOptions({ mergeArrays: false }, defaultMdConfig, config)
+    : defaultMdConfig;
   return [markdown(mergedConfig.markdownExtConfig), heading()];
 }
 

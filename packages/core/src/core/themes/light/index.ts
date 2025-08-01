@@ -1,7 +1,8 @@
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
-import { base } from './base';
+import { base } from '../base';
+import { headingLightTheme } from './markdown/heading';
 
 export const light = (config: { primaryColor: string }): Extension => {
   const lightTheme = EditorView.theme(
@@ -10,13 +11,10 @@ export const light = (config: { primaryColor: string }): Extension => {
         '--purrmd-primary-color': config.primaryColor,
         '--formatting-color': 'var(--purrmd-primary-color)',
       },
-      '.purrmd-cm-formatting-heading': {
-        color: 'var(--formatting-color)',
-      },
     },
     {
       dark: false,
     },
   );
-  return [base(), lightTheme];
+  return [base(), lightTheme, headingLightTheme()];
 };

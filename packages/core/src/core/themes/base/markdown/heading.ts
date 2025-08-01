@@ -3,8 +3,8 @@ import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 
-export const base = (): Extension => {
-  const baseTheme = EditorView.baseTheme({
+export const headingBaseTheme = (): Extension => {
+  const headingTheme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-h1-size': '1.802em',
       '--purrmd-h2-size': '1.602em',
@@ -18,9 +18,6 @@ export const base = (): Extension => {
       '--purrmd-h4-weight': '600',
       '--purrmd-h5-weight': '600',
       '--purrmd-h6-weight': '600',
-    },
-    '.purrmd-cm-hidden': {
-      fontSize: '0px',
     },
     '.purrmd-cm-heading1': {
       fontWeight: 'var(--purrmd-h1-weight)',
@@ -55,5 +52,5 @@ export const base = (): Extension => {
     { class: 'purrmd-cm-heading5', tag: tags.heading5 },
     { class: 'purrmd-cm-heading6', tag: tags.heading6 },
   ]);
-  return [syntaxHighlighting(highlightStyle), baseTheme];
+  return [syntaxHighlighting(highlightStyle), headingTheme];
 };
