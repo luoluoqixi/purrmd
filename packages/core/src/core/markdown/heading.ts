@@ -3,7 +3,7 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { hiddenInlineDecoration } from '../common/decorations';
+import { hiddenBlockDecoration, hiddenInlineDecoration } from '../common/decorations';
 import { isSelectRange } from '../utils';
 
 const headingFormattingClass = 'purrmd-cm-formatting-heading';
@@ -14,23 +14,31 @@ function updateHeadingDecorations(state: EditorState): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
+      const isSelect = isSelectRange(state, node);
       if (node.type.name.startsWith('ATXHeading')) {
         const header = node.node.firstChild;
         if (header) {
-          if (isSelectRange(state, node)) {
-            const decoration = headingDecoration.range(
-              header.from,
-              Math.min(header.to + 1, node.to),
-            );
+          const from = header.from;
+          const to = Math.min(header.to + 1, node.to);
+          if (isSelect) {
+            const decoration = headingDecoration.range(from, to);
             decorations.push(decoration);
           } else {
-            const decoration = hiddenInlineDecoration.range(
-              header.from,
-              Math.min(header.to + 1, node.to),
-            );
+            const decoration = hiddenInlineDecoration.range(from, to);
             decorations.push(decoration);
           }
         }
+      } else if (node.type.name.startsWith('SetextHeading')) {
+        const cursor = node.node.cursor();
+        cursor.iterate((node) => {
+          if (node.type.name === 'HeaderMark') {
+            if (isSelect) {
+              decorations.push(headingDecoration.range(node.from, node.to));
+            } else {
+              decorations.push(hiddenBlockDecoration.range(node.from, node.to));
+            }
+          }
+        });
       }
     },
   });

@@ -12,5 +12,5 @@ export const defaultConfig = (): PurrMDConfig => ({
 
 export const defaultThemeConfig = (): PurrMDThemeConfig => ({
   mode: 'light',
-  primaryColor: '#84acf0',
+  primaryColor: '#f084d1ff',
 });
