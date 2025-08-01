@@ -6,7 +6,6 @@
   "private": false,
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
-  "style": "dist/light.css",
   "author": "luoluoqixi",
   "license": "MIT",
   "scripts": {
@@ -22,6 +21,7 @@
   "peerDependencies": {
     "@codemirror/autocomplete": "^6.18.6",
     "@codemirror/commands": "^6.8.1",
+    "@codemirror/highlight": "^0.19.8",
     "@codemirror/lang-markdown": "^6.3.3",
     "@codemirror/language": "^6.11.2",
     "@codemirror/language-data": "^6.5.1",
@@ -42,10 +42,6 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./base.css": "./dist/base.css",
-    "./base.scss": "./dist/base.scss",
-    "./default.css": "./dist/default.css",
-    "./default.scss": "./dist/default.scss",
     "./dist/*": {
       "types": "./dist/*",
       "default": "./dist/*"
@@ -78,8 +74,5 @@
   "node": ">=20.0.0",
   "dependencies": {
     "ts-deepmerge": "^7.0.3"
-  },
-  "devDependencies": {
-    "chokidar": "^4.0.3"
   }
 }

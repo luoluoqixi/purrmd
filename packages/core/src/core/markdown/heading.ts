@@ -6,21 +6,30 @@ import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 import { hiddenInlineDecoration } from '../common/decorations';
 import { isSelectRange } from '../utils';
 
+const headingFormattingClass = 'purrmd-cm-formatting-heading';
+
+const headingDecoration = Decoration.mark({ class: headingFormattingClass });
+
 function updateHeadingDecorations(state: EditorState): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (isSelectRange(state, node)) {
-        return;
-      }
       if (node.type.name.startsWith('ATXHeading')) {
         const header = node.node.firstChild;
         if (header) {
-          const decoration = hiddenInlineDecoration.range(
-            header.from,
-            Math.min(header.to + 1, node.to),
-          );
-          decorations.push(decoration);
+          if (isSelectRange(state, node)) {
+            const decoration = headingDecoration.range(
+              header.from,
+              Math.min(header.to + 1, node.to),
+            );
+            decorations.push(decoration);
+          } else {
+            const decoration = hiddenInlineDecoration.range(
+              header.from,
+              Math.min(header.to + 1, node.to),
+            );
+            decorations.push(decoration);
+          }
         }
       }
     },

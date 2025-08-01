@@ -1,63 +1,9 @@
-import chokidar from 'chokidar';
-import fs from 'fs';
 import path from 'path';
-import * as sass from 'sass-embedded';
-import { PluginOption } from 'vite';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 
 const outDir = 'dist';
-
-const styleFiles = ['src/styles/base.scss', 'src/styles/default.scss'];
-const styleTargetFiles = styleFiles.map(
-  (f) => `${f.substring('src/styles/'.length, f.length - '.scss'.length)}.css`,
-);
-
-async function compileScss() {
-  for (let i = 0; i < styleFiles.length; i++) {
-    const sourceFile = path.resolve(__dirname, styleFiles[i]);
-    const targetFile = path.resolve(__dirname, outDir, styleTargetFiles[i]);
-    const targetCopyFile = path.join(path.dirname(targetFile), `${path.basename(sourceFile)}`);
-    const result = await sass.compileAsync(sourceFile, {
-      style: 'expanded',
-      verbose: true,
-      sourceMap: false,
-    });
-
-    fs.mkdirSync(path.dirname(targetFile), { recursive: true });
-    fs.writeFileSync(targetFile, result.css);
-    fs.copyFileSync(sourceFile, targetCopyFile);
-  }
-}
-
-const scssBuildPlugin: PluginOption = {
-  name: 'build-scss-embedded',
-  apply: 'build',
-  async closeBundle() {
-    console.log('[scss] Compiling scss with sass-embedded...');
-    await compileScss();
-    console.log('[scss] Done.');
-  },
-
-  buildStart() {
-    console.log('[scss] Watching SCSS files for changes...');
-
-    const watcher = chokidar.watch(
-      styleFiles.map((f) => path.resolve(__dirname, f)),
-      {
-        persistent: true,
-        ignoreInitial: true, // 忽略初始文件变动
-      },
-    );
-
-    watcher.on('change', async (changedPath) => {
-      console.log(`[scss] Detected change in: ${changedPath}`);
-      await compileScss();
-      console.log('[scss] SCSS recompiled successfully!');
-    });
-  },
-};
 
 export default defineConfig({
   appType: 'custom',
@@ -90,7 +36,6 @@ export default defineConfig({
       outDir: path.resolve(__dirname, 'dist'),
       tsconfigPath: path.resolve(__dirname, './tsconfig.json'),
     }),
-    scssBuildPlugin,
   ],
   resolve: {
     alias: {
