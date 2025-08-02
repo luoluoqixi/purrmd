@@ -33,6 +33,9 @@ const strikethroughPlugin = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-export function strikethrough(): Extension {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function strikethrough(config?: StrikethroughConfig): Extension {
   return strikethroughPlugin;
 }
+
+export interface StrikethroughConfig {}

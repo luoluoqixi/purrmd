@@ -9,7 +9,7 @@ export const emphasisTheme = (dark: boolean): Extension => {
       '.cm-content': {
         '--purrmd-formatting-emphasis-color': 'var(--formatting-color)',
       },
-      [`.${emphasisClass.emphasisFormatting}`]: {
+      [`.${emphasisClass.emphasis}.${emphasisClass.emphasisFormatting}`]: {
         color: 'var(--purrmd-formatting-emphasis-color)',
       },
     },

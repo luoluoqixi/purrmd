@@ -33,6 +33,9 @@ const emphasisPlugin = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-export function emphasis(): Extension {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function emphasis(config?: EmphasisConfig): Extension {
   return emphasisPlugin;
 }
+
+export interface EmphasisConfig {}

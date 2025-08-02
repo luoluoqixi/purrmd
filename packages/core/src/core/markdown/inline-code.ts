@@ -54,6 +54,9 @@ const inlineCodePlugin = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-export function inlineCode(): Extension {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function inlineCode(config?: InlineCodeConfig): Extension {
   return inlineCodePlugin;
 }
+
+export interface InlineCodeConfig {}

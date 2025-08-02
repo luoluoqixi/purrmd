@@ -10,6 +10,14 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
     codeLanguages: languages,
     extensions: [GFM, getMarkdownSyntaxTags(), ...(extensions || [])],
   },
+  features: {
+    CodeBlock: true,
+    Emphasis: true,
+    Heading: true,
+    InlineCode: true,
+    Strikethrough: true,
+    Strong: true,
+  },
 });
 
 export const defaultThemeConfig = (): PurrMDThemeConfig => ({
@@ -26,8 +34,8 @@ const getMarkdownSyntaxTags = (): MarkdownExtension => [
         EmphasisMark: markdownTags.emphasisTag,
         StrikethroughMark: markdownTags.strikethroughTag,
         // InlineCode: markdownTags.inlineCode,
+        // FencedCode: markdownTags.fencedCode,
         CodeMark: markdownTags.codeTag,
-        FencedCode: markdownTags.fencedCode,
         CodeInfo: markdownTags.codeInfo,
       }),
     ],

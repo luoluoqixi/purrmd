@@ -3,24 +3,28 @@ import { type Extension } from '@codemirror/state';
 import { merge } from 'ts-deepmerge';
 
 import { defaultConfig, defaultThemeConfig } from './common/config';
-import { emphasis, fencedCode, heading, inlineCode, strikethrough, strong } from './markdown';
+import { codeBlock, emphasis, heading, inlineCode, strikethrough, strong } from './markdown';
 import { base, defaultTheme } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
+import { PurrMDFeatures } from './types';
 
 export function purrmd(config?: PurrMDConfig): Extension {
   const defaultMdConfig = defaultConfig();
   const mergedConfig = config
     ? merge.withOptions({ mergeArrays: false }, defaultMdConfig, config)
     : defaultMdConfig;
+
+  const features = mergedConfig.features;
+  const featuresConfigs = mergedConfig.featuresConfigs;
   return [
     markdown(mergedConfig.markdownExtConfig),
-    emphasis(),
-    fencedCode(),
-    heading(),
-    inlineCode(),
-    strikethrough(),
-    strong(),
-  ];
+    features?.Emphasis ? emphasis(featuresConfigs?.[PurrMDFeatures.Emphasis]) : null,
+    features?.CodeBlock ? codeBlock(featuresConfigs?.[PurrMDFeatures.CodeBlock]) : null,
+    features?.Heading ? heading(featuresConfigs?.[PurrMDFeatures.Heading]) : null,
+    features?.InlineCode ? inlineCode(featuresConfigs?.[PurrMDFeatures.InlineCode]) : null,
+    features?.Strikethrough ? strikethrough(featuresConfigs?.[PurrMDFeatures.Strikethrough]) : null,
+    features?.Strong ? strong(featuresConfigs?.[PurrMDFeatures.Strong]) : null,
+  ].filter(Boolean) as Extension[];
 }
 
 export function purrmdTheme(config?: PurrMDThemeConfig): Extension {

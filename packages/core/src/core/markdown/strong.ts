@@ -33,6 +33,9 @@ const strongPlugin = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-export function strong(): Extension {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function strong(config?: StrongConfig): Extension {
   return strongPlugin;
 }
+
+export interface StrongConfig {}

@@ -11,7 +11,7 @@ export const inlineCodeBaseTheme = (): Extension => {
       padding: '0.2rem',
       borderRadius: '0.4rem',
       fontSize: '0.8rem',
-      backgroundColor: 'gray',
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
       color: 'white',
     },
   });

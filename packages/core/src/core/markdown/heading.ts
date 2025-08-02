@@ -42,6 +42,9 @@ const headingPlugin = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-export function heading(): Extension {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function heading(config?: HeadingConfig): Extension {
   return headingPlugin;
 }
+
+export interface HeadingConfig {}

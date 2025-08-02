@@ -3,8 +3,8 @@ import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
 import { codeBaseTheme, codeClass } from './markdown/code';
+import { codeBlockBaseTheme, codeBlockClass } from './markdown/code-block';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
-import { fencedCodeBaseTheme } from './markdown/fenced-code';
 import { headingBaseTheme, headingClass } from './markdown/heading';
 import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inline-code';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
@@ -21,7 +21,7 @@ export const base = (): Extension => {
     syntaxHighlighting(HighlightStyle.define([...defaultHighlightStyle.specs])),
     codeBaseTheme(),
     emphasisBaseTheme(),
-    fencedCodeBaseTheme(),
+    codeBlockBaseTheme(),
     headingBaseTheme(),
     inlineCodeBaseTheme(),
     strongBaseTheme(),
@@ -30,6 +30,7 @@ export const base = (): Extension => {
 };
 
 export const themeClass = {
+  codeBlock: codeBlockClass,
   code: codeClass,
   emphasis: emphasisClass,
   heading: headingClass,
