@@ -14,7 +14,9 @@ const view = new EditorView({
   extensions: [
     basicSetup,
     EditorView.lineWrapping,
-    purrmd(),
+    purrmd({
+      visibilityMarksMode: 'auto',
+    }),
     purrmdTheme({
       mode: 'light',
     }),

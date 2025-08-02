@@ -18,6 +18,7 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
     Strikethrough: true,
     Strong: true,
   },
+  visibilityMarksMode: 'auto',
 });
 
 export const defaultThemeConfig = (): PurrMDThemeConfig => ({

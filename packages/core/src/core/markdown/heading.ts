@@ -4,13 +4,20 @@ import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
 import { hiddenInlineDecoration } from '../common/decorations';
+import { VisibilityMarksMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
-function updateHeadingDecorations(state: EditorState): DecorationSet {
+function updateHeadingDecorations(
+  mode: VisibilityMarksMode,
+  config: HeadingConfig | undefined,
+  state: EditorState,
+): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (isSelectRange(state, node)) return;
+      if (mode === 'show' || isSelectRange(state, node)) {
+        return;
+      }
       if (node.type.name.startsWith('ATXHeading')) {
         const header = node.node.firstChild;
         if (header) {
@@ -27,23 +34,21 @@ function updateHeadingDecorations(state: EditorState): DecorationSet {
   return Decoration.set(decorations, true);
 }
 
-const headingPlugin = StateField.define<DecorationSet>({
-  create(state) {
-    return updateHeadingDecorations(state);
-  },
+export function heading(mode: VisibilityMarksMode, config?: HeadingConfig): Extension {
+  const headingPlugin = StateField.define<DecorationSet>({
+    create(state) {
+      return updateHeadingDecorations(mode, config, state);
+    },
 
-  update(deco, tr) {
-    if (tr.docChanged || tr.selection) {
-      return updateHeadingDecorations(tr.state);
-    }
-    return deco.map(tr.changes);
-  },
+    update(deco, tr) {
+      if (tr.docChanged || tr.selection) {
+        return updateHeadingDecorations(mode, config, tr.state);
+      }
+      return deco.map(tr.changes);
+    },
 
-  provide: (f) => [EditorView.decorations.from(f)],
-});
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function heading(config?: HeadingConfig): Extension {
+    provide: (f) => [EditorView.decorations.from(f)],
+  });
   return headingPlugin;
 }
 

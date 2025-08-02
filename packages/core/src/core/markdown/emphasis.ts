@@ -3,13 +3,18 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
+import { VisibilityMarksMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
-function updateEmphasisDecorations(state: EditorState): DecorationSet {
+function updateEmphasisDecorations(
+  mode: VisibilityMarksMode,
+  config: EmphasisConfig | undefined,
+  state: EditorState,
+): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (isSelectRange(state, node)) return;
+      if (mode === 'show' || isSelectRange(state, node)) return;
       if (node.type.name === 'Emphasis') {
         setSubNodeHideDecorations(node.node, decorations, 'EmphasisMark', false);
       }
@@ -18,23 +23,21 @@ function updateEmphasisDecorations(state: EditorState): DecorationSet {
   return Decoration.set(decorations, true);
 }
 
-const emphasisPlugin = StateField.define<DecorationSet>({
-  create(state) {
-    return updateEmphasisDecorations(state);
-  },
+export function emphasis(mode: VisibilityMarksMode, config?: EmphasisConfig): Extension {
+  const emphasisPlugin = StateField.define<DecorationSet>({
+    create(state) {
+      return updateEmphasisDecorations(mode, config, state);
+    },
 
-  update(deco, tr) {
-    if (tr.docChanged || tr.selection) {
-      return updateEmphasisDecorations(tr.state);
-    }
-    return deco.map(tr.changes);
-  },
+    update(deco, tr) {
+      if (tr.docChanged || tr.selection) {
+        return updateEmphasisDecorations(mode, config, tr.state);
+      }
+      return deco.map(tr.changes);
+    },
 
-  provide: (f) => [EditorView.decorations.from(f)],
-});
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function emphasis(config?: EmphasisConfig): Extension {
+    provide: (f) => [EditorView.decorations.from(f)],
+  });
   return emphasisPlugin;
 }
 

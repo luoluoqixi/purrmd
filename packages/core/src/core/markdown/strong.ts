@@ -3,13 +3,18 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
+import { VisibilityMarksMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
-function updateStrongDecorations(state: EditorState): DecorationSet {
+function updateStrongDecorations(
+  mode: VisibilityMarksMode,
+  config: StrongConfig | undefined,
+  state: EditorState,
+): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (isSelectRange(state, node)) return;
+      if (mode === 'show' || isSelectRange(state, node)) return;
       if (node.type.name === 'StrongEmphasis') {
         setSubNodeHideDecorations(node.node, decorations, 'EmphasisMark', false);
       }
@@ -18,23 +23,21 @@ function updateStrongDecorations(state: EditorState): DecorationSet {
   return Decoration.set(decorations, true);
 }
 
-const strongPlugin = StateField.define<DecorationSet>({
-  create(state) {
-    return updateStrongDecorations(state);
-  },
+export function strong(mode: VisibilityMarksMode, config?: StrongConfig): Extension {
+  const strongPlugin = StateField.define<DecorationSet>({
+    create(state) {
+      return updateStrongDecorations(mode, config, state);
+    },
 
-  update(deco, tr) {
-    if (tr.docChanged || tr.selection) {
-      return updateStrongDecorations(tr.state);
-    }
-    return deco.map(tr.changes);
-  },
+    update(deco, tr) {
+      if (tr.docChanged || tr.selection) {
+        return updateStrongDecorations(mode, config, tr.state);
+      }
+      return deco.map(tr.changes);
+    },
 
-  provide: (f) => [EditorView.decorations.from(f)],
-});
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function strong(config?: StrongConfig): Extension {
+    provide: (f) => [EditorView.decorations.from(f)],
+  });
   return strongPlugin;
 }
 

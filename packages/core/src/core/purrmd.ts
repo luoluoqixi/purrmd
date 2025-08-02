@@ -13,17 +13,17 @@ export function purrmd(config?: PurrMDConfig): Extension {
   const mergedConfig = config
     ? merge.withOptions({ mergeArrays: false }, defaultMdConfig, config)
     : defaultMdConfig;
-
+  const mode = mergedConfig.visibilityMarksMode || 'auto';
   const features = mergedConfig.features;
   const featuresConfigs = mergedConfig.featuresConfigs;
   return [
     markdown(mergedConfig.markdownExtConfig),
-    features?.Emphasis ? emphasis(featuresConfigs?.[PurrMDFeatures.Emphasis]) : null,
-    features?.CodeBlock ? codeBlock(featuresConfigs?.[PurrMDFeatures.CodeBlock]) : null,
-    features?.Heading ? heading(featuresConfigs?.[PurrMDFeatures.Heading]) : null,
-    features?.InlineCode ? inlineCode(featuresConfigs?.[PurrMDFeatures.InlineCode]) : null,
-    features?.Strikethrough ? strikethrough(featuresConfigs?.[PurrMDFeatures.Strikethrough]) : null,
-    features?.Strong ? strong(featuresConfigs?.[PurrMDFeatures.Strong]) : null,
+    features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
+    features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
+    features?.Heading && heading(mode, featuresConfigs?.[PurrMDFeatures.Heading]),
+    features?.InlineCode && inlineCode(mode, featuresConfigs?.[PurrMDFeatures.InlineCode]),
+    features?.Strikethrough && strikethrough(mode, featuresConfigs?.[PurrMDFeatures.Strikethrough]),
+    features?.Strong && strong(mode, featuresConfigs?.[PurrMDFeatures.Strong]),
   ].filter(Boolean) as Extension[];
 }
 

@@ -10,6 +10,7 @@ import {
   WidgetType,
 } from '@codemirror/view';
 
+import { VisibilityMarksMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations, syntaxTreeInVisible } from '../utils';
 
 export const codeBlockClass = {
@@ -19,11 +20,15 @@ export const codeBlockClass = {
   codeBlockInfo: 'purrmd-cm-code-block-info',
 };
 
-function updateCodeBlockHiddenDecorations(state: EditorState): DecorationSet {
+function updateCodeBlockHiddenDecorations(
+  mode: VisibilityMarksMode,
+  config: CodeBlockConfig | undefined,
+  state: EditorState,
+): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (isSelectRange(state, node)) return;
+      if (mode === 'show' || isSelectRange(state, node)) return;
       if (node.type.name === 'FencedCode') {
         setSubNodeHideDecorations(node.node, decorations, ['CodeMark', 'CodeInfo'], false);
       }
@@ -32,22 +37,7 @@ function updateCodeBlockHiddenDecorations(state: EditorState): DecorationSet {
   return Decoration.set(decorations, true);
 }
 
-const codeBlockHiddenPlugin = StateField.define<DecorationSet>({
-  create(state) {
-    return updateCodeBlockHiddenDecorations(state);
-  },
-
-  update(deco, tr) {
-    if (tr.docChanged || tr.selection) {
-      return updateCodeBlockHiddenDecorations(tr.state);
-    }
-    return deco.map(tr.changes);
-  },
-
-  provide: (f) => [EditorView.decorations.from(f)],
-});
-
-function decorateCodeBlock(view: EditorView, config?: CodeBlockConfig) {
+function decorateCodeBlock(config: CodeBlockConfig | undefined, view: EditorView) {
   const builder = new RangeSetBuilder<Decoration>();
   const visited = new Set<string>();
 
@@ -141,16 +131,30 @@ class CodeBlockInfoWidget extends WidgetType {
   }
 }
 
-export function codeBlock(config?: CodeBlockConfig): Extension {
+export function codeBlock(mode: VisibilityMarksMode, config?: CodeBlockConfig): Extension {
+  const codeBlockHiddenPlugin = StateField.define<DecorationSet>({
+    create(state) {
+      return updateCodeBlockHiddenDecorations(mode, config, state);
+    },
+
+    update(deco, tr) {
+      if (tr.docChanged || tr.selection) {
+        return updateCodeBlockHiddenDecorations(mode, config, tr.state);
+      }
+      return deco.map(tr.changes);
+    },
+
+    provide: (f) => [EditorView.decorations.from(f)],
+  });
   const codeBlockExtension: Extension = ViewPlugin.fromClass(
     class {
       decorations: DecorationSet;
       constructor(view: EditorView) {
-        this.decorations = decorateCodeBlock(view, config);
+        this.decorations = decorateCodeBlock(config, view);
       }
       update(update: ViewUpdate) {
         if (update.docChanged || update.viewportChanged || update.selectionSet)
-          this.decorations = decorateCodeBlock(update.view, config);
+          this.decorations = decorateCodeBlock(config, update.view);
       }
     },
     { decorations: (v) => v.decorations },

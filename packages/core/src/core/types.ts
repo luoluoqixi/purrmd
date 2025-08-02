@@ -29,10 +29,13 @@ export interface PurrMDFeatureConfig {
   [PurrMDFeatures.Strong]?: StrongConfig;
 }
 
+export type VisibilityMarksMode = 'auto' | 'show';
+
 export interface PurrMDConfig {
   markdownExtConfig?: MarkdownExtConfig;
   features?: Partial<Record<PurrMDFeatures, boolean>>;
   featuresConfigs?: PurrMDFeatureConfig;
+  visibilityMarksMode?: VisibilityMarksMode;
 }
 
 export interface PurrMDThemeConfig {
