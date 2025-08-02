@@ -6,7 +6,7 @@
 
 This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 
-**Combined *formatting*** with `code` inside.
+**Combined *formatting* with `code` inside.**
 
 ## Headers
 

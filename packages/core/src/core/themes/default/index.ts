@@ -14,13 +14,12 @@ export const defaultTheme = (config: {
   dark: boolean;
 }): Extension => {
   const dark = config.dark;
+  const formattingColor = config.formattingColor || 'var(--purrmd-primary-color)';
   const theme = EditorView.theme(
     {
       '.cm-content': {
         '--purrmd-primary-color': config.primaryColor,
-        '--formatting-color': config.formattingColor
-          ? config.formattingColor
-          : 'var(--purrmd-primary-color)',
+        '--formatting-color': formattingColor,
       },
     },
     {
