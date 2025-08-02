@@ -6,6 +6,8 @@ export const markdownTags = {
   codeInfo: Tag.define(),
   codeTag: Tag.define(),
 
+  contentSeparator: tags.contentSeparator,
+
   emphasis: tags.emphasis,
   emphasisTag: Tag.define(),
 

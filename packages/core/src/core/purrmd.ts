@@ -8,6 +8,7 @@ import {
   codeBlock,
   emphasis,
   heading,
+  horizontalRule,
   inlineCode,
   strikethrough,
   strong,
@@ -30,6 +31,8 @@ export function purrmd(config?: PurrMDConfig): Extension {
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
     features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
     features?.Heading && heading(mode, featuresConfigs?.[PurrMDFeatures.Heading]),
+    features?.HorizontalRule &&
+      horizontalRule(mode, featuresConfigs?.[PurrMDFeatures.HorizontalRule]),
     features?.InlineCode && inlineCode(mode, featuresConfigs?.[PurrMDFeatures.InlineCode]),
     features?.Strikethrough && strikethrough(mode, featuresConfigs?.[PurrMDFeatures.Strikethrough]),
     features?.Strong && strong(mode, featuresConfigs?.[PurrMDFeatures.Strong]),

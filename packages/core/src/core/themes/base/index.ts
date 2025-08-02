@@ -7,6 +7,7 @@ import { codeBaseTheme, codeClass } from './markdown/code';
 import { codeBlockBaseTheme, codeBlockClass } from './markdown/code-block';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
 import { headingBaseTheme, headingClass } from './markdown/heading';
+import { horizontalRuleBaseTheme } from './markdown/horizontal-rule';
 import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inline-code';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
 import { strongBaseTheme, strongClass } from './markdown/strong';
@@ -25,6 +26,7 @@ export const base = (): Extension => {
     emphasisBaseTheme(),
     codeBlockBaseTheme(),
     headingBaseTheme(),
+    horizontalRuleBaseTheme(),
     inlineCodeBaseTheme(),
     strongBaseTheme(),
     strikethroughBaseTheme(),

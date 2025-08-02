@@ -7,6 +7,7 @@ import { codeTheme } from './markdown/code';
 import { codeBlockTheme } from './markdown/code-block';
 import { emphasisTheme } from './markdown/emphasis';
 import { headingTheme } from './markdown/heading';
+import { horizontalRuleTheme } from './markdown/horizontal-rule';
 import { inlineCodeTheme } from './markdown/inline-code';
 import { strikethroughTheme } from './markdown/strikethrough';
 import { strongTheme } from './markdown/strong';
@@ -37,6 +38,7 @@ export const defaultTheme = (config: {
     emphasisTheme(dark),
     codeBlockTheme(dark),
     headingTheme(dark),
+    horizontalRuleTheme(dark),
     inlineCodeTheme(dark),
     strikethroughTheme(dark),
     strongTheme(dark),
