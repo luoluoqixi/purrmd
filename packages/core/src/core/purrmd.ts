@@ -3,7 +3,7 @@ import { type Extension } from '@codemirror/state';
 import { merge } from 'ts-deepmerge';
 
 import { defaultConfig, defaultThemeConfig } from './common/config';
-import { emphasis, heading, strikethrough, strong } from './markdown';
+import { emphasis, heading, inlineCode, strikethrough, strong } from './markdown';
 import { base, defaultTheme } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 
@@ -16,8 +16,9 @@ export function purrmd(config?: PurrMDConfig): Extension {
     markdown(mergedConfig.markdownExtConfig),
     emphasis(),
     heading(),
-    strong(),
+    inlineCode(),
     strikethrough(),
+    strong(),
   ];
 }
 
@@ -36,6 +37,7 @@ export function purrmdTheme(config?: PurrMDThemeConfig): Extension {
   }
   return defaultTheme({
     primaryColor: mergedConfig.primaryColor,
+    formattingColor: mergedConfig.formattingColor,
     dark: mode === 'dark',
   });
 }

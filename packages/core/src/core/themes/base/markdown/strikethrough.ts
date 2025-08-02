@@ -1,7 +1,6 @@
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
-import { tags } from '@lezer/highlight';
 
 import { markdownTags } from '@/core/common/tags';
 
@@ -20,7 +19,7 @@ export const strikethroughBaseTheme = (): Extension => {
     },
   });
   const highlightStyle = HighlightStyle.define([
-    { class: strikethroughClass.strikethrough, tag: tags.strikethrough },
+    { class: strikethroughClass.strikethrough, tag: markdownTags.strikethrough },
     { class: strikethroughClass.strikethroughFormatting, tag: markdownTags.strikethroughTag },
   ]);
   return [syntaxHighlighting(highlightStyle), theme];

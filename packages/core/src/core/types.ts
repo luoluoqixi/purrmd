@@ -11,4 +11,6 @@ export interface PurrMDThemeConfig {
   mode?: 'light' | 'dark' | 'base';
   /** primary color, support 'light' or 'dark' */
   primaryColor?: string;
+  /** formatting color, support 'light' or 'dark' */
+  formattingColor?: string;
 }

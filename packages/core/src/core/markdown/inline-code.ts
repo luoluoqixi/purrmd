@@ -5,27 +5,27 @@ import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
-function updateEmphasisDecorations(state: EditorState): DecorationSet {
+function updateInlineCodeDecorations(state: EditorState): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
       if (isSelectRange(state, node)) return;
-      if (node.type.name === 'Emphasis') {
-        setSubNodeHideDecorations(node.node, decorations, 'EmphasisMark', false);
+      if (node.type.name === 'InlineCode') {
+        setSubNodeHideDecorations(node.node, decorations, 'CodeMark', false);
       }
     },
   });
   return Decoration.set(decorations, true);
 }
 
-const emphasisPlugin = StateField.define<DecorationSet>({
+const inlineCodePlugin = StateField.define<DecorationSet>({
   create(state) {
-    return updateEmphasisDecorations(state);
+    return updateInlineCodeDecorations(state);
   },
 
   update(deco, tr) {
     if (tr.docChanged || tr.selection) {
-      return updateEmphasisDecorations(tr.state);
+      return updateInlineCodeDecorations(tr.state);
     }
     return deco.map(tr.changes);
   },
@@ -33,6 +33,6 @@ const emphasisPlugin = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-export function emphasis(): Extension {
-  return emphasisPlugin;
+export function inlineCode(): Extension {
+  return inlineCodePlugin;
 }

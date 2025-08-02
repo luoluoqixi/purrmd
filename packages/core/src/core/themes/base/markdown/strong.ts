@@ -1,7 +1,8 @@
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
-import { tags } from '@lezer/highlight';
+
+import { markdownTags } from '@/core/common/tags';
 
 export const strongClass = {
   strong: 'purrmd-cm-strong',
@@ -16,6 +17,8 @@ export const strongBaseTheme = (): Extension => {
       fontWeight: 'var(--purrmd-strong-weight)',
     },
   });
-  const highlightStyle = HighlightStyle.define([{ class: strongClass.strong, tag: tags.strong }]);
+  const highlightStyle = HighlightStyle.define([
+    { class: strongClass.strong, tag: markdownTags.strong },
+  ]);
   return [syntaxHighlighting(highlightStyle), theme];
 };

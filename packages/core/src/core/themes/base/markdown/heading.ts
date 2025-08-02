@@ -1,7 +1,6 @@
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
-import { tags } from '@lezer/highlight';
 
 import { markdownTags } from '@/core/common/tags';
 
@@ -57,12 +56,12 @@ export const headingBaseTheme = (): Extension => {
     },
   });
   const highlightStyle = HighlightStyle.define([
-    { class: headingClass.heading1, tag: tags.heading1 },
-    { class: headingClass.heading2, tag: tags.heading2 },
-    { class: headingClass.heading3, tag: tags.heading3 },
-    { class: headingClass.heading4, tag: tags.heading4 },
-    { class: headingClass.heading5, tag: tags.heading5 },
-    { class: headingClass.heading6, tag: tags.heading6 },
+    { class: headingClass.heading1, tag: markdownTags.heading1 },
+    { class: headingClass.heading2, tag: markdownTags.heading2 },
+    { class: headingClass.heading3, tag: markdownTags.heading3 },
+    { class: headingClass.heading4, tag: markdownTags.heading4 },
+    { class: headingClass.heading5, tag: markdownTags.heading5 },
+    { class: headingClass.heading6, tag: markdownTags.heading6 },
     { class: headingClass.headingFormatting, tag: markdownTags.headerTag },
   ]);
   return [syntaxHighlighting(highlightStyle), theme];

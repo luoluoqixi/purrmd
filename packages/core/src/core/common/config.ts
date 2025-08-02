@@ -25,6 +25,8 @@ const getMarkdownSyntaxTags = (): MarkdownExtension => [
         HeaderMark: markdownTags.headerTag,
         EmphasisMark: markdownTags.emphasisTag,
         StrikethroughMark: markdownTags.strikethroughTag,
+        InlineCode: markdownTags.inlineCode,
+        CodeMark: markdownTags.inlineCodeTag,
       }),
     ],
   },

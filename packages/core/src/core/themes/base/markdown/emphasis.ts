@@ -1,7 +1,6 @@
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
-import { tags } from '@lezer/highlight';
 
 import { markdownTags } from '@/core/common/tags';
 
@@ -20,7 +19,7 @@ export const emphasisBaseTheme = (): Extension => {
     },
   });
   const highlightStyle = HighlightStyle.define([
-    { class: emphasisClass.emphasis, tag: tags.emphasis },
+    { class: emphasisClass.emphasis, tag: markdownTags.emphasis },
     { class: emphasisClass.emphasisFormatting, tag: markdownTags.emphasisTag },
   ]);
   return [syntaxHighlighting(highlightStyle), theme];
