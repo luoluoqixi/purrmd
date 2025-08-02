@@ -1,3 +1,4 @@
+import { HighlightStyle, defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
@@ -21,6 +22,7 @@ export const base = (): Extension => {
   });
   return [
     baseTheme,
+    syntaxHighlighting(HighlightStyle.define([...defaultHighlightStyle.specs])),
     codeBaseTheme(),
     emphasisBaseTheme(),
     fencedCodeBaseTheme(),

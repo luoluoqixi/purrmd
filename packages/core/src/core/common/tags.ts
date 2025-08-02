@@ -16,7 +16,6 @@ export const markdownTags = {
   strikethrough: tags.strikethrough,
   strikethroughTag: Tag.define(),
 
-  inlineCode: Tag.define(),
   fencedCode: Tag.define(),
 
   codeInfo: Tag.define(),

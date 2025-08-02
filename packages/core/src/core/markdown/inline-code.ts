@@ -3,15 +3,23 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { isSelectRange, setSubNodeHideDecorations } from '../utils';
+import { isInsideFencedCode, isSelectRange, setSubNodeHideDecorations } from '../utils';
+
+export const inlineCodeClass = 'purrmd-cm-inline-code';
+
+const inlineCodeDecoration = Decoration.mark({ class: inlineCodeClass });
 
 function updateInlineCodeDecorations(state: EditorState): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (isSelectRange(state, node)) return;
       if (node.type.name === 'InlineCode') {
-        setSubNodeHideDecorations(node.node, decorations, 'CodeMark', false);
+        if (!isInsideFencedCode(state, node.from)) {
+          decorations.push(inlineCodeDecoration.range(node.from, node.to));
+          if (!isSelectRange(state, node)) {
+            setSubNodeHideDecorations(node.node, decorations, 'CodeMark', false);
+          }
+        }
       }
     },
   });

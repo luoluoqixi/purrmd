@@ -1,11 +1,10 @@
-import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
-import { markdownTags } from '@/core/common/tags';
+import { inlineCodeClass as inlineCode } from '@/core/markdown';
 
 export const inlineCodeClass = {
-  inlineCode: 'purrmd-cm-inline-code',
+  inlineCode,
 };
 
 export const inlineCodeBaseTheme = (): Extension => {
@@ -18,8 +17,5 @@ export const inlineCodeBaseTheme = (): Extension => {
       color: 'white',
     },
   });
-  const highlightStyle = HighlightStyle.define([
-    { class: inlineCodeClass.inlineCode, tag: markdownTags.inlineCode },
-  ]);
-  return [syntaxHighlighting(highlightStyle), theme];
+  return theme;
 };

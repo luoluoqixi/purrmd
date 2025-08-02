@@ -1,6 +1,7 @@
+import { syntaxTree } from '@codemirror/language';
 import { EditorState, type Range } from '@codemirror/state';
-import { Decoration } from '@codemirror/view';
-import type { SyntaxNode } from '@lezer/common';
+import { Decoration, EditorView } from '@codemirror/view';
+import type { SyntaxNode, SyntaxNodeRef } from '@lezer/common';
 
 import { hiddenBlockDecoration, hiddenInlineDecoration } from '../common/decorations';
 
@@ -31,3 +32,24 @@ export const setSubNodeHideDecorations = (
     }
   });
 };
+
+export function syntaxTreeInVisible(
+  view: EditorView,
+  iterateFns: {
+    enter(node: SyntaxNodeRef): boolean | void;
+    leave?(node: SyntaxNodeRef): void;
+  },
+) {
+  for (const { from, to } of view.visibleRanges) {
+    syntaxTree(view.state).iterate({ ...iterateFns, from, to });
+  }
+}
+
+export function isInsideFencedCode(state: EditorState, from: number): boolean {
+  let node: SyntaxNode | null = syntaxTree(state).resolve(from);
+  while (node) {
+    if (node.name === 'FencedCode') return true;
+    node = node.parent;
+  }
+  return false;
+}
