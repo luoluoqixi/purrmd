@@ -11,21 +11,26 @@ export const horizontalRuleBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-horizontal-rule-color': '#ccc',
-      '--purrmd-horizontal-rule-height': '2px',
+      '--purrmd-horizontal-rule-height': '1px',
       '--purrmd-formatting-horizontal-rule-color': 'inherit',
     },
     [`.${horizontalRuleClass.horizontalRule}`]: {
       display: 'inline-block',
       width: '100%',
-      height: '1em',
-      padding: '0',
+      padding: '0 0 1px 0',
+      lineHeight: 'inherit',
+      verticalAlign: 'middle',
     },
     [`.${horizontalRuleClass.horizontalRule} hr`]: {
       all: 'unset',
       display: 'block',
-      borderBottom:
+      boxShadow: 'none',
+      filter: 'none',
+      borderTop:
         'var(--purrmd-horizontal-rule-height) solid var(--purrmd-horizontal-rule-color, #ccc)',
-      height: '0.52em',
+      height: '0px',
+      padding: '0',
+      margin: '0',
     },
     [`.${horizontalRuleClass.horizontalRuleFormatting}`]: {
       display: 'inline-block',
