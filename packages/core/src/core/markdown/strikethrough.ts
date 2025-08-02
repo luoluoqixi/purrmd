@@ -3,25 +3,15 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { setSubNodeDecorations } from '../utils';
-
-export const strikethroughFormattingClass = 'purrmd-cm-formatting-strikethrough';
-
-const strikethroughDecoration = Decoration.mark({ class: strikethroughFormattingClass });
+import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 function updateStrikeThroughDecorations(state: EditorState): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
+      if (isSelectRange(state, node)) return;
       if (node.type.name === 'Strikethrough') {
-        setSubNodeDecorations(
-          state,
-          node.node,
-          decorations,
-          'StrikethroughMark',
-          strikethroughDecoration,
-          false,
-        );
+        setSubNodeHideDecorations(node.node, decorations, 'StrikethroughMark', false);
       }
     },
   });

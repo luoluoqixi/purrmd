@@ -1,3 +1,4 @@
+import { syntaxTree } from '@codemirror/language';
 import { EditorView } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
 import { purrmd, purrmdTheme } from 'purrmd';
@@ -21,3 +22,5 @@ const view = new EditorView({
 });
 
 console.log(view);
+
+console.log(syntaxTree(view.state).toString());

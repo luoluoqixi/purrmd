@@ -1,15 +1,15 @@
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
-import { emphasisFormattingClass } from '@/core/markdown';
+import { emphasisClass } from '../../base/markdown/emphasis';
 
 export const emphasisLightTheme = (dark: boolean): Extension => {
-  const emphasisTheme = EditorView.theme(
+  const theme = EditorView.theme(
     {
       '.cm-content': {
         '--purrmd-formatting-emphasis-color': 'var(--formatting-color)',
       },
-      [`.${emphasisFormattingClass}`]: {
+      [`.${emphasisClass.emphasisFormatting}`]: {
         color: 'var(--purrmd-formatting-emphasis-color)',
       },
     },
@@ -17,5 +17,5 @@ export const emphasisLightTheme = (dark: boolean): Extension => {
       dark,
     },
   );
-  return emphasisTheme;
+  return theme;
 };

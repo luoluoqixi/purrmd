@@ -3,19 +3,25 @@ import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 
-export const strikethroughClass = 'purrmd-cm-strikethrough';
+import { markdownTags } from '@/core/common/tags';
+
+export const strikethroughClass = {
+  strikethrough: 'purrmd-cm-strikethrough',
+  strikethroughFormatting: 'purrmd-cm-formatting-strikethrough',
+};
 
 export const strikethroughBaseTheme = (): Extension => {
-  const strikethroughTheme = EditorView.baseTheme({
+  const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-strikethrough-text-decoration': 'line-through',
     },
-    [`.${strikethroughClass}`]: {
+    [`.${strikethroughClass.strikethrough}`]: {
       textDecoration: 'var(--purrmd-strikethrough-text-decoration)',
     },
   });
   const highlightStyle = HighlightStyle.define([
-    { class: strikethroughClass, tag: tags.strikethrough },
+    { class: strikethroughClass.strikethrough, tag: tags.strikethrough },
+    { class: strikethroughClass.strikethroughFormatting, tag: markdownTags.strikethroughTag },
   ]);
-  return [syntaxHighlighting(highlightStyle), strikethroughTheme];
+  return [syntaxHighlighting(highlightStyle), theme];
 };

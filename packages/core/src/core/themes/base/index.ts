@@ -1,10 +1,10 @@
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
-import { emphasisBaseTheme } from './markdown/emphasis';
-import { headingBaseTheme } from './markdown/heading';
-import { strikethroughBaseTheme } from './markdown/strikethrough';
-import { strongBaseTheme } from './markdown/strong';
+import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
+import { headingBaseTheme, headingClass } from './markdown/heading';
+import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
+import { strongBaseTheme, strongClass } from './markdown/strong';
 
 export const base = (): Extension => {
   const baseTheme = EditorView.baseTheme({
@@ -19,4 +19,11 @@ export const base = (): Extension => {
     strongBaseTheme(),
     strikethroughBaseTheme(),
   ];
+};
+
+export const themeClass = {
+  emphasis: emphasisClass,
+  heading: headingClass,
+  strikethrough: strikethroughClass,
+  strong: strongClass,
 };

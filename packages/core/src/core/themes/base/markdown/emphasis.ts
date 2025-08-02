@@ -3,17 +3,25 @@ import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 
-export const emphasisClass = 'purrmd-cm-emphasis';
+import { markdownTags } from '@/core/common/tags';
+
+export const emphasisClass = {
+  emphasis: 'purrmd-cm-emphasis',
+  emphasisFormatting: 'purrmd-cm-formatting-emphasis',
+};
 
 export const emphasisBaseTheme = (): Extension => {
-  const emphasisTheme = EditorView.baseTheme({
+  const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-emphasis-style': 'italic',
     },
-    [`.${emphasisClass}`]: {
+    [`.${emphasisClass.emphasis}`]: {
       fontStyle: 'var(--purrmd-emphasis-style)',
     },
   });
-  const highlightStyle = HighlightStyle.define([{ class: emphasisClass, tag: tags.emphasis }]);
-  return [syntaxHighlighting(highlightStyle), emphasisTheme];
+  const highlightStyle = HighlightStyle.define([
+    { class: emphasisClass.emphasis, tag: tags.emphasis },
+    { class: emphasisClass.emphasisFormatting, tag: markdownTags.emphasisTag },
+  ]);
+  return [syntaxHighlighting(highlightStyle), theme];
 };

@@ -1,15 +1,15 @@
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
-import { headingFormattingClass } from '@/core/markdown';
+import { headingClass } from '../../base/markdown/heading';
 
 export const headingLightTheme = (dark: boolean): Extension => {
-  const headingTheme = EditorView.theme(
+  const theme = EditorView.theme(
     {
       '.cm-content': {
         '--purrmd-formatting-heading-color': 'var(--formatting-color)',
       },
-      [`.${headingFormattingClass}`]: {
+      [`.${headingClass.headingFormatting}`]: {
         color: 'var(--purrmd-formatting-heading-color)',
       },
     },
@@ -17,5 +17,5 @@ export const headingLightTheme = (dark: boolean): Extension => {
       dark,
     },
   );
-  return headingTheme;
+  return theme;
 };

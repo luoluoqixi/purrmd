@@ -3,25 +3,15 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { setSubNodeDecorations } from '../utils';
-
-export const emphasisFormattingClass = 'purrmd-cm-formatting-emphasis';
-
-const emphasisDecoration = Decoration.mark({ class: emphasisFormattingClass });
+import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 function updateItalicDecorations(state: EditorState): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
+      if (isSelectRange(state, node)) return;
       if (node.type.name === 'Emphasis') {
-        setSubNodeDecorations(
-          state,
-          node.node,
-          decorations,
-          'EmphasisMark',
-          emphasisDecoration,
-          false,
-        );
+        setSubNodeHideDecorations(node.node, decorations, 'EmphasisMark', false);
       }
     },
   });

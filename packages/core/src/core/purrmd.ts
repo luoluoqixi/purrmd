@@ -39,3 +39,5 @@ export function purrmdTheme(config?: PurrMDThemeConfig): Extension {
     dark: mode === 'dark',
   });
 }
+
+export { themeClass } from './themes/base';

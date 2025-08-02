@@ -5,7 +5,6 @@ import { base } from '../base';
 import { emphasisLightTheme } from './markdown/emphasis';
 import { headingLightTheme } from './markdown/heading';
 import { strikethroughLightTheme } from './markdown/strikethrough';
-import { strongLightTheme } from './markdown/strong';
 
 export const defaultTheme = (config: { primaryColor: string; dark: boolean }): Extension => {
   const dark = config.dark;
@@ -25,7 +24,6 @@ export const defaultTheme = (config: { primaryColor: string; dark: boolean }): E
     theme,
     emphasisLightTheme(dark),
     headingLightTheme(dark),
-    strongLightTheme(dark),
     strikethroughLightTheme(dark),
   ];
 };

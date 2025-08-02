@@ -3,6 +3,8 @@ import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 
+import { markdownTags } from '@/core/common/tags';
+
 export const headingClass = {
   heading1: 'purrmd-cm-heading1',
   heading2: 'purrmd-cm-heading2',
@@ -10,10 +12,11 @@ export const headingClass = {
   heading4: 'purrmd-cm-heading4',
   heading5: 'purrmd-cm-heading5',
   heading6: 'purrmd-cm-heading6',
+  headingFormatting: 'purrmd-cm-formatting-heading',
 };
 
 export const headingBaseTheme = (): Extension => {
-  const headingTheme = EditorView.baseTheme({
+  const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-h1-size': '1.802em',
       '--purrmd-h2-size': '1.602em',
@@ -60,6 +63,7 @@ export const headingBaseTheme = (): Extension => {
     { class: headingClass.heading4, tag: tags.heading4 },
     { class: headingClass.heading5, tag: tags.heading5 },
     { class: headingClass.heading6, tag: tags.heading6 },
+    { class: headingClass.headingFormatting, tag: markdownTags.headerTag },
   ]);
-  return [syntaxHighlighting(highlightStyle), headingTheme];
+  return [syntaxHighlighting(highlightStyle), theme];
 };
