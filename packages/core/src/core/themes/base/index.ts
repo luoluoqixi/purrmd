@@ -3,6 +3,7 @@ import { EditorView } from '@codemirror/view';
 
 import { emphasisBaseTheme } from './markdown/emphasis';
 import { headingBaseTheme } from './markdown/heading';
+import { strikethroughBaseTheme } from './markdown/strikethrough';
 import { strongBaseTheme } from './markdown/strong';
 
 export const base = (): Extension => {
@@ -11,5 +12,11 @@ export const base = (): Extension => {
       fontSize: '0px',
     },
   });
-  return [baseTheme, emphasisBaseTheme(), headingBaseTheme(), strongBaseTheme()];
+  return [
+    baseTheme,
+    emphasisBaseTheme(),
+    headingBaseTheme(),
+    strongBaseTheme(),
+    strikethroughBaseTheme(),
+  ];
 };

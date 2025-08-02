@@ -3,18 +3,18 @@ import { EditorView } from '@codemirror/view';
 
 import { strongFormattingClass } from '@/core/markdown';
 
-export const strongLightTheme = (): Extension => {
+export const strongLightTheme = (dark: boolean): Extension => {
   const strongTheme = EditorView.theme(
     {
       '.cm-content': {
-        '--purrmd-strong-formatting-color': 'var(--formatting-color)',
+        '--purrmd-formatting-strong-color': 'var(--formatting-color)',
       },
       [`.${strongFormattingClass}`]: {
-        color: 'var(--purrmd-strong-formatting-color)',
+        color: 'var(--purrmd-formatting-strong-color)',
       },
     },
     {
-      dark: false,
+      dark,
     },
   );
   return strongTheme;
