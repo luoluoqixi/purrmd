@@ -6,8 +6,11 @@ import { strongFormattingClass } from '@/core/markdown';
 export const strongLightTheme = (): Extension => {
   const strongTheme = EditorView.theme(
     {
+      '.cm-content': {
+        '--purrmd-strong-formatting-color': 'var(--formatting-color)',
+      },
       [`.${strongFormattingClass}`]: {
-        color: 'var(--formatting-color)',
+        color: 'var(--purrmd-strong-formatting-color)',
       },
     },
     {
