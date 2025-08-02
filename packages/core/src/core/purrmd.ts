@@ -13,7 +13,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
   const mergedConfig = config
     ? merge.withOptions({ mergeArrays: false }, defaultMdConfig, config)
     : defaultMdConfig;
-  const mode = mergedConfig.visibilityMarksMode || 'auto';
+  const mode = mergedConfig.formattingDisplayMode || 'auto';
   const features = mergedConfig.features;
   const featuresConfigs = mergedConfig.featuresConfigs;
   return [

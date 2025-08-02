@@ -3,11 +3,11 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { VisibilityMarksMode } from '../types';
+import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 function updateStrikeThroughDecorations(
-  mode: VisibilityMarksMode,
+  mode: FormattingDisplayMode,
   config: StrikethroughConfig | undefined,
   state: EditorState,
 ): DecorationSet {
@@ -23,7 +23,10 @@ function updateStrikeThroughDecorations(
   return Decoration.set(decorations, true);
 }
 
-export function strikethrough(mode: VisibilityMarksMode, config?: StrikethroughConfig): Extension {
+export function strikethrough(
+  mode: FormattingDisplayMode,
+  config?: StrikethroughConfig,
+): Extension {
   const strikethroughPlugin = StateField.define<DecorationSet>({
     create(state) {
       return updateStrikeThroughDecorations(mode, config, state);

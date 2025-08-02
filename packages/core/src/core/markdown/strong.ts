@@ -3,11 +3,11 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { VisibilityMarksMode } from '../types';
+import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 function updateStrongDecorations(
-  mode: VisibilityMarksMode,
+  mode: FormattingDisplayMode,
   config: StrongConfig | undefined,
   state: EditorState,
 ): DecorationSet {
@@ -23,7 +23,7 @@ function updateStrongDecorations(
   return Decoration.set(decorations, true);
 }
 
-export function strong(mode: VisibilityMarksMode, config?: StrongConfig): Extension {
+export function strong(mode: FormattingDisplayMode, config?: StrongConfig): Extension {
   const strongPlugin = StateField.define<DecorationSet>({
     create(state) {
       return updateStrongDecorations(mode, config, state);

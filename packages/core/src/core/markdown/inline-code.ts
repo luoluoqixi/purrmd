@@ -3,7 +3,7 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { VisibilityMarksMode } from '../types';
+import { FormattingDisplayMode } from '../types';
 import { isInsideFencedCode, isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 export const inlineCodeClass = {
@@ -16,7 +16,7 @@ const inlineCodeDecoration = Decoration.mark({ class: inlineCodeClass.inlineCode
 const inlineCodeMarkDecoration = Decoration.mark({ class: inlineCodeClass.inlineCodeFormatting });
 
 function updateInlineCodeDecorations(
-  mode: VisibilityMarksMode,
+  mode: FormattingDisplayMode,
   config: InlineCodeConfig | undefined,
   state: EditorState,
 ): DecorationSet {
@@ -44,7 +44,7 @@ function updateInlineCodeDecorations(
   return Decoration.set(decorations, true);
 }
 
-export function inlineCode(mode: VisibilityMarksMode, config?: InlineCodeConfig): Extension {
+export function inlineCode(mode: FormattingDisplayMode, config?: InlineCodeConfig): Extension {
   const inlineCodePlugin = StateField.define<DecorationSet>({
     create(state) {
       return updateInlineCodeDecorations(mode, config, state);

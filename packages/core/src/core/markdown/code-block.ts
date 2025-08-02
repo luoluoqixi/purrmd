@@ -10,7 +10,7 @@ import {
   WidgetType,
 } from '@codemirror/view';
 
-import { VisibilityMarksMode } from '../types';
+import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations, syntaxTreeInVisible } from '../utils';
 
 export const codeBlockClass = {
@@ -21,7 +21,7 @@ export const codeBlockClass = {
 };
 
 function updateCodeBlockHiddenDecorations(
-  mode: VisibilityMarksMode,
+  mode: FormattingDisplayMode,
   config: CodeBlockConfig | undefined,
   state: EditorState,
 ): DecorationSet {
@@ -131,7 +131,7 @@ class CodeBlockInfoWidget extends WidgetType {
   }
 }
 
-export function codeBlock(mode: VisibilityMarksMode, config?: CodeBlockConfig): Extension {
+export function codeBlock(mode: FormattingDisplayMode, config?: CodeBlockConfig): Extension {
   const codeBlockHiddenPlugin = StateField.define<DecorationSet>({
     create(state) {
       return updateCodeBlockHiddenDecorations(mode, config, state);

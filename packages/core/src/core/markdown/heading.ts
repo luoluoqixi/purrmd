@@ -4,11 +4,11 @@ import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
 import { hiddenInlineDecoration } from '../common/decorations';
-import { VisibilityMarksMode } from '../types';
+import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 function updateHeadingDecorations(
-  mode: VisibilityMarksMode,
+  mode: FormattingDisplayMode,
   config: HeadingConfig | undefined,
   state: EditorState,
 ): DecorationSet {
@@ -34,7 +34,7 @@ function updateHeadingDecorations(
   return Decoration.set(decorations, true);
 }
 
-export function heading(mode: VisibilityMarksMode, config?: HeadingConfig): Extension {
+export function heading(mode: FormattingDisplayMode, config?: HeadingConfig): Extension {
   const headingPlugin = StateField.define<DecorationSet>({
     create(state) {
       return updateHeadingDecorations(mode, config, state);

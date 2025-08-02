@@ -3,11 +3,11 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { VisibilityMarksMode } from '../types';
+import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 function updateEmphasisDecorations(
-  mode: VisibilityMarksMode,
+  mode: FormattingDisplayMode,
   config: EmphasisConfig | undefined,
   state: EditorState,
 ): DecorationSet {
@@ -23,7 +23,7 @@ function updateEmphasisDecorations(
   return Decoration.set(decorations, true);
 }
 
-export function emphasis(mode: VisibilityMarksMode, config?: EmphasisConfig): Extension {
+export function emphasis(mode: FormattingDisplayMode, config?: EmphasisConfig): Extension {
   const emphasisPlugin = StateField.define<DecorationSet>({
     create(state) {
       return updateEmphasisDecorations(mode, config, state);
