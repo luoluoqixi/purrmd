@@ -4,22 +4,18 @@ import { EditorView } from '@codemirror/view';
 
 import { markdownTags } from '@/core/common/tags';
 
-export const inlineCodeClass = {
-  inlineCode: 'purrmd-cm-inline-code',
+export const codeClass = {
+  codeFormatting: 'purrmd-cm-formatting-code',
+  codeInfo: 'purrmd-cm-formatting-code-info',
 };
 
-export const inlineCodeBaseTheme = (): Extension => {
+export const codeBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
-    [`.${inlineCodeClass.inlineCode}`]: {
-      padding: '0.2rem',
-      borderRadius: '0.4rem',
-      fontSize: '0.8rem',
-      backgroundColor: 'gray',
-      color: 'white',
-    },
+    '.cm-content': {},
   });
   const highlightStyle = HighlightStyle.define([
-    { class: inlineCodeClass.inlineCode, tag: markdownTags.inlineCode },
+    { class: codeClass.codeFormatting, tag: markdownTags.codeTag },
+    { class: codeClass.codeInfo, tag: markdownTags.codeInfo },
   ]);
   return [syntaxHighlighting(highlightStyle), theme];
 };
