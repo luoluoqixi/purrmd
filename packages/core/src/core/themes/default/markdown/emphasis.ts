@@ -3,7 +3,7 @@ import { EditorView } from '@codemirror/view';
 
 import { emphasisClass } from '../../base/markdown/emphasis';
 
-export const emphasisLightTheme = (dark: boolean): Extension => {
+export const emphasisTheme = (dark: boolean): Extension => {
   const theme = EditorView.theme(
     {
       '.cm-content': {

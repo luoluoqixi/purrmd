@@ -3,7 +3,7 @@ import { EditorView } from '@codemirror/view';
 
 import { strikethroughClass } from '../../base/markdown/strikethrough';
 
-export const strikethroughLightTheme = (dark: boolean): Extension => {
+export const strikethroughTheme = (dark: boolean): Extension => {
   const theme = EditorView.theme(
     {
       '.cm-content': {
