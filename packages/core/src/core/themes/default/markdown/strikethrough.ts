@@ -9,7 +9,7 @@ export const strikethroughTheme = (dark: boolean): Extension => {
       '.cm-content': {
         '--purrmd-formatting-strikethrough-color': 'var(--formatting-color)',
       },
-      [`.${strikethroughClass.strikethroughFormatting}`]: {
+      [`.${strikethroughClass.strikethrough}.${strikethroughClass.strikethroughFormatting}`]: {
         color: 'var(--purrmd-formatting-strikethrough-color)',
       },
     },

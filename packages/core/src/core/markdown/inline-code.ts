@@ -5,9 +5,14 @@ import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
 import { isInsideFencedCode, isSelectRange, setSubNodeHideDecorations } from '../utils';
 
-export const inlineCodeClass = 'purrmd-cm-inline-code';
+export const inlineCodeClass = {
+  inlineCode: 'purrmd-cm-inline-code',
+  inlineCodeFormatting: 'purrmd-cm-inline-code-mark',
+};
 
-const inlineCodeDecoration = Decoration.mark({ class: inlineCodeClass });
+const inlineCodeDecoration = Decoration.mark({ class: inlineCodeClass.inlineCode });
+
+const inlineCodeMarkDecoration = Decoration.mark({ class: inlineCodeClass.inlineCodeFormatting });
 
 function updateInlineCodeDecorations(state: EditorState): DecorationSet {
   const decorations: Range<Decoration>[] = [];
@@ -18,6 +23,14 @@ function updateInlineCodeDecorations(state: EditorState): DecorationSet {
           decorations.push(inlineCodeDecoration.range(node.from, node.to));
           if (!isSelectRange(state, node)) {
             setSubNodeHideDecorations(node.node, decorations, 'CodeMark', false);
+          } else {
+            setSubNodeHideDecorations(
+              node.node,
+              decorations,
+              'CodeMark',
+              false,
+              inlineCodeMarkDecoration,
+            );
           }
         }
       }

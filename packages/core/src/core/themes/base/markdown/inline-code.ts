@@ -3,9 +3,7 @@ import { EditorView } from '@codemirror/view';
 
 import { inlineCodeClass as inlineCode } from '@/core/markdown';
 
-export const inlineCodeClass = {
-  inlineCode,
-};
+export const inlineCodeClass = inlineCode;
 
 export const inlineCodeBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({

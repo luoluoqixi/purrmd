@@ -19,6 +19,7 @@ export const setSubNodeHideDecorations = (
   decorations: Range<Decoration>[],
   subNodeName: string | string[],
   isBlock: boolean,
+  decoration?: Decoration | null,
 ) => {
   const isArray = Array.isArray(subNodeName);
   const cursor = node.cursor();
@@ -27,8 +28,10 @@ export const setSubNodeHideDecorations = (
       ? subNodeName.some((name) => node.type.name === name)
       : node.type.name === subNodeName;
     if (isMatch) {
-      const hiddenDecoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
-      decorations.push(hiddenDecoration.range(node.from, node.to));
+      if (!decoration) {
+        decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
+      }
+      decorations.push(decoration.range(node.from, node.to));
     }
   });
 };

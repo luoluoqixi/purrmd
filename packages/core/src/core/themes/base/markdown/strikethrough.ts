@@ -14,7 +14,7 @@ export const strikethroughBaseTheme = (): Extension => {
     '.cm-content': {
       '--purrmd-strikethrough-text-decoration': 'line-through',
     },
-    [`.${strikethroughClass.strikethrough}`]: {
+    [`.${strikethroughClass.strikethrough}.${strikethroughClass.strikethrough}`]: {
       textDecoration: 'var(--purrmd-strikethrough-text-decoration)',
     },
   });

@@ -29,30 +29,37 @@ export const headingBaseTheme = (): Extension => {
       '--purrmd-h4-weight': '600',
       '--purrmd-h5-weight': '600',
       '--purrmd-h6-weight': '600',
+      '--purrmd-h1-text-decoration': 'none',
     },
     [`.${headingClass.heading1}`]: {
       fontWeight: 'var(--purrmd-h1-weight)',
       fontSize: 'var(--purrmd-h1-size)',
+      textDecoration: 'var(--purrmd-h1-text-decoration, none)',
     },
     [`.${headingClass.heading2}`]: {
       fontWeight: 'var(--purrmd-h2-weight)',
       fontSize: 'var(--purrmd-h2-size)',
+      textDecoration: 'var(--purrmd-h1-text-decoration, none)',
     },
     [`.${headingClass.heading3}`]: {
       fontWeight: 'var(--purrmd-h3-weight)',
       fontSize: 'var(--purrmd-h3-size)',
+      textDecoration: 'var(--purrmd-h1-text-decoration, none)',
     },
     [`.${headingClass.heading4}`]: {
       fontWeight: 'var(--purrmd-h4-weight)',
       fontSize: 'var(--purrmd-h4-size)',
+      textDecoration: 'var(--purrmd-h1-text-decoration, none)',
     },
     [`.${headingClass.heading5}`]: {
       fontWeight: 'var(--purrmd-h5-weight)',
       fontSize: 'var(--purrmd-h5-size)',
+      textDecoration: 'var(--purrmd-h1-text-decoration, none)',
     },
     [`.${headingClass.heading6}`]: {
       fontWeight: 'var(--purrmd-h6-weight)',
       fontSize: 'var(--purrmd-h6-size)',
+      textDecoration: 'var(--purrmd-h1-text-decoration, none)',
     },
   });
   const highlightStyle = HighlightStyle.define([
