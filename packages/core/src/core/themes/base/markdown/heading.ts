@@ -30,6 +30,7 @@ export const headingBaseTheme = (): Extension => {
       '--purrmd-h5-weight': '600',
       '--purrmd-h6-weight': '600',
       '--purrmd-h1-text-decoration': 'none',
+      '--purrmd-formatting-heading-color': 'inherit',
     },
     [`.${headingClass.heading1}`]: {
       fontWeight: 'var(--purrmd-h1-weight)',
@@ -60,6 +61,9 @@ export const headingBaseTheme = (): Extension => {
       fontWeight: 'var(--purrmd-h6-weight)',
       fontSize: 'var(--purrmd-h6-size)',
       textDecoration: 'var(--purrmd-h1-text-decoration, none)',
+    },
+    [`.${headingClass.headingFormatting}`]: {
+      color: 'var(--purrmd-formatting-heading-color)',
     },
   });
   const highlightStyle = HighlightStyle.define([

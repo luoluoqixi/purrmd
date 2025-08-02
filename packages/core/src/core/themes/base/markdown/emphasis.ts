@@ -13,9 +13,13 @@ export const emphasisBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-emphasis-style': 'italic',
+      '--purrmd-formatting-emphasis-color': 'inherit',
     },
     [`.${emphasisClass.emphasis}`]: {
       fontStyle: 'var(--purrmd-emphasis-style)',
+    },
+    [`.${emphasisClass.emphasis}.${emphasisClass.emphasisFormatting}`]: {
+      color: 'var(--purrmd-formatting-emphasis-color)',
     },
   });
   const highlightStyle = HighlightStyle.define([

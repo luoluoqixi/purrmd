@@ -14,6 +14,19 @@ export const isSelectRange = (state: EditorState, range: BaseRange) => {
   return state.selection.ranges.some((r) => range.from <= r.to && range.to >= r.from);
 };
 
+export const isSelectLine = (state: EditorState, node: SyntaxNodeRef) => {
+  const doc = state.doc;
+  const fromLine = doc.lineAt(node.from).number;
+  const toLine = doc.lineAt(node.to).number;
+
+  return state.selection.ranges.some((r) => {
+    const rFromLine = doc.lineAt(r.from).number;
+    const rToLine = doc.lineAt(r.to).number;
+
+    return rFromLine <= toLine && rToLine >= fromLine;
+  });
+};
+
 export const setSubNodeHideDecorations = (
   node: SyntaxNode,
   decorations: Range<Decoration>[],
@@ -32,6 +45,31 @@ export const setSubNodeHideDecorations = (
         decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
       }
       decorations.push(decoration.range(node.from, node.to));
+    }
+  });
+};
+
+export const setSubNodeHideDecorationsLine = (
+  state: EditorState,
+  node: SyntaxNode,
+  decorations: Range<Decoration>[],
+  subNodeName: string | string[],
+  isBlock: boolean,
+  decoration?: Decoration | null,
+) => {
+  const isArray = Array.isArray(subNodeName);
+  const cursor = node.cursor();
+  cursor.iterate((sub) => {
+    const isMatch = isArray
+      ? subNodeName.some((name) => sub.type.name === name)
+      : sub.type.name === subNodeName;
+    if (isMatch) {
+      if (!isSelectLine(state, sub)) {
+        if (!decoration) {
+          decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
+        }
+        decorations.push(decoration.range(sub.from, sub.to));
+      }
     }
   });
 };

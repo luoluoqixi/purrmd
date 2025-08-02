@@ -4,6 +4,8 @@ import { EditorView } from '@codemirror/view';
 
 import { markdownTags } from '@/core/common/tags';
 
+import { emphasisClass } from './emphasis';
+
 export const strongClass = {
   strong: 'purrmd-cm-strong',
 };
@@ -12,9 +14,13 @@ export const strongBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-strong-weight': 'bold',
+      '--purrmd-formatting-strong-color': 'inherit',
     },
     [`.${strongClass.strong}`]: {
       fontWeight: 'var(--purrmd-strong-weight)',
+    },
+    [`.${strongClass.strong}.${emphasisClass.emphasisFormatting}`]: {
+      color: 'var(--purrmd-formatting-strong-color)',
     },
   });
   const highlightStyle = HighlightStyle.define([

@@ -3,7 +3,15 @@ import { type Extension } from '@codemirror/state';
 import { merge } from 'ts-deepmerge';
 
 import { defaultConfig, defaultThemeConfig } from './common/config';
-import { codeBlock, emphasis, heading, inlineCode, strikethrough, strong } from './markdown';
+import {
+  blockquote,
+  codeBlock,
+  emphasis,
+  heading,
+  inlineCode,
+  strikethrough,
+  strong,
+} from './markdown';
 import { base, defaultTheme } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 import { PurrMDFeatures } from './types';
@@ -18,8 +26,9 @@ export function purrmd(config?: PurrMDConfig): Extension {
   const featuresConfigs = mergedConfig.featuresConfigs;
   return [
     markdown(mergedConfig.markdownExtConfig),
-    features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
+    features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
+    features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
     features?.Heading && heading(mode, featuresConfigs?.[PurrMDFeatures.Heading]),
     features?.InlineCode && inlineCode(mode, featuresConfigs?.[PurrMDFeatures.InlineCode]),
     features?.Strikethrough && strikethrough(mode, featuresConfigs?.[PurrMDFeatures.Strikethrough]),

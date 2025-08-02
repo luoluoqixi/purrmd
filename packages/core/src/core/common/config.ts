@@ -11,6 +11,7 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
     extensions: [GFM, getMarkdownSyntaxTags(), ...(extensions || [])],
   },
   features: {
+    Blockquote: true,
     CodeBlock: true,
     Emphasis: true,
     Heading: true,
@@ -31,6 +32,7 @@ const getMarkdownSyntaxTags = (): MarkdownExtension => [
     defineNodes: [],
     props: [
       styleTags({
+        QuoteMark: markdownTags.blockquoteTag,
         HeaderMark: markdownTags.headerTag,
         EmphasisMark: markdownTags.emphasisTag,
         StrikethroughMark: markdownTags.strikethroughTag,

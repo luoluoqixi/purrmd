@@ -15,9 +15,7 @@ function updateHeadingDecorations(
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (mode === 'show' || isSelectRange(state, node)) {
-        return;
-      }
+      if (mode === 'show' || isSelectRange(state, node)) return;
       if (node.type.name.startsWith('ATXHeading')) {
         const header = node.node.firstChild;
         if (header) {

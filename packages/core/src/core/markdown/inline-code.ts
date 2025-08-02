@@ -8,7 +8,7 @@ import { isInsideFencedCode, isSelectRange, setSubNodeHideDecorations } from '..
 
 export const inlineCodeClass = {
   inlineCode: 'purrmd-cm-inline-code',
-  inlineCodeFormatting: 'purrmd-cm-inline-code-mark',
+  inlineCodeFormatting: 'purrmd-cm-formatting-inline-code',
 };
 
 const inlineCodeDecoration = Decoration.mark({ class: inlineCodeClass.inlineCode });

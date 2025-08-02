@@ -1,6 +1,7 @@
 import type { markdown } from '@codemirror/lang-markdown';
 
 import {
+  BlockquoteConfig,
   CodeBlockConfig,
   EmphasisConfig,
   HeadingConfig,
@@ -12,6 +13,7 @@ import {
 export type MarkdownExtConfig = Parameters<typeof markdown>[0];
 
 export enum PurrMDFeatures {
+  Blockquote = 'Blockquote',
   CodeBlock = 'CodeBlock',
   Emphasis = 'Emphasis',
   Heading = 'Heading',
@@ -21,6 +23,7 @@ export enum PurrMDFeatures {
 }
 
 export interface PurrMDFeatureConfig {
+  [PurrMDFeatures.Blockquote]?: BlockquoteConfig;
   [PurrMDFeatures.CodeBlock]?: CodeBlockConfig;
   [PurrMDFeatures.Emphasis]?: EmphasisConfig;
   [PurrMDFeatures.Heading]?: HeadingConfig;

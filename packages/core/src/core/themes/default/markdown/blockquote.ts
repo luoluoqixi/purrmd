@@ -1,11 +1,12 @@
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
-export const codeTheme = (dark: boolean): Extension => {
+export const blockquoteTheme = (dark: boolean): Extension => {
   const theme = EditorView.theme(
     {
       '.cm-content': {
-        '--purrmd-formatting-code-info-color': 'inherit',
+        '--purrmd-formatting-blockquote-color': 'var(--formatting-color)',
+        '--purrmd-formatting-blockquote-border-color': 'var(--formatting-color)',
       },
     },
     {

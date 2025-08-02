@@ -13,9 +13,13 @@ export const strikethroughBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-strikethrough-text-decoration': 'line-through',
+      '--purrmd-formatting-strikethrough-color': 'inherit',
     },
     [`.${strikethroughClass.strikethrough}.${strikethroughClass.strikethrough}`]: {
       textDecoration: 'var(--purrmd-strikethrough-text-decoration)',
+    },
+    [`.${strikethroughClass.strikethrough}.${strikethroughClass.strikethroughFormatting}`]: {
+      color: 'var(--purrmd-formatting-strikethrough-color)',
     },
   });
   const highlightStyle = HighlightStyle.define([

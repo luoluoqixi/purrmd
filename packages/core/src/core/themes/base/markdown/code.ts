@@ -11,7 +11,12 @@ export const codeClass = {
 
 export const codeBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
-    '.cm-content': {},
+    '.cm-content': {
+      '--purrmd-formatting-code-info-color': 'inherit',
+    },
+    [`.${codeClass.codeInfo}`]: {
+      color: 'var(--purrmd-formatting-code-info-color)',
+    },
   });
   const highlightStyle = HighlightStyle.define([
     { class: codeClass.codeFormatting, tag: markdownTags.codeTag },

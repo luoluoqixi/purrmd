@@ -1,3 +1,4 @@
+export * from './blockquote';
 export * from './code-block';
 export * from './emphasis';
 export * from './heading';

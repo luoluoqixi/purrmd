@@ -2,6 +2,7 @@ import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
 import { base } from '../base';
+import { blockquoteTheme } from './markdown/blockquote';
 import { codeTheme } from './markdown/code';
 import { codeBlockTheme } from './markdown/code-block';
 import { emphasisTheme } from './markdown/emphasis';
@@ -31,6 +32,7 @@ export const defaultTheme = (config: {
   return [
     base(),
     theme,
+    blockquoteTheme(dark),
     codeTheme(dark),
     emphasisTheme(dark),
     codeBlockTheme(dark),

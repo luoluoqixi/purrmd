@@ -3,20 +3,29 @@ import { EditorView } from '@codemirror/view';
 
 import { codeBlockClass as codeBlock } from '@/core/markdown';
 
+import { codeClass } from './code';
+
 export const codeBlockClass = codeBlock;
 
 export const codeBlockBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
+    '.cm-content': {
+      '--purrmd-code-block-bg-color': 'rgba(0, 0, 0, 0.05)',
+      '--purrmd-code-block-border-radius': '0.5rem',
+      '--purrmd-code-block-info-bg-color': 'transparent',
+      '--purrmd-code-block-info-bg-color-hover': 'rgba(0, 0, 0, 0.1)',
+      '--purrmd-formatting-code-block-color': 'inherit',
+    },
     [`.${codeBlockClass.codeBlockLine}`]: {
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      backgroundColor: 'var(--purrmd-code-block-bg-color)',
     },
     [`.${codeBlockClass.codeBlockFirstLine}`]: {
-      borderTopLeftRadius: '0.5rem',
-      borderTopRightRadius: '0.5rem',
+      borderTopLeftRadius: 'var(--purrmd-code-block-border-radius)',
+      borderTopRightRadius: 'var(--purrmd-code-block-border-radius)',
     },
     [`.${codeBlockClass.codeBlockLastLine}`]: {
-      borderBottomLeftRadius: '0.5rem',
-      borderBottomRightRadius: '0.5rem',
+      borderBottomLeftRadius: 'var(--purrmd-code-block-border-radius)',
+      borderBottomRightRadius: 'var(--purrmd-code-block-border-radius)',
     },
     [`.${codeBlockClass.codeBlockInfo}`]: {
       float: 'right',
@@ -27,9 +36,14 @@ export const codeBlockBaseTheme = (): Extension => {
       cursor: 'default',
       borderRadius: '0.4rem',
       transition: 'background-color 0.2s ease',
+      backgroundColor: 'var(--purrmd-code-block-info-bg-color)',
     },
     [`.${codeBlockClass.codeBlockInfo}:hover`]: {
-      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      backgroundColor: 'var(--purrmd-code-block-info-bg-color-hover)',
+    },
+    [`.${codeBlockClass.codeBlockFirstLine} .${codeClass.codeFormatting},
+      .${codeBlockClass.codeBlockLastLine} .${codeClass.codeFormatting}`]: {
+      color: 'var(--purrmd-formatting-code-block-color)',
     },
   });
   return theme;

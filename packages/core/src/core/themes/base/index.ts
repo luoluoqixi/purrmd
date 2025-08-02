@@ -2,6 +2,7 @@ import { HighlightStyle, defaultHighlightStyle, syntaxHighlighting } from '@code
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
+import { blockquoteBaseTheme } from './markdown/blockquote';
 import { codeBaseTheme, codeClass } from './markdown/code';
 import { codeBlockBaseTheme, codeBlockClass } from './markdown/code-block';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
@@ -19,6 +20,7 @@ export const base = (): Extension => {
   return [
     baseTheme,
     syntaxHighlighting(HighlightStyle.define([...defaultHighlightStyle.specs])),
+    blockquoteBaseTheme(),
     codeBaseTheme(),
     emphasisBaseTheme(),
     codeBlockBaseTheme(),
