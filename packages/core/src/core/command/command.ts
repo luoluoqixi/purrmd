@@ -36,6 +36,14 @@ class Context {
   marker(doc: Text, add: number) {
     const number =
       this.node.name == 'OrderedList' ? String(+itemNumber(this.item!, doc)[2] + add) : '';
+    let type = this.type;
+    if (type.includes('[') && this.node.name == 'OrderedList') {
+      // 有序任务列表
+      type = type.replace(/([.)])(\s*\[[ xX]\]\s*)/, (_, p1) => {
+        return `${p1} [ ] `;
+      });
+      return this.spaceBefore + number + type;
+    }
     return this.spaceBefore + number + this.type + this.spaceAfter;
   }
 }
@@ -59,16 +67,19 @@ function getContext(node: SyntaxNode, doc: Text) {
     } else if (
       node.name == 'ListItem' &&
       node.parent!.name == 'OrderedList' &&
-      (match = /^( *)\d+([.)])( *)/.exec(line.text.slice(startPos)))
+      (match = /^( *)(\d+)([.)])( {1,4}\[[ xX]\])?(\s*)/.exec(line.text.slice(startPos)))
     ) {
-      let after = match[3],
-        len = match[0].length;
-      if (after.length >= 4) {
-        after = after.slice(0, after.length - 4);
-        len -= 4;
+      let after = match[5] || ' ';
+      const len = match[0].length;
+      let type = match[3];
+
+      if (match[4]) {
+        // 有序任务列表
+        type += match[4].trim() === '[x]' ? ' [ ] ' : ' [ ] ';
+        after = after.slice(0, 1);
       }
       context.push(
-        new Context(node.parent!, startPos, startPos + len, match[1], after, match[2], node),
+        new Context(node.parent!, startPos, startPos + len, match[1], after, type, node),
       );
     } else if (
       node.name == 'ListItem' &&
@@ -147,10 +158,15 @@ function nonTightList(node: SyntaxNode, doc: Text) {
 function blankLine(context: Context[], state: EditorState, line: Line) {
   let insert = '';
   for (let i = 0, e = context.length - 2; i <= e; i++) {
-    insert += context[i].blank(
+    let blank = context[i].blank(
       i < e ? countColumn(line.text, 4, context[i + 1].from) - insert.length : null,
       i < e,
     );
+    if (context[i].type.includes('[')) {
+      // 有序任务列表
+      blank = blank.replace(/(\d+[.)])(\s*)(\[[ xX]\])?(\s*)/, '$1 [ ] ');
+    }
+    insert += blank;
   }
   return normalizeIndent(insert, state);
 }
