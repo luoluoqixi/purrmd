@@ -1,7 +1,9 @@
 import { markdown } from '@codemirror/lang-markdown';
-import { type Extension } from '@codemirror/state';
+import { type Extension, Prec } from '@codemirror/state';
+import { keymap } from '@codemirror/view';
 import { merge } from 'ts-deepmerge';
 
+import { markdownKeymap } from './command';
 import { defaultConfig, defaultThemeConfig } from './common/config';
 import {
   blockquote,
@@ -31,12 +33,19 @@ export function purrmd(config?: PurrMDConfig): Extension {
       ];
     }
   }
+
+  // 将默认的 addKeymap 禁用
+  if (!mergedConfig.markdownExtConfig) mergedConfig.markdownExtConfig = {};
+  const addKeymap = mergedConfig.markdownExtConfig.addKeymap !== false;
+  mergedConfig.markdownExtConfig.addKeymap = false;
+
   const mode = mergedConfig.formattingDisplayMode || 'auto';
   const features = mergedConfig.features;
   const featuresConfigs = mergedConfig.featuresConfigs;
 
   return [
     markdown(mergedConfig.markdownExtConfig),
+    addKeymap && Prec.high(keymap.of(markdownKeymap())),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
     features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
