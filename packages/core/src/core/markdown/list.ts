@@ -45,6 +45,16 @@ class Checkbox extends WidgetType {
     el.className = listClass.checkboxFormatting;
     el.checked = this.checked;
     el.disabled = this.readonly === true;
+    // 阻止触摸事件的默认行为
+    el.addEventListener(
+      'touchstart',
+      (e) => {
+        e.preventDefault();
+        el.checked = !el.checked; // 手动切换状态
+        if (this.onChecked) this.onChecked(el.checked, e);
+      },
+      { passive: false },
+    );
     el.onchange = (e) => {
       const checked = (e.target as HTMLInputElement).checked;
       if (this.onChecked) {
