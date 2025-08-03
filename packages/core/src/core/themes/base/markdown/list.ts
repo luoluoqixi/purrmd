@@ -13,6 +13,8 @@ export const listBaseTheme = (): Extension => {
       '--purrmd-formatting-bullet-list-item-color': '#ababab',
       '--purrmd-formatting-bullet-list-item-point-color': '#ababab',
       '--purrmd-formatting-ordered-list-item-color': '#ababab',
+      '--purrmd-formatting-bullet-list-task-color': '#ababab',
+      '--purrmd-formatting-ordered-list-task-color': '#ababab',
     },
     [`.${listClass.bulletListItemFormattingHide} .${listClass.listFormatting},
       .${listClass.bulletListItemFormatting} .${listClass.listFormatting}`]: {
@@ -24,6 +26,12 @@ export const listBaseTheme = (): Extension => {
     },
     [`.${listClass.bulletListItemFormatting} .${listClass.listFormatting}`]: {
       color: 'var(--purrmd-formatting-bullet-list-item-color)',
+    },
+    [`.${listClass.bulletListItemFormatting} .${listClass.taskFormatting}`]: {
+      color: 'var(--purrmd-formatting-bullet-list-task-color)',
+    },
+    [`.${listClass.orderedListItemFormatting} .${listClass.taskFormatting}`]: {
+      color: 'var(--purrmd-formatting-ordered-list-task-color)',
     },
     [`.${listClass.bulletListItemFormattingHide} .${listClass.listFormatting}::after,
       .${listClass.bulletListItemFormatting} .${listClass.listFormatting}::after`]: {
@@ -45,6 +53,10 @@ export const listBaseTheme = (): Extension => {
     {
       tag: markdownTags.listTag,
       class: listClass.listFormatting,
+    },
+    {
+      tag: markdownTags.taskTag,
+      class: listClass.taskFormatting,
     },
   ]);
   return [syntaxHighlighting(highlightStyle), theme];

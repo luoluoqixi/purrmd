@@ -20,6 +20,7 @@ export const markdownTags = {
   headerTag: Tag.define(),
 
   listTag: Tag.define(),
+  taskTag: Tag.define(),
 
   strong: tags.strong,
 
