@@ -19,6 +19,11 @@ export const markdownTags = {
   heading6: tags.heading6,
   headerTag: Tag.define(),
 
+  link: tags.link,
+  linkTag: Tag.define(),
+  linkTitle: Tag.define(),
+  linkURLTag: Tag.define(),
+
   listTag: Tag.define(),
   taskTag: Tag.define(),
 

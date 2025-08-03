@@ -7,6 +7,7 @@ import {
   HeadingConfig,
   HorizontalRuleConfig,
   InlineCodeConfig,
+  LinkConfig,
   ListConfig,
   StrikethroughConfig,
   StrongConfig,
@@ -21,6 +22,7 @@ export enum PurrMDFeatures {
   Heading = 'Heading',
   HorizontalRule = 'HorizontalRule',
   InlineCode = 'InlineCode',
+  Link = 'Link',
   List = 'List',
   Strikethrough = 'Strikethrough',
   Strong = 'Strong',
@@ -33,6 +35,7 @@ export interface PurrMDFeatureConfig {
   [PurrMDFeatures.Heading]?: HeadingConfig;
   [PurrMDFeatures.HorizontalRule]?: HorizontalRuleConfig;
   [PurrMDFeatures.InlineCode]?: InlineCodeConfig;
+  [PurrMDFeatures.Link]?: LinkConfig;
   [PurrMDFeatures.List]?: ListConfig;
   [PurrMDFeatures.Strikethrough]?: StrikethroughConfig;
   [PurrMDFeatures.Strong]?: StrongConfig;

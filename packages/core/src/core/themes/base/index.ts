@@ -2,6 +2,8 @@ import { HighlightStyle, defaultHighlightStyle, syntaxHighlighting } from '@code
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
+import { hiddenClass } from '@/core/common/decorations';
+
 import { blockquoteBaseTheme } from './markdown/blockquote';
 import { codeBaseTheme, codeClass } from './markdown/code';
 import { codeBlockBaseTheme, codeBlockClass } from './markdown/codeBlock';
@@ -9,13 +11,14 @@ import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
 import { headingBaseTheme, headingClass } from './markdown/heading';
 import { horizontalRuleBaseTheme } from './markdown/horizontalRule';
 import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inlineCode';
+import { linkBaseTheme } from './markdown/link';
 import { listBaseTheme } from './markdown/list';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
 import { strongBaseTheme, strongClass } from './markdown/strong';
 
 export const base = (): Extension => {
   const baseTheme = EditorView.baseTheme({
-    '.purrmd-cm-hidden': {
+    [`.${hiddenClass.inline}`]: {
       fontSize: '0px',
     },
   });
@@ -29,6 +32,7 @@ export const base = (): Extension => {
     headingBaseTheme(),
     horizontalRuleBaseTheme(),
     inlineCodeBaseTheme(),
+    linkBaseTheme(),
     listBaseTheme(),
     strongBaseTheme(),
     strikethroughBaseTheme(),

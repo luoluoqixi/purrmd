@@ -12,6 +12,7 @@ import {
   heading,
   horizontalRule,
   inlineCode,
+  link,
   list,
   strikethrough,
   strong,
@@ -53,6 +54,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     features?.HorizontalRule &&
       horizontalRule(mode, featuresConfigs?.[PurrMDFeatures.HorizontalRule]),
     features?.InlineCode && inlineCode(mode, featuresConfigs?.[PurrMDFeatures.InlineCode]),
+    features?.Link && link(mode, featuresConfigs?.[PurrMDFeatures.Link]),
     features?.List && list(mode, featuresConfigs?.[PurrMDFeatures.List]),
     features?.Strikethrough && strikethrough(mode, featuresConfigs?.[PurrMDFeatures.Strikethrough]),
     features?.Strong && strong(mode, featuresConfigs?.[PurrMDFeatures.Strong]),

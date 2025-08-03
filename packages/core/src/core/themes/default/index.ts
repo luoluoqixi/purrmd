@@ -9,6 +9,7 @@ import { emphasisTheme } from './markdown/emphasis';
 import { headingTheme } from './markdown/heading';
 import { horizontalRuleTheme } from './markdown/horizontalRule';
 import { inlineCodeTheme } from './markdown/inlineCode';
+import { linkTheme } from './markdown/link';
 import { listTheme } from './markdown/list';
 import { strikethroughTheme } from './markdown/strikethrough';
 import { strongTheme } from './markdown/strong';
@@ -41,6 +42,7 @@ export const defaultTheme = (config: {
     headingTheme(dark),
     horizontalRuleTheme(dark),
     inlineCodeTheme(dark),
+    linkTheme(dark),
     listTheme(dark),
     strikethroughTheme(dark),
     strongTheme(dark),

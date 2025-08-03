@@ -1,7 +1,11 @@
 import { Decoration } from '@codemirror/view';
 
+export const hiddenClass = {
+  inline: 'purrmd-cm-hidden',
+};
+
 export const hiddenInlineDecoration = Decoration.mark({
-  class: 'purrmd-cm-hidden',
+  class: hiddenClass.inline,
 });
 
 export const hiddenBlockDecoration = Decoration.replace({
