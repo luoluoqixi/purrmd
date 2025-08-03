@@ -20,12 +20,21 @@ import { PurrMDFeatures } from './types';
 
 export function purrmd(config?: PurrMDConfig): Extension {
   const defaultMdConfig = defaultConfig();
-  const mergedConfig = config
-    ? merge.withOptions({ mergeArrays: false }, defaultMdConfig, config)
-    : defaultMdConfig;
+  let mergedConfig = defaultMdConfig;
+  if (config) {
+    mergedConfig = merge.withOptions({ mergeArrays: false }, defaultMdConfig, config);
+    if (config.markdownExtConfig?.extensions) {
+      if (!mergedConfig.markdownExtConfig) mergedConfig.markdownExtConfig = {};
+      mergedConfig.markdownExtConfig.extensions = [
+        defaultMdConfig.markdownExtConfig?.extensions || [],
+        config.markdownExtConfig.extensions,
+      ];
+    }
+  }
   const mode = mergedConfig.formattingDisplayMode || 'auto';
   const features = mergedConfig.features;
   const featuresConfigs = mergedConfig.featuresConfigs;
+
   return [
     markdown(mergedConfig.markdownExtConfig),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),

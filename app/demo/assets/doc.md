@@ -103,8 +103,8 @@ function hello() {
     1. [ ] Nested Ordered task
     2. [ ] Nested Ordered task
     3. [ ] Nested Ordered task
-        - [ ] Nested Incomplete task
-        - [ ] Nested Incomplete task
+        1. [ ] Nested Ordered task
+        2. [ ] Nested Ordered task
 
 ### Ordered
 

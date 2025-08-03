@@ -155,46 +155,50 @@ function updateListDecorations(
                   }).range(node.from - 2, node.to);
                 }
               } else if (root.name === 'OrderedList') {
-                // 有序任务列表
-                decoration = [];
-                if (
-                  mode !== 'show' &&
-                  !isSelectRange(state, {
-                    from: node.from - 3,
-                    to: node.to,
-                  })
-                ) {
-                  const pos = node.from;
-                  const onChecked = (checked: boolean, e: Event) => {
-                    view.dispatch({
-                      changes: {
-                        from: pos + 1,
-                        to: pos + 2,
-                        insert: checked ? 'x' : ' ',
-                      },
-                    });
-                    if (config?.onTaskItemChecked) {
-                      config?.onTaskItemChecked?.(checked, e);
-                    } else {
-                      e.stopPropagation();
-                    }
-                  };
+                const cursor = parent.cursor();
+                if (cursor.prevSibling() && cursor.name === 'ListMark') {
+                  const from = cursor.from;
+                  // 有序任务列表
+                  decoration = [];
+                  if (
+                    mode !== 'show' &&
+                    !isSelectRange(state, {
+                      from,
+                      to: node.to,
+                    })
+                  ) {
+                    const pos = node.from;
+                    const onChecked = (checked: boolean, e: Event) => {
+                      view.dispatch({
+                        changes: {
+                          from: pos + 1,
+                          to: pos + 2,
+                          insert: checked ? 'x' : ' ',
+                        },
+                      });
+                      if (config?.onTaskItemChecked) {
+                        config?.onTaskItemChecked?.(checked, e);
+                      } else {
+                        e.stopPropagation();
+                      }
+                    };
+                    decoration.push(
+                      Decoration.replace({
+                        widget: new Checkbox(
+                          checked,
+                          listClass.orderedListCheckboxFormatting,
+                          onChecked,
+                          config?.taskItemReadonly,
+                        ),
+                      }).range(node.from, node.to),
+                    );
+                  }
                   decoration.push(
-                    Decoration.replace({
-                      widget: new Checkbox(
-                        checked,
-                        listClass.orderedListCheckboxFormatting,
-                        onChecked,
-                        config?.taskItemReadonly,
-                      ),
-                    }).range(node.from, node.to),
+                    Decoration.mark({
+                      class: listClass.orderedListCheckboxFormatting,
+                    }).range(from, node.to),
                   );
                 }
-                decoration.push(
-                  Decoration.mark({
-                    class: listClass.orderedListCheckboxFormatting,
-                  }).range(node.from - 3, node.to),
-                );
               }
               if (decoration) {
                 if (Array.isArray(decoration)) {
@@ -215,18 +219,6 @@ function updateListDecorations(
 export function list(mode: FormattingDisplayMode, config?: ListConfig): Extension {
   const listPlugin = ViewPlugin.fromClass(
     class {
-      // create(state) {
-      //   return updateListDecorations(mode, config, state);
-      // },
-
-      // update(deco, tr) {
-      //   if (tr.docChanged || tr.selection) {
-      //     return updateListDecorations(mode, config, tr.state);
-      //   }
-      //   return deco.map(tr.changes);
-      // },
-
-      // provide: (f) => [EditorView.decorations.from(f)],
       decorations: DecorationSet;
 
       constructor(readonly view: EditorView) {
@@ -237,10 +229,6 @@ export function list(mode: FormattingDisplayMode, config?: ListConfig): Extensio
         if (update.docChanged || update.selectionSet) {
           this.decorations = updateListDecorations(mode, config, update.view);
         }
-      }
-
-      destroy() {
-        // 可选：清理操作
       }
     },
     {
