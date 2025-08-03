@@ -15,11 +15,15 @@ import { isSelectRange } from '../utils';
 export const listClass = {
   listFormatting: 'purrmd-cm-formatting-list',
   taskFormatting: 'purrmd-cm-formatting-task',
+
+  checkboxFormatting: 'purrmd-cm-formatting-checkbox',
   bulletListItemFormattingHide: 'purrmd-cm-formatting-bullet-list-item-hide',
   bulletListItemFormatting: 'purrmd-cm-formatting-bullet-list-item',
   orderedListItemFormatting: 'purrmd-cm-formatting-ordered-list-item',
   bulletListTaskFormatting: 'purrmd-cm-formatting-bullet-list-task',
+
   bulletListCheckboxFormatting: 'purrmd-cm-formatting-bullet-list-checkbox',
+  orderedListCheckboxFormatting: 'purrmd-cm-formatting-ordered-list-checkbox',
 };
 
 class Checkbox extends WidgetType {
@@ -27,6 +31,7 @@ class Checkbox extends WidgetType {
 
   constructor(
     checked: boolean,
+    readonly wrapClass: string | null,
     readonly onChecked?: (checked: boolean, event: Event) => void,
     readonly readonly?: boolean,
   ) {
@@ -37,7 +42,7 @@ class Checkbox extends WidgetType {
   toDOM() {
     const el = document.createElement('input');
     el.type = 'checkbox';
-    el.className = listClass.bulletListCheckboxFormatting;
+    el.className = listClass.checkboxFormatting;
     el.checked = this.checked;
     el.disabled = this.readonly === true;
     el.onchange = (e) => {
@@ -46,6 +51,12 @@ class Checkbox extends WidgetType {
         this.onChecked(checked, e);
       }
     };
+    if (this.wrapClass) {
+      const wrapper = document.createElement('span');
+      wrapper.className = this.wrapClass;
+      wrapper.appendChild(el);
+      return wrapper;
+    }
     return el;
   }
 
@@ -115,44 +126,8 @@ function updateListDecorations(
                     to: node.to,
                   })
                 ) {
+                  const pos = node.from;
                   const onChecked = (checked: boolean, e: Event) => {
-                    const pos = view.posAtDOM(e.target as HTMLElement);
-                    view.dispatch({
-                      changes: {
-                        from: pos + 3,
-                        to: pos + 4,
-                        insert: checked ? 'x' : ' ',
-                      },
-                    });
-                    if (config?.onTaskItemChecked) {
-                      config?.onTaskItemChecked?.(checked, e);
-                    }
-                  };
-                  decoration = Decoration.replace({
-                    widget: new Checkbox(checked, onChecked, config?.taskItemReadonly),
-                  }).range(node.from - 2, node.to);
-                } else {
-                  decoration = Decoration.mark({
-                    class: listClass.bulletListItemFormatting,
-                  }).range(node.from - 2, node.to);
-                }
-              } else if (root.name === 'OrderedList') {
-                // 有序任务列表
-                decoration = [];
-                decoration.push(
-                  Decoration.mark({
-                    class: listClass.orderedListItemFormatting,
-                  }).range(node.from - 3, node.to),
-                );
-                if (
-                  mode !== 'show' &&
-                  !isSelectRange(state, {
-                    from: node.from - 3,
-                    to: node.to,
-                  })
-                ) {
-                  const onChecked = (checked: boolean, e: Event) => {
-                    const pos = view.posAtDOM(e.target as HTMLElement);
                     view.dispatch({
                       changes: {
                         from: pos + 1,
@@ -162,14 +137,64 @@ function updateListDecorations(
                     });
                     if (config?.onTaskItemChecked) {
                       config?.onTaskItemChecked?.(checked, e);
+                    } else {
+                      e.stopPropagation();
+                    }
+                  };
+                  decoration = Decoration.replace({
+                    widget: new Checkbox(
+                      checked,
+                      listClass.bulletListCheckboxFormatting,
+                      onChecked,
+                      config?.taskItemReadonly,
+                    ),
+                  }).range(node.from - 2, node.to);
+                } else {
+                  decoration = Decoration.mark({
+                    class: listClass.bulletListCheckboxFormatting,
+                  }).range(node.from - 2, node.to);
+                }
+              } else if (root.name === 'OrderedList') {
+                // 有序任务列表
+                decoration = [];
+                if (
+                  mode !== 'show' &&
+                  !isSelectRange(state, {
+                    from: node.from - 3,
+                    to: node.to,
+                  })
+                ) {
+                  const pos = node.from;
+                  const onChecked = (checked: boolean, e: Event) => {
+                    view.dispatch({
+                      changes: {
+                        from: pos + 1,
+                        to: pos + 2,
+                        insert: checked ? 'x' : ' ',
+                      },
+                    });
+                    if (config?.onTaskItemChecked) {
+                      config?.onTaskItemChecked?.(checked, e);
+                    } else {
+                      e.stopPropagation();
                     }
                   };
                   decoration.push(
                     Decoration.replace({
-                      widget: new Checkbox(checked, onChecked, config?.taskItemReadonly),
+                      widget: new Checkbox(
+                        checked,
+                        listClass.orderedListCheckboxFormatting,
+                        onChecked,
+                        config?.taskItemReadonly,
+                      ),
                     }).range(node.from, node.to),
                   );
                 }
+                decoration.push(
+                  Decoration.mark({
+                    class: listClass.orderedListCheckboxFormatting,
+                  }).range(node.from - 3, node.to),
+                );
               }
               if (decoration) {
                 if (Array.isArray(decoration)) {
