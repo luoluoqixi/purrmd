@@ -10,6 +10,7 @@ import {
   heading,
   horizontalRule,
   inlineCode,
+  list,
   strikethrough,
   strong,
 } from './markdown';
@@ -34,6 +35,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     features?.HorizontalRule &&
       horizontalRule(mode, featuresConfigs?.[PurrMDFeatures.HorizontalRule]),
     features?.InlineCode && inlineCode(mode, featuresConfigs?.[PurrMDFeatures.InlineCode]),
+    features?.List && list(mode, featuresConfigs?.[PurrMDFeatures.List]),
     features?.Strikethrough && strikethrough(mode, featuresConfigs?.[PurrMDFeatures.Strikethrough]),
     features?.Strong && strong(mode, featuresConfigs?.[PurrMDFeatures.Strong]),
   ].filter(Boolean) as Extension[];

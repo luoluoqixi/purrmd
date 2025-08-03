@@ -9,6 +9,7 @@ import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
 import { headingBaseTheme, headingClass } from './markdown/heading';
 import { horizontalRuleBaseTheme } from './markdown/horizontalRule';
 import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inlineCode';
+import { listBaseTheme } from './markdown/list';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
 import { strongBaseTheme, strongClass } from './markdown/strong';
 
@@ -28,6 +29,7 @@ export const base = (): Extension => {
     headingBaseTheme(),
     horizontalRuleBaseTheme(),
     inlineCodeBaseTheme(),
+    listBaseTheme(),
     strongBaseTheme(),
     strikethroughBaseTheme(),
   ];

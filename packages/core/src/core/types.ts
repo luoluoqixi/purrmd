@@ -7,6 +7,7 @@ import {
   HeadingConfig,
   HorizontalRuleConfig,
   InlineCodeConfig,
+  ListConfig,
   StrikethroughConfig,
   StrongConfig,
 } from './markdown';
@@ -20,6 +21,7 @@ export enum PurrMDFeatures {
   Heading = 'Heading',
   HorizontalRule = 'HorizontalRule',
   InlineCode = 'InlineCode',
+  List = 'List',
   Strikethrough = 'Strikethrough',
   Strong = 'Strong',
 }
@@ -31,6 +33,7 @@ export interface PurrMDFeatureConfig {
   [PurrMDFeatures.Heading]?: HeadingConfig;
   [PurrMDFeatures.HorizontalRule]?: HorizontalRuleConfig;
   [PurrMDFeatures.InlineCode]?: InlineCodeConfig;
+  [PurrMDFeatures.List]?: ListConfig;
   [PurrMDFeatures.Strikethrough]?: StrikethroughConfig;
   [PurrMDFeatures.Strong]?: StrongConfig;
 }

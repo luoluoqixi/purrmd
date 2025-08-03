@@ -23,19 +23,36 @@ This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 
 - Item 1
 - Item 2
-  - Nested item 2.1
-  - Nested item 2.2
+    - Nested item 2.1
+    - Nested item 2.2
+        - Nested item 2.2.1
+        - Nested item 2.2.2
+        - Nested item 2.2.3
 - Item 3
-  * Nested item 3.1
-  * Nested item 3.2
+    * Nested item 3.1
+    * Nested item 3.2
+        1. Nested ordered 3.2.1
+        2. Nested ordered 3.2.2
+        3. Nested ordered 3.2.3
+            + Nested item 3.2.3.1
+            + Nested item 3.2.3.2
+            + Nested item 3.2.3.3
 
 ### Ordered
 
 1. First item
 2. Second item
-  1. Nested ordered 2.1
-  2. Nested ordered 2.2
+    1. Nested ordered 2.1
+    2. Nested ordered 2.2
+        1. Nested ordered 2.2.1
+        2. Nested ordered 2.2.2
+        3. Nested ordered 2.2.3
 3. Third item
+    - Nested item 3.1
+    - Nested item 3.2
+        * Nested item 3.2.1
+        * Nested item 3.2.2
+        * Nested item 3.2.3
 
 ## Code Blocks
 
@@ -72,9 +89,39 @@ function hello() {
 
 ## Task Lists
 
+### Unordered
+
 - [x] Completed task
+    - [x] Nested Completed task
+    - [x] Nested Completed task
 - [ ] Incomplete task
-- [ ] Ongoing task
+    - [ ] Nested Incomplete task
+    - [ ] Nested Incomplete task
+        - [ ] Nested Incomplete task
+        - [ ] Nested Incomplete task
+- [ ] Incomplete task
+    1. [ ] Nested Ordered task
+    2. [ ] Nested Ordered task
+    3. [ ] Nested Ordered task
+        - [ ] Nested Incomplete task
+        - [ ] Nested Incomplete task
+
+### Ordered
+
+1. [x] Completed task
+    1. [x] Nested Completed task
+    2. [x] Nested Completed task
+2. [ ] Incomplete task
+    1. [ ] Nested Incomplete task
+    2. [ ] Nested Incomplete task
+        1. [ ] Nested Incomplete task
+        2. [ ] Nested Incomplete task
+3. [ ] Incomplete task
+    - [ ] Nested Unordered task
+    - [ ] Nested Unordered task
+    - [ ] Nested Unordered task
+        1. [ ] Nested Incomplete task
+        2. [ ] Nested Incomplete task
 
 ## Horizontal Rule
 

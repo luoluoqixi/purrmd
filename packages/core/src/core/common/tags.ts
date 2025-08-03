@@ -19,6 +19,8 @@ export const markdownTags = {
   heading6: tags.heading6,
   headerTag: Tag.define(),
 
+  listTag: Tag.define(),
+
   strong: tags.strong,
 
   strikethrough: tags.strikethrough,
