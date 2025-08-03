@@ -4,11 +4,11 @@ import { EditorView } from '@codemirror/view';
 
 import { blockquoteBaseTheme } from './markdown/blockquote';
 import { codeBaseTheme, codeClass } from './markdown/code';
-import { codeBlockBaseTheme, codeBlockClass } from './markdown/code-block';
+import { codeBlockBaseTheme, codeBlockClass } from './markdown/codeBlock';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
 import { headingBaseTheme, headingClass } from './markdown/heading';
-import { horizontalRuleBaseTheme } from './markdown/horizontal-rule';
-import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inline-code';
+import { horizontalRuleBaseTheme } from './markdown/horizontalRule';
+import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inlineCode';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
 import { strongBaseTheme, strongClass } from './markdown/strong';
 
