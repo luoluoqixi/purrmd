@@ -21,10 +21,6 @@ export const inlineCodeBaseTheme = (): Extension => {
       backgroundColor: 'var(--purrmd-inline-code-bg-color)',
       color: 'var(--purrmd-inline-code-color)',
     },
-    [`.${inlineCodeClass.inlineCode}`]: {
-      backgroundColor: 'var(--purrmd-inline-code-bg-color)',
-      color: 'var(--purrmd-inline-code-color)',
-    },
     [`.${inlineCodeClass.inlineCodeFormatting} .${codeClass.codeFormatting}`]: {
       color: 'var(--purrmd-formatting-inline-code-color)',
     },

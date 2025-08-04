@@ -14,35 +14,47 @@ export const horizontalRuleBaseTheme = (): Extension => {
       '--purrmd-horizontal-rule-height': '1px',
       '--purrmd-formatting-horizontal-rule-color': 'inherit',
     },
-    [`.${horizontalRuleClass.horizontalRule}`]: {
+    [`.${horizontalRuleClass.horizontalRuleFormatting} .${horizontalRuleClass.contentSeparator},
+      .${horizontalRuleClass.horizontalRule} .${horizontalRuleClass.contentSeparator}`]: {
+      display: 'inline-block',
+      height: '1em',
+      margin: 0,
+      color: 'transparent',
+    },
+    [`.${horizontalRuleClass.horizontalRuleFormatting} .${horizontalRuleClass.contentSeparator}`]: {
+      color: 'var(--purrmd-formatting-horizontal-rule-color)',
+    },
+    [`.${horizontalRuleClass.horizontalRule} .${horizontalRuleClass.contentSeparator}`]: {
       display: 'inline-block',
       width: '100%',
-      padding: '0 0 1px 0',
+      padding: '0 0 0 0',
       lineHeight: 'inherit',
       verticalAlign: 'middle',
+
+      position: 'relative',
     },
-    [`.${horizontalRuleClass.horizontalRule} hr`]: {
-      all: 'unset',
+    [`.${horizontalRuleClass.horizontalRule} .${horizontalRuleClass.contentSeparator}::before`]: {
       display: 'block',
+      content: '""',
       boxShadow: 'none',
       filter: 'none',
       borderTop:
         'var(--purrmd-horizontal-rule-height) solid var(--purrmd-horizontal-rule-color, #ccc)',
-      height: '0px',
+      height: '1px',
       padding: '0',
       margin: '0',
-    },
-    [`.${horizontalRuleClass.horizontalRuleFormatting}`]: {
-      display: 'inline-block',
-      color: 'var(--purrmd-formatting-horizontal-rule-color)',
-      height: '1em',
-      margin: 0,
+
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '100%',
     },
   });
   const highlightStyle = HighlightStyle.define([
     {
       tag: markdownTags.contentSeparator,
-      class: horizontalRuleClass.horizontalRuleFormatting,
+      class: horizontalRuleClass.contentSeparator,
     },
   ]);
   return [syntaxHighlighting(highlightStyle), theme];

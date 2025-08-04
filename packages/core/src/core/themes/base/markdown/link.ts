@@ -24,6 +24,9 @@ export const linkBaseTheme = (): Extension => {
       textDecoration: 'underline',
       cursor: 'pointer',
     },
+    [`.${linkClass.linkHideFormatting} .${linkClass.link}:hover`]: {
+      opacity: '0.8',
+    },
     [`.${linkClass.linkFormatting} .${linkClass.linkURL}`]: {
       color: 'var(--purrmd-link-url-color)',
       textDecoration: 'underline',

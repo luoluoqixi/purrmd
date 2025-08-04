@@ -111,6 +111,7 @@ class CodeBlockInfoWidget extends WidgetType {
     const dom = document.createElement('div');
     dom.className = codeBlockClass.codeBlockInfo;
     dom.innerHTML = this.lang;
+    dom.tabIndex = -1;
     dom.onclick = (event) => {
       if (this.onClick) {
         this.onClick(this.lang, this.code, event);
@@ -125,6 +126,7 @@ class CodeBlockInfoWidget extends WidgetType {
         }, 3000);
         navigator.clipboard.writeText(this.code);
         event.stopPropagation();
+        event.preventDefault();
       }
     };
     return dom;

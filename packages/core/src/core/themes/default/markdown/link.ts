@@ -8,7 +8,7 @@ export const linkTheme = (dark: boolean): Extension => {
         '--purrmd-link-color': 'var(--purrmd-primary-color)',
         '--purrmd-link-url-color': 'var(--purrmd-primary-color)',
         '--purrmd-link-title-color': '#a11',
-        '--purrmd-formatting-link-color': 'var(--purrmd-primary-color)',
+        '--purrmd-formatting-link-color': 'var(--formatting-color)',
       },
     },
     {
