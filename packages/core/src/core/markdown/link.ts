@@ -81,8 +81,8 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
   const clickToOpenPreview = config?.clickToOpenPreview ?? 'click';
   const isNeedOpenSource = clickToOpenSource !== 'none';
   const isNeedOpenPreview = clickToOpenPreview !== 'none';
-  const isCtrlClickSource = clickToOpenSource === 'ctrl';
-  const isCtrlClickPreview = clickToOpenPreview === 'ctrl';
+  const isCtrlClickSource = clickToOpenSource === 'ctrlOrCommand';
+  const isCtrlClickPreview = clickToOpenPreview === 'ctrlOrCommand';
 
   const linkPlugin = StateField.define<DecorationSet>({
     create(state) {
@@ -101,7 +101,13 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
 
   const clickHandler = EditorView.domEventHandlers({
     mousedown: (event, view) => {
-      if (!isNeedOpenSource && !isNeedOpenPreview) return;
+      if (
+        !isNeedOpenSource &&
+        !isNeedOpenPreview &&
+        config?.onLinkClickPreview == null &&
+        config?.onLinkClickSource == null
+      )
+        return;
       const target = event.target as HTMLElement;
       if (
         target.closest(`.${linkClass.linkURL}`) ||
@@ -121,8 +127,10 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
             event.preventDefault();
             config.onLinkClickPreview(url, event);
           } else {
-            if (!isCtrlClickPreview || (isCtrlClickPreview && event.ctrlKey)) {
-              window.open(url, '_blank');
+            if (isNeedOpenPreview) {
+              if (!isCtrlClickPreview || (isCtrlClickPreview && (event.ctrlKey || event.metaKey))) {
+                window.open(url, '_blank');
+              }
             }
           }
         } else {
@@ -131,8 +139,10 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
             event.preventDefault();
             config.onLinkClickSource(url, event);
           } else {
-            if (!isCtrlClickSource || (isCtrlClickSource && event.ctrlKey)) {
-              window.open(url, '_blank');
+            if (isNeedOpenSource) {
+              if (!isCtrlClickSource || (isCtrlClickSource && (event.ctrlKey || event.metaKey))) {
+                window.open(url, '_blank');
+              }
             }
           }
         }
@@ -144,8 +154,8 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
 }
 
 export interface LinkConfig {
-  clickToOpenSource?: 'ctrl' | 'click' | 'none';
-  clickToOpenPreview?: 'ctrl' | 'click' | 'none';
+  clickToOpenSource?: 'ctrlOrCommand' | 'click' | 'none';
+  clickToOpenPreview?: 'ctrlOrCommand' | 'click' | 'none';
   onLinkClickSource?: (url: string, event: MouseEvent) => void;
   onLinkClickPreview?: (url: string, event: MouseEvent) => void;
 }
