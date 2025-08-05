@@ -4,15 +4,15 @@ import { EditorView } from '@codemirror/view';
 
 import { hiddenClass } from '@/core/common/decorations';
 
-import { blockquoteBaseTheme } from './markdown/blockquote';
+import { blockquoteBaseTheme, blockquoteClass } from './markdown/blockquote';
 import { codeBaseTheme, codeClass } from './markdown/code';
 import { codeBlockBaseTheme, codeBlockClass } from './markdown/codeBlock';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
 import { headingBaseTheme, headingClass } from './markdown/heading';
-import { horizontalRuleBaseTheme } from './markdown/horizontalRule';
+import { horizontalRuleBaseTheme, horizontalRuleClass } from './markdown/horizontalRule';
 import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inlineCode';
-import { linkBaseTheme } from './markdown/link';
-import { listBaseTheme } from './markdown/list';
+import { linkBaseTheme, linkClass } from './markdown/link';
+import { listBaseTheme, listClass } from './markdown/list';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
 import { strongBaseTheme, strongClass } from './markdown/strong';
 
@@ -40,11 +40,15 @@ export const base = (): Extension => {
 };
 
 export const themeClass = {
-  codeBlock: codeBlockClass,
+  blockquote: blockquoteClass,
   code: codeClass,
+  codeBlock: codeBlockClass,
   emphasis: emphasisClass,
   heading: headingClass,
+  horizontalRule: horizontalRuleClass,
   inlineCode: inlineCodeClass,
+  link: linkClass,
+  list: listClass,
   strikethrough: strikethroughClass,
   strong: strongClass,
 };
