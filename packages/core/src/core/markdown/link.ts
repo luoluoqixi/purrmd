@@ -77,12 +77,12 @@ function getLinkIsHidden(state: EditorState, pos: number, view: EditorView): boo
 }
 
 export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extension {
-  const clickToOpenSource = config?.clickToOpenSource ?? 'ctrl';
-  const clickToOpenPreview = config?.clickToOpenPreview ?? 'click';
-  const isNeedOpenSource = clickToOpenSource !== 'none';
-  const isNeedOpenPreview = clickToOpenPreview !== 'none';
-  const isCtrlClickSource = clickToOpenSource === 'ctrlOrCommand';
-  const isCtrlClickPreview = clickToOpenPreview === 'ctrlOrCommand';
+  const clickToOpenInSource = config?.clickToOpenInSource ?? 'controlOrCommand';
+  const clickToOpenInPreview = config?.clickToOpenInPreview ?? 'click';
+  const isNeedOpenSource = clickToOpenInSource !== 'none';
+  const isNeedOpenPreview = clickToOpenInPreview !== 'none';
+  const isCtrlClickSource = clickToOpenInSource === 'controlOrCommand';
+  const isCtrlClickPreview = clickToOpenInPreview === 'controlOrCommand';
 
   const linkPlugin = StateField.define<DecorationSet>({
     create(state) {
@@ -154,8 +154,10 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
 }
 
 export interface LinkConfig {
-  clickToOpenSource?: 'ctrlOrCommand' | 'click' | 'none';
-  clickToOpenPreview?: 'ctrlOrCommand' | 'click' | 'none';
+  /** Click Open in source mode @default 'controlOrCommand'  */
+  clickToOpenInSource?: 'controlOrCommand' | 'click' | 'none';
+  /** Click Open in preview mode @default 'click' */
+  clickToOpenInPreview?: 'controlOrCommand' | 'click' | 'none';
   onLinkClickSource?: (url: string, event: MouseEvent) => void;
   onLinkClickPreview?: (url: string, event: MouseEvent) => void;
 }
