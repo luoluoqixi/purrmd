@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "pnpm run lint && pnpm --filter=purrmd run build",
-    "build-docs": "pnpm --filter=purrmd-docs run build",
+    "build-docs": "pnpm build&&pnpm --filter=purrmd-docs run build",
     "dev": "concurrently \"pnpm watch-purrmd\" \"pnpm dev-demo\"",
     "dev-demo": "pnpm --filter=purrmd-demo run dev",
     "dev-docs": "pnpm --filter=purrmd-docs run dev",
