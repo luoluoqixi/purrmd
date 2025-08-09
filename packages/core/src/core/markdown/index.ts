@@ -3,6 +3,7 @@ export * from './codeBlock';
 export * from './emphasis';
 export * from './heading';
 export * from './horizontalRule';
+export * from './image';
 export * from './inlineCode';
 export * from './link';
 export * from './list';

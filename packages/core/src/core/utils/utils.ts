@@ -1,5 +1,5 @@
 import { syntaxTree } from '@codemirror/language';
-import { EditorState, type Range } from '@codemirror/state';
+import { EditorSelection, EditorState, Line, type Range } from '@codemirror/state';
 import { Decoration, EditorView } from '@codemirror/view';
 import type { SyntaxNode, SyntaxNodeRef } from '@lezer/common';
 
@@ -93,4 +93,46 @@ export function isInsideFencedCode(state: EditorState, from: number): boolean {
     node = node.parent;
   }
   return false;
+}
+
+export function findNodeURL(state: EditorState, node: SyntaxNodeRef): string | undefined {
+  let url: string | undefined;
+  if (node.name === 'URL') {
+    url = state.doc.sliceString(node.from, node.to);
+  } else {
+    const cursor = node.node.cursor();
+    if (cursor.firstChild()) {
+      do {
+        if (cursor.name === 'URL') {
+          url = state.doc.sliceString(cursor.from, cursor.to);
+          break;
+        }
+      } while (cursor.nextSibling());
+    }
+  }
+  return url;
+}
+
+export function findNodeFromLine(state: EditorState, line: Line, name: string): SyntaxNode | null {
+  let foundNode: SyntaxNode | null = null;
+  syntaxTree(state).iterate({
+    from: line.from,
+    to: line.to,
+    enter(node) {
+      if (node.type.name === name) {
+        foundNode = node.node;
+        return true;
+      }
+    },
+  });
+  return foundNode;
+}
+
+export function selectRange(view: EditorView, range: BaseRange) {
+  setTimeout(() => {
+    if (!view) return;
+    view.dispatch({
+      selection: EditorSelection.single(range.to, range.from),
+    });
+  }, 0);
 }

@@ -8,6 +8,7 @@ import { codeBlockTheme } from './markdown/codeBlock';
 import { emphasisTheme } from './markdown/emphasis';
 import { headingTheme } from './markdown/heading';
 import { horizontalRuleTheme } from './markdown/horizontalRule';
+import { imageTheme } from './markdown/image';
 import { inlineCodeTheme } from './markdown/inlineCode';
 import { linkTheme } from './markdown/link';
 import { listTheme } from './markdown/list';
@@ -41,6 +42,7 @@ export const defaultTheme = (config: {
     codeBlockTheme(dark),
     headingTheme(dark),
     horizontalRuleTheme(dark),
+    imageTheme(dark),
     inlineCodeTheme(dark),
     linkTheme(dark),
     listTheme(dark),

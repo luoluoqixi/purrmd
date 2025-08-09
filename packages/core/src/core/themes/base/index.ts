@@ -10,6 +10,7 @@ import { codeBlockBaseTheme, codeBlockClass } from './markdown/codeBlock';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
 import { headingBaseTheme, headingClass } from './markdown/heading';
 import { horizontalRuleBaseTheme, horizontalRuleClass } from './markdown/horizontalRule';
+import { imageBaseTheme } from './markdown/image';
 import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inlineCode';
 import { linkBaseTheme, linkClass } from './markdown/link';
 import { listBaseTheme, listClass } from './markdown/list';
@@ -31,6 +32,7 @@ export const base = (): Extension => {
     codeBlockBaseTheme(),
     headingBaseTheme(),
     horizontalRuleBaseTheme(),
+    imageBaseTheme(),
     inlineCodeBaseTheme(),
     linkBaseTheme(),
     listBaseTheme(),

@@ -16,6 +16,7 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
     Emphasis: true,
     Heading: true,
     HorizontalRule: true,
+    Image: true,
     InlineCode: true,
     Link: true,
     List: true,

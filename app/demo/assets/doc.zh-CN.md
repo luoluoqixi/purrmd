@@ -1,7 +1,5 @@
 # PurrMD 演示 - Markdown 测试文档
 
-![PurrMD](./logo.png)
-
 ## 文本格式
 
 这里测试了**加粗**、*斜体*、~~删除线~~和 `行内代码`。
@@ -79,6 +77,10 @@ function hello() {
 [GitHub](https://github.com/luoluoqixi/purrmd)
 
 [带标题的链接](https://github.com/luoluoqixi/purrmd "PurrMD")
+
+## 图片
+
+![Image](https://i0.pickpik.com/photos/548/90/482/sunrise-phu-quoc-island-ocean-preview.jpg)
 
 ## 表格
 

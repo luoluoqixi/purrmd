@@ -1,9 +1,10 @@
 import { syntaxTree } from '@codemirror/language';
 import { EditorState, Extension, type Range, StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
+import { SyntaxNodeRef } from '@lezer/common';
 
 import { FormattingDisplayMode } from '../types';
-import { isSelectRange } from '../utils';
+import { findNodeFromLine, isSelectRange, selectRange } from '../utils';
 
 export const horizontalRuleClass = {
   horizontalRule: 'purrmd-cm-horizontal-rule',
@@ -55,7 +56,29 @@ export function horizontalRule(
 
     provide: (f) => [EditorView.decorations.from(f)],
   });
-  return horizontalRulePlugin;
+  const clickHandler = EditorView.domEventHandlers({
+    mousedown: (event: MouseEvent, view: EditorView) => {
+      const target = event.target as HTMLElement;
+      const hrElement = target.closest(`.${horizontalRuleClass.horizontalRule}`);
+      if (hrElement) {
+        const pos = view.posAtDOM(hrElement);
+        if (pos === null) return;
+        const line = view.state.doc.lineAt(pos);
+        const foundNode = findNodeFromLine(view.state, line, 'HorizontalRule');
+        if (foundNode) {
+          const from = foundNode.from;
+          const to = foundNode.to;
+          selectRange(view, { from, to });
+          if (config?.onClick) {
+            config.onClick(event, view, foundNode);
+          }
+        }
+      }
+    },
+  });
+  return [horizontalRulePlugin, clickHandler];
 }
 
-export interface HorizontalRuleConfig {}
+export interface HorizontalRuleConfig {
+  onClick?: (event: MouseEvent, view: EditorView, node: SyntaxNodeRef) => void;
+}

@@ -4,7 +4,7 @@ import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
 import { FormattingDisplayMode } from '../types';
-import { isSelectRange, setSubNodeHideDecorations } from '../utils';
+import { findNodeURL, isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 export const linkClass = {
   link: 'purrmd-cm-link',
@@ -52,16 +52,10 @@ function getLinkUrl(state: EditorState, pos: number): string | undefined {
       if (node.name === 'URL') {
         url = state.doc.sliceString(node.from, node.to);
         return true;
-      } else if (node.name === 'Link') {
-        const cursor = node.node.cursor();
-        if (cursor.firstChild()) {
-          do {
-            if (cursor.name === 'URL') {
-              url = state.doc.sliceString(cursor.from, cursor.to);
-              return true;
-            }
-          } while (cursor.nextSibling());
-        }
+      }
+      if (node.name === 'Link') {
+        url = findNodeURL(state, node);
+        if (url) return true;
       }
     },
   });
@@ -124,7 +118,6 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
         if (isHidden) {
           // Preview mode
           if (config?.onLinkClickPreview) {
-            event.preventDefault();
             config.onLinkClickPreview(url, event);
           } else {
             if (isNeedOpenPreview) {
@@ -136,7 +129,6 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
         } else {
           // Source mode
           if (config?.onLinkClickSource) {
-            event.preventDefault();
             config.onLinkClickSource(url, event);
           } else {
             if (isNeedOpenSource) {

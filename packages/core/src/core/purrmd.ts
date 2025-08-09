@@ -11,6 +11,7 @@ import {
   emphasis,
   heading,
   horizontalRule,
+  image,
   inlineCode,
   link,
   list,
@@ -53,6 +54,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     features?.Heading && heading(mode, featuresConfigs?.[PurrMDFeatures.Heading]),
     features?.HorizontalRule &&
       horizontalRule(mode, featuresConfigs?.[PurrMDFeatures.HorizontalRule]),
+    features?.Image && image(mode, featuresConfigs?.[PurrMDFeatures.Image]),
     features?.InlineCode && inlineCode(mode, featuresConfigs?.[PurrMDFeatures.InlineCode]),
     features?.Link && link(mode, featuresConfigs?.[PurrMDFeatures.Link]),
     features?.List && list(mode, featuresConfigs?.[PurrMDFeatures.List]),

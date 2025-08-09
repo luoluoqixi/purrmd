@@ -6,6 +6,7 @@ import {
   EmphasisConfig,
   HeadingConfig,
   HorizontalRuleConfig,
+  ImageConfig,
   InlineCodeConfig,
   LinkConfig,
   ListConfig,
@@ -21,6 +22,7 @@ export enum PurrMDFeatures {
   Emphasis = 'Emphasis',
   Heading = 'Heading',
   HorizontalRule = 'HorizontalRule',
+  Image = 'Image',
   InlineCode = 'InlineCode',
   Link = 'Link',
   List = 'List',
@@ -34,6 +36,7 @@ export interface PurrMDFeatureConfig {
   [PurrMDFeatures.Emphasis]?: EmphasisConfig;
   [PurrMDFeatures.Heading]?: HeadingConfig;
   [PurrMDFeatures.HorizontalRule]?: HorizontalRuleConfig;
+  [PurrMDFeatures.Image]?: ImageConfig;
   [PurrMDFeatures.InlineCode]?: InlineCodeConfig;
   [PurrMDFeatures.Link]?: LinkConfig;
   [PurrMDFeatures.List]?: ListConfig;

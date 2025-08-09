@@ -1,7 +1,5 @@
 # PurrMD Demo - Markdown Test Document
 
-![PurrMD](./logo.png)
-
 ## Text Formatting
 
 This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
@@ -79,6 +77,10 @@ function hello() {
 [GitHub](https://github.com/luoluoqixi/purrmd)
 
 [Link with title](https://github.com/luoluoqixi/purrmd "PurrMD")
+
+## Image
+
+![Image](https://i0.pickpik.com/photos/548/90/482/sunrise-phu-quoc-island-ocean-preview.jpg)
 
 ## Tables
 
