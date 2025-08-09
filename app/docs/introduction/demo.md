@@ -9,10 +9,12 @@ layout: page
   #root {
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center;
   }
   .cm-editor {
     padding: 0px 0px 10px 0px;
-    width: 100%;
+    width: 1000px;
     height: 100%;
     outline: 0 !important;
   }

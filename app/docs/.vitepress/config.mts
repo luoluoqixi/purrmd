@@ -70,6 +70,12 @@ export default defineConfig({
             ],
           },
         ],
+        returnToTopLabel: '返回顶部',
+        sidebarMenuLabel: '菜单',
+        docFooter: {
+          next: '下一页',
+          prev: '上一页',
+        },
       },
     },
   },
