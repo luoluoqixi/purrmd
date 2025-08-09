@@ -45,7 +45,7 @@ const view = new EditorView({
 - **WYSIWYG Editing** - Instant preview of Markdown rendering
 - **GFM Compatible** - Supports GitHub Flavored Markdown
 
-## 📋 功能支持
+## 📋 Supported Features
 
 | Feature | Syntax Example |
 |------|----------|
