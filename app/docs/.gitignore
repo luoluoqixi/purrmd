@@ -2,3 +2,6 @@
 .vitepress/cache
 .vitepress/dist
 node_modules
+
+apis/*
+zh/apis/*

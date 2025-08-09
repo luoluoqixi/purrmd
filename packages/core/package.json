@@ -10,6 +10,7 @@
   "license": "MIT",
   "scripts": {
     "build": "vite build",
+    "build-api": "npx typedoc src/index.ts --out ../../app/docs/apis/&&npx typedoc src/index.ts --out ../../app/docs/zh/apis/",
     "format": "prettier --write .",
     "lint": "eslint ./src --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
     "preinstall": "npx only-allow pnpm",
@@ -75,5 +76,9 @@
   "node": ">=20.0.0",
   "dependencies": {
     "ts-deepmerge": "^7.0.3"
+  },
+  "devDependencies": {
+    "typedoc": "^0.28.9",
+    "typedoc-plugin-markdown": "^4.8.0"
   }
 }
