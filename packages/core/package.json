@@ -68,6 +68,7 @@
     "dist",
     "src",
     "README.md",
+    "README_zh.md",
     "LICENSE"
   ],
   "packageManager": "pnpm@9.15.0",
