@@ -25,15 +25,22 @@ layout: page
 </style>
 
 <script setup>
-  import { onMounted } from 'vue';
+  import { useData } from 'vitepress'
+  import { onMounted, onUnmounted, watch } from 'vue';
   import { purrmd, purrmdTheme } from 'purrmd';
   import { EditorView } from '@codemirror/view';
   import { basicSetup } from 'codemirror';
 
   const documentText = __INIT_DOCUMENT;
+  const { isDark } = useData();
+  let view = null
 
-  onMounted(() => {
-    const view = new EditorView({
+  const createEditor = (isDarkMode) => {
+    if (view) {
+      view.destroy();
+      view = null;
+    }
+    view = new EditorView({
       doc: documentText,
       parent: document.getElementById('root'),
       extensions: [
@@ -43,10 +50,25 @@ layout: page
           formattingDisplayMode: 'auto',
         }),
         purrmdTheme({
-          mode: 'light',
+          mode: isDarkMode ? 'dark' : 'light',
         }),
       ],
     });
+  }
+
+  watch(isDark, (newVal) => {
+    createEditor(newVal);
+  })
+
+  onMounted(() => {
+    createEditor(isDark.value)
+  });
+
+  onUnmounted(() => {
+    if (view) {
+      view.destroy();
+      view = null;
+    }
   });
 </script>
 
