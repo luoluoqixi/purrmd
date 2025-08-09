@@ -3,7 +3,7 @@
   "description": "purrmd docs",
   "private": true,
   "scripts": {
-    "dev": "vitepress dev --host",
+    "dev": "vitepress dev --host --force",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },

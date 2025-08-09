@@ -11,7 +11,7 @@ hero:
       link: /introduction/demo
     - theme: alt
       text: Document
-      link: /introduction/getting-started
+      link: /introduction/
 
 ---
 

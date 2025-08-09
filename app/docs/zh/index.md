@@ -11,7 +11,7 @@ hero:
       link: /zh//introduction/demo
     - theme: alt
       text: 文档
-      link: /zh/introduction/getting-started
+      link: /zh/introduction/
 
 ---
 

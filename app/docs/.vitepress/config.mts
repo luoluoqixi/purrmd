@@ -12,9 +12,7 @@ export default defineConfig({
   description: 'A WYSIWYG Markdown Editor for CodeMirror6',
   base: '/',
   vite: {
-    optimizeDeps: {
-      include: ['purrmd'],
-    },
+    optimizeDeps: {},
     define: {
       __INIT_DOCUMENT: loadFileDefine('../../demo/assets/doc.md'),
       __INIT_DOCUMENT_ZH: loadFileDefine('../../demo/assets/doc.zh-CN.md'),
@@ -37,16 +35,12 @@ export default defineConfig({
         darkModeSwitchTitle: '切换夜间模式',
         nav: [
           { text: '演示', link: '/zh/introduction/demo' },
-          { text: '文档', link: '/zh/introduction/getting-started' },
+          { text: '文档', link: '/zh/introduction/' },
         ],
         sidebar: [
           {
             text: '介绍',
             items: [
-              {
-                text: '演示',
-                link: '/zh/introduction/demo',
-              },
               {
                 text: '简介',
                 link: '/zh/introduction/',
@@ -84,16 +78,12 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Demo', link: '/introduction/demo' },
-      { text: 'Document', link: '/introduction/getting-started' },
+      { text: 'Document', link: '/introduction/' },
     ],
     sidebar: [
       {
         text: 'Introduction',
         items: [
-          {
-            text: 'Demo',
-            link: '/introduction/demo',
-          },
           {
             text: 'Introduction',
             link: '/introduction/',

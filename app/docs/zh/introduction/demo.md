@@ -1,14 +1,14 @@
-# 演示
-
 ---
-
+sidebar: false
+layout: page
+---
 
 <div id="root"></div>
 
 <style>
   #root {
     width: 100%;
-    height: 600px;
+    height: 100%;
   }
   .cm-editor {
     padding: 0px 0px 10px 0px;
@@ -31,7 +31,6 @@
   const documentText = __INIT_DOCUMENT_ZH;
 
   onMounted(() => {
-    console.log(document.getElementById('root'))
     const view = new EditorView({
       doc: documentText,
       parent: document.getElementById('root'),
