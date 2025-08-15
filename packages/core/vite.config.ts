@@ -27,7 +27,7 @@ export default defineConfig({
       deps: false,
       devDeps: true,
       nodeBuiltins: true,
-      include: [/@codemirror\/*/],
+      include: [/@codemirror\/*/, '@uiw/codemirror-theme-vscode', '@uiw/codemirror-theme-dracula'],
     }),
     dts({
       // root: path.resolve(__dirname, 'src'),
