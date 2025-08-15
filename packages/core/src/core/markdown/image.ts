@@ -13,9 +13,10 @@ import { FormattingDisplayMode } from '../types';
 import { findNodeURL, isSelectRange, selectRange } from '../utils';
 
 export const imageClass = {
+  image: 'purrmd-cm-image',
   imageLinkWrap: 'purrmd-cm-image-link-wrap',
   imageWrap: 'purrmd-cm-image-wrap',
-  image: 'purrmd-cm-image',
+  imageDom: 'purrmd-cm-image-dom',
 };
 
 class Image extends WidgetType {
@@ -33,7 +34,7 @@ class Image extends WidgetType {
     el.className = this.isImageLink ? imageClass.imageLinkWrap : imageClass.imageWrap;
     if (this.url) {
       const alt = this.alt ? `alt="${this.alt}"` : '';
-      el.innerHTML = `<img class="${imageClass.image}" src="${this.url}" ${alt} />`;
+      el.innerHTML = `<img class="${imageClass.imageDom}" src="${this.url}" ${alt} />`;
     }
 
     el.onmousedown = this.onImageDown;

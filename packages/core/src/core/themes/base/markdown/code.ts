@@ -1,3 +1,4 @@
+import { markdownLanguage } from '@codemirror/lang-markdown';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
@@ -18,9 +19,14 @@ export const codeBaseTheme = (): Extension => {
       color: 'var(--purrmd-formatting-code-info-color)',
     },
   });
-  const highlightStyle = HighlightStyle.define([
-    { class: codeClass.codeFormatting, tag: markdownTags.codeTag },
-    { class: codeClass.codeInfo, tag: markdownTags.codeInfo },
-  ]);
+  const highlightStyle = HighlightStyle.define(
+    [
+      { class: codeClass.codeFormatting, tag: markdownTags.codeTag },
+      { class: codeClass.codeInfo, tag: markdownTags.codeInfo },
+    ],
+    {
+      scope: markdownLanguage,
+    },
+  );
   return [syntaxHighlighting(highlightStyle), theme];
 };

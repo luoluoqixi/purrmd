@@ -5,7 +5,7 @@ export const strikethroughTheme = (dark: boolean): Extension => {
   const theme = EditorView.theme(
     {
       '.cm-content': {
-        '--purrmd-formatting-strikethrough-color': 'var(--formatting-color)',
+        '--purrmd-formatting-strikethrough-color': 'var(--purrmd-formatting-color)',
       },
     },
     {

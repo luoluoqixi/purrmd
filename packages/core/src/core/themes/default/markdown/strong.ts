@@ -5,7 +5,7 @@ export const strongTheme = (dark: boolean): Extension => {
   const theme = EditorView.theme(
     {
       '.cm-content': {
-        '--purrmd-formatting-strong-color': 'var(--formatting-color)',
+        '--purrmd-formatting-strong-color': 'var(--purrmd-formatting-color)',
       },
     },
     {

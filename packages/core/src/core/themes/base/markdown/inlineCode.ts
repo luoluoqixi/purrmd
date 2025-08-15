@@ -10,7 +10,7 @@ export const inlineCodeClass = inlineCode;
 export const inlineCodeBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
-      '--purrmd-inline-code-bg-color': 'rgba(0, 0, 0, 0.1)',
+      '--purrmd-inline-code-bg-color': 'var(--purrmd-primary-color)',
       '--purrmd-inline-code-color': 'inherit',
       '--purrmd-formatting-inline-code-color': 'inherit',
     },
@@ -23,6 +23,7 @@ export const inlineCodeBaseTheme = (): Extension => {
     },
     [`.${inlineCodeClass.inlineCodeFormatting} .${codeClass.codeFormatting}`]: {
       color: 'var(--purrmd-formatting-inline-code-color)',
+      opacity: 'var(--purrmd-formatting-opacity)',
     },
   });
   return theme;

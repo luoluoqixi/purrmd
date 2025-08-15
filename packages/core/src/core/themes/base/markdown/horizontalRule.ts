@@ -1,3 +1,4 @@
+import { markdownLanguage } from '@codemirror/lang-markdown';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
@@ -10,9 +11,11 @@ export const horizontalRuleClass = horizontalRule;
 export const horizontalRuleBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
-      '--purrmd-horizontal-rule-color': '#ccc',
+      // '--purrmd-horizontal-rule-color': '#ccc',
+      '--purrmd-horizontal-rule-color': 'inherit',
       '--purrmd-horizontal-rule-height': '1px',
-      '--purrmd-formatting-horizontal-rule-color': 'inherit',
+      '--purrmd-formatting-horizontal-rule-color': 'var(--purrmd-formatting-color)',
+      '--purrmd-formatting-horizontal-rule-opacity': 'var(--purrmd-formatting-opacity)',
     },
     [`.${horizontalRuleClass.horizontalRuleFormatting} .${horizontalRuleClass.contentSeparator},
       .${horizontalRuleClass.horizontalRule} .${horizontalRuleClass.contentSeparator}`]: {
@@ -23,6 +26,7 @@ export const horizontalRuleBaseTheme = (): Extension => {
     },
     [`.${horizontalRuleClass.horizontalRuleFormatting} .${horizontalRuleClass.contentSeparator}`]: {
       color: 'var(--purrmd-formatting-horizontal-rule-color)',
+      opacity: 'var(--purrmd-formatting-horizontal-rule-opacity)',
     },
     [`.${horizontalRuleClass.horizontalRule} .${horizontalRuleClass.contentSeparator}`]: {
       display: 'inline-block',
@@ -51,11 +55,16 @@ export const horizontalRuleBaseTheme = (): Extension => {
       width: '100%',
     },
   });
-  const highlightStyle = HighlightStyle.define([
+  const highlightStyle = HighlightStyle.define(
+    [
+      {
+        tag: markdownTags.contentSeparator,
+        class: horizontalRuleClass.contentSeparator,
+      },
+    ],
     {
-      tag: markdownTags.contentSeparator,
-      class: horizontalRuleClass.contentSeparator,
+      scope: markdownLanguage,
     },
-  ]);
+  );
   return [syntaxHighlighting(highlightStyle), theme];
 };

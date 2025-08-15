@@ -10,11 +10,12 @@ export const codeBlockClass = codeBlock;
 export const codeBlockBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
-      '--purrmd-code-block-bg-color': 'rgba(0, 0, 0, 0.05)',
+      '--purrmd-code-block-bg-color': '#00000040',
       '--purrmd-code-block-border-radius': '0.5rem',
       '--purrmd-code-block-info-bg-color': 'transparent',
-      '--purrmd-code-block-info-bg-color-hover': 'rgba(0, 0, 0, 0.1)',
-      '--purrmd-formatting-code-block-color': 'inherit',
+      '--purrmd-code-block-info-bg-color-hover': '#0000001a',
+      '--purrmd-formatting-code-block-color': 'var(--purrmd-formatting-color)',
+      '--purrmd-formatting-code-opacity': 'var(--purrmd-formatting-opacity)',
     },
     [`.${codeBlockClass.codeBlockLine}`]: {
       backgroundColor: 'var(--purrmd-code-block-bg-color)',
@@ -44,6 +45,7 @@ export const codeBlockBaseTheme = (): Extension => {
     [`.${codeBlockClass.codeBlockFirstLine} .${codeClass.codeFormatting},
       .${codeBlockClass.codeBlockLastLine} .${codeClass.codeFormatting}`]: {
       color: 'var(--purrmd-formatting-code-block-color)',
+      opacity: 'var(--purrmd-formatting-code-opacity)',
     },
   });
   return theme;

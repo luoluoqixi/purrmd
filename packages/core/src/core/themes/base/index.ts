@@ -19,6 +19,11 @@ import { strongBaseTheme, strongClass } from './markdown/strong';
 
 export const base = (): Extension => {
   const baseTheme = EditorView.baseTheme({
+    '.cm-content': {
+      '--purrmd-primary-color': 'gray',
+      '--purrmd-formatting-color': 'var(--purrmd-primary-color)',
+      '--purrmd-formatting-opacity': '0.8',
+    },
     [`.${hiddenClass.inline}`]: {
       fontSize: '0px',
     },

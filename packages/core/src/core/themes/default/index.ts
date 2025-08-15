@@ -26,7 +26,8 @@ export const defaultTheme = (config: {
     {
       '.cm-content': {
         '--purrmd-primary-color': config.primaryColor,
-        '--formatting-color': formattingColor,
+        '--purrmd-formatting-color': formattingColor,
+        '--purrmd-formatting-opacity': config.formattingColor || '0.8',
       },
     },
     {

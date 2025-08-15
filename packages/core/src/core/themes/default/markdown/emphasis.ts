@@ -5,7 +5,7 @@ export const emphasisTheme = (dark: boolean): Extension => {
   const theme = EditorView.theme(
     {
       '.cm-content': {
-        '--purrmd-formatting-emphasis-color': 'var(--formatting-color)',
+        '--purrmd-formatting-emphasis-color': 'var(--purrmd-formatting-color)',
       },
     },
     {

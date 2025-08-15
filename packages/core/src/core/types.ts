@@ -64,4 +64,6 @@ export interface PurrMDThemeConfig {
   primaryColor?: string;
   /** formatting color, support 'light' or 'dark' */
   formattingColor?: string;
+  /** formatting opacity @default '0.8' */
+  formattingOpacity?: string;
 }

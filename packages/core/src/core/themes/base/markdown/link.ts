@@ -1,3 +1,4 @@
+import { markdownLanguage } from '@codemirror/lang-markdown';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
@@ -10,15 +11,26 @@ export const linkClass = link;
 export const linkBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
-      '--purrmd-link-color': 'blue',
-      '--purrmd-link-url-color': 'blue',
-      '--purrmd-link-title-color': '#a11',
       '--purrmd-formatting-link-color': 'blue',
+      '--purrmd-formatting-link-opacity': 'var(--purrmd-formatting-opacity)',
+
+      '--purrmd-link-color': 'var(--purrmd-primary-color)',
+      '--purrmd-link-url-color': 'var(--purrmd-primary-color)',
+      '--purrmd-link-title-color': 'var(--purrmd-primary-color)',
     },
-    [`.${linkClass.linkFormatting} .${linkClass.link}`]: {
+    [`.${linkClass.link}`]: {
       color: 'var(--purrmd-link-color)',
       textDecoration: 'none',
     },
+    [`.${linkClass.linkURL}`]: {
+      color: 'var(--purrmd-link-url-color)',
+      textDecoration: 'underline',
+    },
+    [`.${linkClass.linkTitle}`]: {
+      color: 'var(--purrmd-link-title-color)',
+      textDecoration: 'none',
+    },
+
     [`.${linkClass.linkHideFormatting} .${linkClass.link}`]: {
       color: 'var(--purrmd-link-color)',
       textDecoration: 'underline',
@@ -27,14 +39,6 @@ export const linkBaseTheme = (): Extension => {
     [`.${linkClass.linkHideFormatting} .${linkClass.link}:hover`]: {
       opacity: '0.8',
     },
-    [`.${linkClass.linkFormatting} .${linkClass.linkURL}`]: {
-      color: 'var(--purrmd-link-url-color)',
-      textDecoration: 'underline',
-    },
-    [`.${linkClass.linkFormatting} .${linkClass.linkTitle}`]: {
-      color: 'var(--purrmd-link-title-color)',
-      textDecoration: 'none',
-    },
     [`.${linkClass.linkHideFormatting} .${linkClass.linkTitle}`]: {
       color: 'var(--purrmd-link-title-color)',
       textDecoration: 'underline',
@@ -42,16 +46,22 @@ export const linkBaseTheme = (): Extension => {
     [`.${linkClass.link}.${linkClass.linkFormatting}`]: {
       color: 'var(--purrmd-formatting-link-color)',
       textDecoration: 'none',
+      opacity: 'var(--purrmd-formatting-link-opacity)',
     },
     [`.${linkClass.linkHideFormatting}`]: {
       textDecoration: 'none',
     },
   });
-  const highlightStyle = HighlightStyle.define([
-    { class: linkClass.linkFormatting, tag: markdownTags.linkTag },
-    { class: linkClass.linkURL, tag: markdownTags.linkURLTag },
-    { class: linkClass.linkTitle, tag: markdownTags.linkTitle },
-    { class: linkClass.link, tag: markdownTags.link },
-  ]);
+  const highlightStyle = HighlightStyle.define(
+    [
+      { class: linkClass.linkFormatting, tag: markdownTags.linkTag },
+      { class: linkClass.linkURL, tag: markdownTags.linkURLTag },
+      { class: linkClass.linkTitle, tag: markdownTags.linkTitle },
+      { class: linkClass.link, tag: markdownTags.link },
+    ],
+    {
+      scope: markdownLanguage,
+    },
+  );
   return [syntaxHighlighting(highlightStyle), theme];
 };

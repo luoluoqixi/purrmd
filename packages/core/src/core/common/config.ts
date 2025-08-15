@@ -28,7 +28,7 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
 
 export const defaultThemeConfig = (): PurrMDThemeConfig => ({
   mode: 'light',
-  primaryColor: '#ab35ff',
+  primaryColor: '#e957b6',
 });
 
 const getMarkdownSyntaxTags = (): MarkdownExtension => [

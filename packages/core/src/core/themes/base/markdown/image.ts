@@ -7,11 +7,7 @@ export const imageClass = image;
 
 export const imageBaseTheme = (): Extension => {
   const theme = EditorView.baseTheme({
-    '.cm-content': {
-      '--purrmd-formatting-blockquote-color': 'inherit',
-      '--purrmd-formatting-blockquote-border-thickness': '2px',
-      '--purrmd-formatting-blockquote-border-color': 'grey',
-    },
+    '.cm-content': {},
     [`.${imageClass.imageWrap}, .${imageClass.imageLinkWrap}`]: {},
     [`.${imageClass.imageWrap}`]: {
       display: 'block',
@@ -25,7 +21,7 @@ export const imageBaseTheme = (): Extension => {
     [`.${imageClass.imageLinkWrap}`]: {
       display: 'inline-block',
     },
-    [`.${imageClass.image}`]: {
+    [`.${imageClass.imageDom}`]: {
       maxWidth: '100%',
       height: 'auto',
     },

@@ -5,7 +5,9 @@ export const codeBlockTheme = (dark: boolean): Extension => {
   const theme = EditorView.theme(
     {
       '.cm-content': {
-        '--purrmd-formatting-code-block-color': 'var(--formatting-color)',
+        '--purrmd-formatting-code-block-color': 'var(--purrmd-formatting-color)',
+        '--purrmd-code-block-bg-color': dark ? '#ffffff05' : '#00000040',
+        '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
       },
     },
     {
