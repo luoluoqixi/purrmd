@@ -12,7 +12,7 @@
     "build-apis": "pnpm --filter=purrmd run build-api",
     "dev": "concurrently \"pnpm watch-purrmd\" \"pnpm dev-demo\"",
     "dev-demo": "pnpm --filter=purrmd-demo run dev",
-    "dev-docs": "pnpm --filter=purrmd-docs run dev",
+    "dev-docs": "concurrently \"pnpm watch-purrmd\" \"pnpm --filter=purrmd-docs run dev\"",
     "watch-purrmd": "pnpm --filter=purrmd run watch",
     "format": "prettier --write .",
     "lint": "eslint ./packages --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
