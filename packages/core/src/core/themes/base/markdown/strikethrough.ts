@@ -10,11 +10,12 @@ export const strikethroughClass = {
   strikethroughFormatting: 'purrmd-cm-formatting-strikethrough',
 };
 
-export const strikethroughBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const strikethroughBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-strikethrough-text-decoration': 'line-through',
-      '--purrmd-formatting-strikethrough-color': 'inherit',
+      '--purrmd-formatting-strikethrough-color': 'var(--purrmd-primary-color)',
       '--purrmd-formatting-strikethrough-opacity': 'var(--purrmd-formatting-opacity)',
     },
     [`.${strikethroughClass.strikethrough}.${strikethroughClass.strikethrough}`]: {

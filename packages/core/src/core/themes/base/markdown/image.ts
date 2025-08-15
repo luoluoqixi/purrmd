@@ -5,7 +5,8 @@ import { imageClass as image } from '@/core/markdown';
 
 export const imageClass = image;
 
-export const imageBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const imageBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {},
     [`.${imageClass.imageWrap}, .${imageClass.imageLinkWrap}`]: {},

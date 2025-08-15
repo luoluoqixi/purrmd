@@ -1,53 +1,16 @@
 import { Extension } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
+import { dracula } from '@uiw/codemirror-theme-dracula';
+import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode';
 
 import { base } from '../base';
-import { blockquoteTheme } from './markdown/blockquote';
-import { codeTheme } from './markdown/code';
-import { codeBlockTheme } from './markdown/codeBlock';
-import { emphasisTheme } from './markdown/emphasis';
-import { headingTheme } from './markdown/heading';
-import { horizontalRuleTheme } from './markdown/horizontalRule';
-import { imageTheme } from './markdown/image';
-import { inlineCodeTheme } from './markdown/inlineCode';
-import { linkTheme } from './markdown/link';
-import { listTheme } from './markdown/list';
-import { strikethroughTheme } from './markdown/strikethrough';
-import { strongTheme } from './markdown/strong';
 
 export const defaultTheme = (config: {
   primaryColor: string;
   formattingColor?: string;
+  mode: 'light' | 'dark' | 'dracula';
   dark: boolean;
 }): Extension => {
-  const dark = config.dark;
-  const formattingColor = config.formattingColor || 'var(--purrmd-primary-color)';
-  const theme = EditorView.theme(
-    {
-      '.cm-content': {
-        '--purrmd-primary-color': config.primaryColor,
-        '--purrmd-formatting-color': formattingColor,
-        '--purrmd-formatting-opacity': config.formattingColor || '0.8',
-      },
-    },
-    {
-      dark,
-    },
-  );
-  return [
-    base(),
-    theme,
-    blockquoteTheme(dark),
-    codeTheme(dark),
-    emphasisTheme(dark),
-    codeBlockTheme(dark),
-    headingTheme(dark),
-    horizontalRuleTheme(dark),
-    imageTheme(dark),
-    inlineCodeTheme(dark),
-    linkTheme(dark),
-    listTheme(dark),
-    strikethroughTheme(dark),
-    strongTheme(dark),
-  ];
+  const highlightStyle =
+    config.mode === 'dark' ? vscodeDark : config.mode === 'dracula' ? dracula : vscodeLight;
+  return [base(config), highlightStyle];
 };

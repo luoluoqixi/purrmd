@@ -11,11 +11,12 @@ export const strongClass = {
   strong: 'purrmd-cm-strong',
 };
 
-export const strongBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const strongBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-strong-weight': 'bold',
-      '--purrmd-formatting-strong-color': 'inherit',
+      '--purrmd-formatting-strong-color': 'var(--purrmd-primary-color)',
       '--purrmd-formatting-strong-opacity': 'var(--purrmd-formatting-opacity)',
     },
     [`.${strongClass.strong}`]: {

@@ -7,15 +7,15 @@ import { codeClass } from './code';
 
 export const codeBlockClass = codeBlock;
 
-export const codeBlockBaseTheme = (): Extension => {
+export const codeBlockBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
-      '--purrmd-code-block-bg-color': '#00000040',
       '--purrmd-code-block-border-radius': '0.5rem',
       '--purrmd-code-block-info-bg-color': 'transparent',
-      '--purrmd-code-block-info-bg-color-hover': '#0000001a',
       '--purrmd-formatting-code-block-color': 'var(--purrmd-formatting-color)',
       '--purrmd-formatting-code-opacity': 'var(--purrmd-formatting-opacity)',
+      '--purrmd-code-block-bg-color': dark ? '#ffffff05' : '#00000005',
+      '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
     },
     [`.${codeBlockClass.codeBlockLine}`]: {
       backgroundColor: 'var(--purrmd-code-block-bg-color)',

@@ -8,7 +8,8 @@ import { linkClass as link } from '@/core/markdown';
 
 export const linkClass = link;
 
-export const linkBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const linkBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-formatting-link-color': 'blue',

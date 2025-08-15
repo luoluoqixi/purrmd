@@ -9,7 +9,8 @@ import { listClass as list } from '@/core/markdown';
 
 export const listClass = list;
 
-export const listBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const listBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-formatting-bullet-list-opacity': '1',

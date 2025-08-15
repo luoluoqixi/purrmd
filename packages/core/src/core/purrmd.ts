@@ -1,6 +1,5 @@
 import { markdown } from '@codemirror/lang-markdown';
 import { type Extension, Prec } from '@codemirror/state';
-import { oneDarkTheme } from '@codemirror/theme-one-dark';
 import { keymap } from '@codemirror/view';
 import { merge } from 'ts-deepmerge';
 
@@ -75,19 +74,23 @@ export function purrmdTheme(config?: PurrMDThemeConfig): Extension {
   mergedConfig.primaryColor = mergedConfig.primaryColor || defaultConfig.primaryColor!;
   const mode = mergedConfig.mode;
   if (mode === 'base') {
-    return base();
+    return base({
+      primaryColor: mergedConfig.primaryColor,
+      formattingColor: mergedConfig.formattingColor,
+      dark: mergedConfig.isDark || false,
+    });
   }
-  if (mode !== 'dark' && mode !== 'light') {
+  if (mode !== 'dark' && mode !== 'light' && mode !== 'dracula') {
     console.error(`not support theme mode: ${mode}`);
   }
+  const dark =
+    mergedConfig.isDark != null ? mergedConfig.isDark : mode === 'dark' || mode === 'dracula';
   const teme = defaultTheme({
     primaryColor: mergedConfig.primaryColor,
     formattingColor: mergedConfig.formattingColor,
-    dark: mode === 'dark',
+    mode: mode || 'light',
+    dark,
   });
-  if (mode === 'dark') {
-    return [teme, oneDarkTheme];
-  }
   return teme;
 }
 

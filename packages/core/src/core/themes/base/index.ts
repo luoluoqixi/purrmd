@@ -1,4 +1,3 @@
-import { HighlightStyle, defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
@@ -17,7 +16,11 @@ import { listBaseTheme, listClass } from './markdown/list';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
 import { strongBaseTheme, strongClass } from './markdown/strong';
 
-export const base = (): Extension => {
+export const base = (config: {
+  primaryColor: string;
+  formattingColor?: string;
+  dark: boolean;
+}): Extension => {
   const baseTheme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-primary-color': 'gray',
@@ -28,21 +31,34 @@ export const base = (): Extension => {
       fontSize: '0px',
     },
   });
+  const formattingColor = config.formattingColor || 'var(--purrmd-primary-color)';
+  const theme = EditorView.theme(
+    {
+      '.cm-content': {
+        '--purrmd-primary-color': config.primaryColor,
+        '--purrmd-formatting-color': formattingColor,
+        '--purrmd-formatting-opacity': config.formattingColor || '0.8',
+      },
+    },
+    {
+      dark: config.dark,
+    },
+  );
   return [
     baseTheme,
-    syntaxHighlighting(HighlightStyle.define([...defaultHighlightStyle.specs])),
-    blockquoteBaseTheme(),
-    codeBaseTheme(),
-    emphasisBaseTheme(),
-    codeBlockBaseTheme(),
-    headingBaseTheme(),
-    horizontalRuleBaseTheme(),
-    imageBaseTheme(),
-    inlineCodeBaseTheme(),
-    linkBaseTheme(),
-    listBaseTheme(),
-    strongBaseTheme(),
-    strikethroughBaseTheme(),
+    theme,
+    blockquoteBaseTheme(config.dark),
+    codeBaseTheme(config.dark),
+    emphasisBaseTheme(config.dark),
+    codeBlockBaseTheme(config.dark),
+    headingBaseTheme(config.dark),
+    horizontalRuleBaseTheme(config.dark),
+    imageBaseTheme(config.dark),
+    inlineCodeBaseTheme(config.dark),
+    linkBaseTheme(config.dark),
+    listBaseTheme(config.dark),
+    strongBaseTheme(config.dark),
+    strikethroughBaseTheme(config.dark),
   ];
 };
 

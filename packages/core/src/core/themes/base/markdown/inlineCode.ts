@@ -7,12 +7,13 @@ import { codeClass } from './code';
 
 export const inlineCodeClass = inlineCode;
 
-export const inlineCodeBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const inlineCodeBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-inline-code-bg-color': 'var(--purrmd-primary-color)',
-      '--purrmd-inline-code-color': 'inherit',
-      '--purrmd-formatting-inline-code-color': 'inherit',
+      '--purrmd-inline-code-color': 'white',
+      '--purrmd-formatting-inline-code-color': 'white',
     },
     [`.${inlineCodeClass.inlineCode}`]: {
       padding: '0.2rem',

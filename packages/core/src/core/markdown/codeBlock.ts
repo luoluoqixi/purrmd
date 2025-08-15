@@ -125,7 +125,16 @@ class CodeBlockInfoWidget extends WidgetType {
           dom.innerHTML = this.lang;
           this.timeout = undefined;
         }, 3000);
-        navigator.clipboard.writeText(this.code);
+        if (window.navigator.clipboard) {
+          window.navigator.clipboard.writeText(this.code);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = this.code;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
         event.stopPropagation();
         event.preventDefault();
       }

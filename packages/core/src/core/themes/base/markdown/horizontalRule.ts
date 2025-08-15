@@ -8,7 +8,8 @@ import { horizontalRuleClass as horizontalRule } from '@/core/markdown';
 
 export const horizontalRuleClass = horizontalRule;
 
-export const horizontalRuleBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const horizontalRuleBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       // '--purrmd-horizontal-rule-color': '#ccc',

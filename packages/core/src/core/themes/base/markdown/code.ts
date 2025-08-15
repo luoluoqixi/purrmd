@@ -10,7 +10,8 @@ export const codeClass = {
   codeInfo: 'purrmd-cm-formatting-code-info',
 };
 
-export const codeBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const codeBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-formatting-code-info-color': 'inherit',

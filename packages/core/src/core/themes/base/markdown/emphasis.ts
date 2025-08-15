@@ -10,7 +10,8 @@ export const emphasisClass = {
   emphasisFormatting: 'purrmd-cm-formatting-emphasis',
 };
 
-export const emphasisBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const emphasisBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-emphasis-style': 'italic',

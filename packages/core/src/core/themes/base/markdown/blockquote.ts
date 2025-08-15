@@ -8,7 +8,8 @@ import { blockquoteClass as blockquote } from '@/core/markdown';
 
 export const blockquoteClass = blockquote;
 
-export const blockquoteBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const blockquoteBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-formatting-blockquote-color': 'var(--purrmd-formatting-color)',

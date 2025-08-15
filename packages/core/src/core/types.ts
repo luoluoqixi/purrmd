@@ -59,11 +59,13 @@ export interface PurrMDConfig {
 
 export interface PurrMDThemeConfig {
   /** theme mode @default 'light' */
-  mode?: 'light' | 'dark' | 'base';
+  mode?: 'light' | 'dark' | 'dracula' | 'base';
   /** primary color, support 'light' or 'dark' */
   primaryColor?: string;
   /** formatting color, support 'light' or 'dark' */
   formattingColor?: string;
   /** formatting opacity @default '0.8' */
   formattingOpacity?: string;
+  /** whether the theme is dark mode, default from mode */
+  isDark?: boolean;
 }

@@ -15,7 +15,8 @@ export const headingClass = {
   headingFormatting: 'purrmd-cm-formatting-heading',
 };
 
-export const headingBaseTheme = (): Extension => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const headingBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-h1-size': '1.802em',
