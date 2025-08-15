@@ -1,6 +1,6 @@
 {
   "name": "purrmd",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "purrmd",
   "type": "module",
   "private": false,
@@ -16,7 +16,7 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "prepublishOnly": "pnpm run build",
-    "release": "npm publish",
+    "release": "standard-version",
     "watch": "vite build --watch"
   },
   "peerDependencies": {
@@ -81,6 +81,14 @@
   },
   "devDependencies": {
     "typedoc": "^0.28.9",
-    "typedoc-plugin-markdown": "^4.8.0"
+    "typedoc-plugin-markdown": "^4.8.0",
+    "standard-version": "^9.5.0"
+  },
+  "standard-version": {
+    "changelogFile": "CHANGELOG.md",
+    "skip": {
+      "commit": true,
+      "tag": true
+    }
   }
 }

@@ -1,6 +1,5 @@
 {
   "name": "purrmd",
-  "version": "0.0.1",
   "description": "purrmd",
   "type": "module",
   "private": true,
@@ -19,10 +18,10 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "prepublishOnly": "pnpm run build",
-    "release": "npm publish"
+    "release": "pnpm --filter=purrmd run release",
+    "npm:publish": "npm publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
