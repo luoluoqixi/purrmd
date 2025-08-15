@@ -59,9 +59,12 @@ function imageDecorations(
       if (node.type.name === 'Image') {
         const parent = node.node.parent;
         const isImageLink = parent != null && parent.type.name === 'Link';
-        const url = findNodeURL(state, node);
+        let url = findNodeURL(state, node);
         const from = node.from;
         const to = node.to;
+        if (config?.proxyURL) {
+          url = config.proxyURL(url || '');
+        }
         const image = new Image(url, null, isImageLink, () => {
           selectRange(view, { from, to });
         });
@@ -98,4 +101,7 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
   return imagePlugin;
 }
 
-export interface ImageConfig {}
+export interface ImageConfig {
+  /** Proxy URL, if provided, will be used to transform the URL */
+  proxyURL?: (url: string) => string;
+}
