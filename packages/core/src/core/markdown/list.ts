@@ -46,6 +46,10 @@ class Checkbox extends WidgetType {
     el.checked = this.checked;
     el.disabled = this.readonly === true;
     el.tabIndex = -1;
+    el.onmousedown = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
     el.onchange = (e) => {
       const checked = (e.target as HTMLInputElement).checked;
       if (this.onChecked) {
