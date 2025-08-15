@@ -18,8 +18,7 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "prepublishOnly": "pnpm run build",
-    "release": "pnpm --filter=purrmd run release",
-    "npm:publish": "npm publish"
+    "release": "pnpm --filter=purrmd run release"
   },
   "devDependencies": {
     "@babel/runtime": "^7.28.3",
