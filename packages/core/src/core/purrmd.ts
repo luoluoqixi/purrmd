@@ -18,6 +18,7 @@ import {
   strikethrough,
   strong,
 } from './markdown';
+import { focusListener, focusState } from './state/focus';
 import { base, defaultTheme } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 import { PurrMDFeatures } from './types';
@@ -46,6 +47,8 @@ export function purrmd(config?: PurrMDConfig): Extension {
   const featuresConfigs = mergedConfig.featuresConfigs;
 
   return [
+    focusState,
+    focusListener,
     markdown(mergedConfig.markdownExtConfig),
     addKeymap && Prec.high(keymap.of(markdownKeymap())),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),

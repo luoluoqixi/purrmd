@@ -84,7 +84,12 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
         this.decorations = imageDecorations(mode, config, view);
       }
       update(update: ViewUpdate) {
-        if (update.docChanged || update.viewportChanged || update.selectionSet)
+        if (
+          update.docChanged ||
+          update.viewportChanged ||
+          update.selectionSet ||
+          update.focusChanged
+        )
           this.decorations = imageDecorations(mode, config, update.view);
       }
     },

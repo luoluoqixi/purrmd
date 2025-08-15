@@ -229,7 +229,7 @@ export function list(mode: FormattingDisplayMode, config?: ListConfig): Extensio
       }
 
       update(update: ViewUpdate) {
-        if (update.docChanged || update.selectionSet) {
+        if (update.docChanged || update.selectionSet || update.focusChanged) {
           this.decorations = updateListDecorations(mode, config, update.view);
         }
       }

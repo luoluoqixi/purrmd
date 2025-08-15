@@ -3,6 +3,7 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
+import { isFocusEvent } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
@@ -30,7 +31,7 @@ export function strong(mode: FormattingDisplayMode, config?: StrongConfig): Exte
     },
 
     update(deco, tr) {
-      if (tr.docChanged || tr.selection) {
+      if (tr.docChanged || tr.selection || isFocusEvent(tr)) {
         return updateStrongDecorations(mode, config, tr.state);
       }
       return deco.map(tr.changes);

@@ -4,6 +4,7 @@ import { Decoration, EditorView } from '@codemirror/view';
 import type { SyntaxNode, SyntaxNodeRef } from '@lezer/common';
 
 import { hiddenBlockDecoration, hiddenInlineDecoration } from '../common/decorations';
+import { hasFocus } from '../state';
 
 export interface BaseRange {
   from: number;
@@ -11,6 +12,7 @@ export interface BaseRange {
 }
 
 export const isSelectRange = (state: EditorState, range: BaseRange) => {
+  if (!hasFocus(state)) return false;
   return state.selection.ranges.some((r) => range.from <= r.to && range.to >= r.from);
 };
 
