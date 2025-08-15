@@ -12,7 +12,7 @@ export const linkClass = link;
 export const linkBaseTheme = (dark: boolean): Extension => {
   const theme = EditorView.baseTheme({
     '.cm-content': {
-      '--purrmd-formatting-link-color': 'blue',
+      '--purrmd-formatting-link-color': 'var(--purrmd-primary-color)',
       '--purrmd-formatting-link-opacity': 'var(--purrmd-formatting-opacity)',
 
       '--purrmd-link-color': 'var(--purrmd-primary-color)',

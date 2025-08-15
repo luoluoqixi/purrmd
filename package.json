@@ -22,6 +22,7 @@
     "npm:publish": "npm publish"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.28.3",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
