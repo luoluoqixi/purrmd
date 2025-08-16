@@ -10,13 +10,14 @@ export const focusState = StateField.define({
   },
 });
 
-export const focusListener = EditorView.domEventHandlers({
-  focus: (event, view) => {
-    view.dispatch({ userEvent: 'cm-focus' });
-  },
-  blur: (event, view) => {
-    view.dispatch({ userEvent: 'cm-blur' });
-  },
+export const focusListener = EditorView.updateListener.of((update) => {
+  if (update.focusChanged) {
+    requestAnimationFrame(() => {
+      update.view.dispatch({
+        userEvent: update.view.hasFocus ? 'cm-focus' : 'cm-blur',
+      });
+    });
+  }
 });
 
 export const hasFocus = (state: EditorState) => state.field(focusState);
