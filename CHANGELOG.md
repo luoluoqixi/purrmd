@@ -1,1 +1,1 @@
-[CHANGELOG](./packages/core/README.md)
+[CHANGELOG](./packages/core/CHANGELOG.md)
