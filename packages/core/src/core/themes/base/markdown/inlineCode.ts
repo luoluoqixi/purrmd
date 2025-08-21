@@ -16,7 +16,7 @@ export const inlineCodeBaseTheme = (dark: boolean): Extension => {
       '--purrmd-formatting-inline-code-color': 'white',
     },
     [`.${inlineCodeClass.inlineCode}`]: {
-      padding: '0.2rem',
+      padding: '0.14rem 0.22rem',
       borderRadius: '0.4rem',
       fontSize: '0.8rem',
       backgroundColor: 'var(--purrmd-inline-code-bg-color)',

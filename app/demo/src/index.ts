@@ -7,6 +7,7 @@ import './index.css';
 
 let editor: EditorView | null = null;
 let sourceMode = false;
+let themeMode: 'light' | 'dark' = 'light';
 
 const language = navigator.language;
 const documentText = language === 'zh-CN' ? __INIT_DOCUMENT_ZH : __INIT_DOCUMENT;
@@ -26,7 +27,7 @@ const createEditor = (sourceMode: boolean) => {
         formattingDisplayMode: sourceMode ? 'show' : 'auto',
       }),
       purrmdTheme({
-        mode: 'light',
+        mode: themeMode,
       }),
     ],
   });
@@ -55,6 +56,12 @@ const appendTestBtn = (text: string, onClick: (e: MouseEvent) => void) => {
 appendTestBtn('Source Mode', (e) => {
   e.preventDefault();
   sourceMode = !sourceMode;
+  createEditor(sourceMode);
+});
+
+appendTestBtn('Dark Mode', (e) => {
+  e.preventDefault();
+  themeMode = themeMode === 'light' ? 'dark' : 'light';
   createEditor(sourceMode);
 });
 

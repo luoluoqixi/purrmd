@@ -1,4 +1,5 @@
 import { Extension } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode';
 
@@ -12,5 +13,8 @@ export const defaultTheme = (config: {
 }): Extension => {
   const highlightStyle =
     config.mode === 'dark' ? vscodeDark : config.mode === 'dracula' ? dracula : vscodeLight;
-  return [base(config), highlightStyle];
+  const theme = EditorView.theme({
+    '&': { color: config.dark ? '#dadada' : '#383a42' },
+  });
+  return [theme, base(config), highlightStyle];
 };
