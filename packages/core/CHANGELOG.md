@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/luoluoqixi/purrmd/compare/v0.0.5...v0.0.6) (2025-08-21)
+
+
+### Bug Fixes
+
+* padding of inline code in iOS, and dark mode color ([adb5878](https://github.com/luoluoqixi/purrmd/commit/adb587845dc4f02490b832bd70a1e6c54a8e222e))
+
 ### [0.0.5](https://github.com/luoluoqixi/purrmd/compare/v0.0.4...v0.0.5) (2025-08-16)
 
 
