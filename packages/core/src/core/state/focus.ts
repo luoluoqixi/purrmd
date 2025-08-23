@@ -24,3 +24,6 @@ export const hasFocus = (state: EditorState) => state.field(focusState);
 
 export const isFocusEvent = (tr: Transaction) =>
   tr.isUserEvent('cm-focus') || tr.isUserEvent('cm-blur');
+
+export const isFocusEventState = (prev: EditorState, next: EditorState) =>
+  prev.field(focusState) !== next.field(focusState);

@@ -10,7 +10,7 @@ import {
   WidgetType,
 } from '@codemirror/view';
 
-import { isFocusEvent } from '../state';
+import { isFocusEvent, isFocusEventState } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations, syntaxTreeInVisible } from '../utils';
 
@@ -169,7 +169,7 @@ export function codeBlock(mode: FormattingDisplayMode, config?: CodeBlockConfig)
           update.docChanged ||
           update.viewportChanged ||
           update.selectionSet ||
-          update.focusChanged
+          isFocusEventState(update.startState, update.state)
         )
           this.decorations = decorateCodeBlock(config, update.view);
       }
