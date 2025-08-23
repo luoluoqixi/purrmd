@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/luoluoqixi/purrmd/compare/v0.0.6...v0.0.7) (2025-08-23)
+
+
+### Bug Fixes
+
+* blockquote focus state ([273de29](https://github.com/luoluoqixi/purrmd/commit/273de295ada5c1ad03fc78fa113e657cd849de08))
+* demo click empty line to top ([1f64079](https://github.com/luoluoqixi/purrmd/commit/1f640791beb5666b515892bd9bb941c6eb5108b2))
+* focus update: code block, image, list ([c8fb7ce](https://github.com/luoluoqixi/purrmd/commit/c8fb7ce7d6fc7d013840f930e11a2a176b6d4a62))
+
 ### [0.0.6](https://github.com/luoluoqixi/purrmd/compare/v0.0.5...v0.0.6) (2025-08-21)
 
 
