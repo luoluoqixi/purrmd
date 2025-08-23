@@ -17,6 +17,7 @@ export const isSelectRange = (state: EditorState, range: BaseRange) => {
 };
 
 export const isSelectLine = (state: EditorState, node: SyntaxNodeRef) => {
+  if (!hasFocus(state)) return false;
   const doc = state.doc;
   const fromLine = doc.lineAt(node.from).number;
   const toLine = doc.lineAt(node.to).number;
