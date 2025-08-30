@@ -5,7 +5,7 @@ import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
 import { isFocusEvent } from '../state';
 import { FormattingDisplayMode } from '../types';
-import { findNodeURL, isSelectRange, setSubNodeHideDecorations } from '../utils';
+import { deviceIsDesktop, findNodeURL, isSelectRange, setSubNodeHideDecorations } from '../utils';
 
 export const linkClass = {
   link: 'purrmd-cm-link',
@@ -13,6 +13,7 @@ export const linkClass = {
   linkTitle: 'purrmd-cm-link-title',
   linkFormatting: 'purrmd-cm-formatting-link',
   linkHideFormatting: 'purrmd-cm-formatting-link-hide',
+  linkHover: 'purrmd-cm-link-hover',
 };
 
 const linkDecoration = Decoration.mark({
@@ -21,6 +22,10 @@ const linkDecoration = Decoration.mark({
 
 const linkHideDecoration = Decoration.mark({
   class: linkClass.linkHideFormatting,
+});
+
+const linkTitleDecoration = Decoration.mark({
+  class: linkClass.linkTitle,
 });
 
 function updateLinkDecorations(
@@ -34,9 +39,34 @@ function updateLinkDecorations(
       if (node.type.name === 'Link') {
         if (mode === 'show' || isSelectRange(state, node)) {
           decorations.push(linkDecoration.range(node.from, node.to));
+          setSubNodeHideDecorations(
+            node.node,
+            decorations,
+            ['LinkTitle'],
+            false,
+            null,
+            (node, decoration) => {
+              if (node.name === 'LinkTitle') {
+                return linkTitleDecoration.range(node.from - 1, node.to);
+              }
+            },
+          );
         } else {
           decorations.push(linkHideDecoration.range(node.from, node.to));
-          setSubNodeHideDecorations(node.node, decorations, ['LinkMark', 'URL'], false);
+          setSubNodeHideDecorations(
+            node.node,
+            decorations,
+            ['LinkMark', 'URL', 'LinkTitle'],
+            false,
+            null,
+            (node, decoration) => {
+              if (node.name === 'LinkTitle') {
+                return decoration.range(node.from - 1, node.to);
+              } else {
+                return decoration.range(node.from, node.to);
+              }
+            },
+          );
         }
       }
     },
@@ -73,11 +103,89 @@ function getLinkIsHidden(state: EditorState, pos: number, view: EditorView): boo
 
 export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extension {
   const clickToOpenInSource = config?.clickToOpenInSource ?? 'controlOrCommand';
-  const clickToOpenInPreview = config?.clickToOpenInPreview ?? 'click';
+  const clickToOpenInPreview = config?.clickToOpenInPreview ?? 'controlOrCommand';
   const isNeedOpenSource = clickToOpenInSource !== 'none';
   const isNeedOpenPreview = clickToOpenInPreview !== 'none';
   const isCtrlClickSource = clickToOpenInSource === 'controlOrCommand';
   const isCtrlClickPreview = clickToOpenInPreview === 'controlOrCommand';
+  const isDesktop = deviceIsDesktop();
+  const isNeedEventHandler =
+    isNeedOpenSource ||
+    isNeedOpenPreview ||
+    config?.onLinkClickPreview != null ||
+    config?.onLinkClickSource != null;
+
+  const hoverMap: Map<Element, boolean> = new Map();
+  const clearHover = () => {
+    if (hoverMap.size > 0) {
+      for (const [e] of hoverMap) {
+        e.classList.remove(linkClass.linkHover);
+      }
+      hoverMap.clear();
+    }
+  };
+  const addHoverClass = (element: Element) => {
+    const classList = element.classList;
+    if (!classList.contains(linkClass.linkHover)) {
+      classList.add(linkClass.linkHover);
+    }
+  };
+  const removeHoverClass = (element: Element) => {
+    const classList = element.classList;
+    if (classList.contains(linkClass.linkHover)) {
+      classList.remove(linkClass.linkHover);
+    }
+  };
+  const updateHover = (isCtrlPressed: boolean) => {
+    if (hoverMap.size > 0) {
+      for (const [e, isHide] of hoverMap) {
+        const clickConfig = isHide ? clickToOpenInPreview : clickToOpenInSource;
+        if (clickConfig === 'click') {
+          addHoverClass(e);
+        } else {
+          if (isCtrlPressed) {
+            addHoverClass(e);
+          } else {
+            removeHoverClass(e);
+          }
+        }
+      }
+    }
+  };
+
+  const eventIsLink = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (!target) return false;
+    if (
+      target.closest(`.${linkClass.linkURL}`) ||
+      target.closest(`.${linkClass.linkFormatting}`) ||
+      target.closest(`.${linkClass.linkHideFormatting}`)
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const getLinkElement = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (!target) return null;
+    let element: HTMLElement | null = null;
+    element = target.closest(`.${linkClass.linkFormatting}`);
+    if (element) {
+      return {
+        isHide: false,
+        element,
+      };
+    }
+    element = target.closest(`.${linkClass.linkHideFormatting}`);
+    if (element) {
+      return {
+        isHide: true,
+        element,
+      };
+    }
+    return null;
+  };
 
   const linkPlugin = StateField.define<DecorationSet>({
     create(state) {
@@ -94,21 +202,10 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
     provide: (f) => [EditorView.decorations.from(f)],
   });
 
-  const clickHandler = EditorView.domEventHandlers({
+  const eventHandler = EditorView.domEventHandlers({
     mousedown: (event, view) => {
-      if (
-        !isNeedOpenSource &&
-        !isNeedOpenPreview &&
-        config?.onLinkClickPreview == null &&
-        config?.onLinkClickSource == null
-      )
-        return;
-      const target = event.target as HTMLElement;
-      if (
-        target.closest(`.${linkClass.linkURL}`) ||
-        target.closest(`.${linkClass.linkFormatting}`) ||
-        target.closest(`.${linkClass.linkHideFormatting}`)
-      ) {
+      if (!isNeedEventHandler) return;
+      if (eventIsLink(event)) {
         const pos = view.posAtCoords({ x: event.clientX, y: event.clientY });
         if (pos === null) return;
 
@@ -141,15 +238,49 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
         }
       }
     },
+    mousemove: (event) => {
+      if (!isDesktop || !isNeedEventHandler) return;
+      if (!isNeedOpenSource && !isNeedOpenSource) return;
+      const isCtrlPressed = event.ctrlKey || event.metaKey;
+      const link = getLinkElement(event);
+      if (link != null) {
+        if (!hoverMap.has(link.element)) {
+          clearHover();
+          hoverMap.set(link.element, link.isHide);
+          updateHover(isCtrlPressed);
+        }
+      } else {
+        clearHover();
+      }
+    },
+    mouseleave: () => {
+      if (!isDesktop || !isNeedEventHandler) return;
+      if (!isNeedOpenSource && !isNeedOpenSource) return;
+      clearHover();
+    },
+    keydown: (event) => {
+      if (!isDesktop || !isNeedEventHandler) return;
+      if (!isNeedOpenSource && !isNeedOpenSource) return;
+      if (event.key === 'Control' || event.key === 'Meta') {
+        updateHover(true);
+      }
+    },
+    keyup: (event) => {
+      if (!isDesktop || !isNeedEventHandler) return;
+      if (!isNeedOpenSource && !isNeedOpenSource) return;
+      if (event.key === 'Control' || event.key === 'Meta') {
+        updateHover(false);
+      }
+    },
   });
 
-  return [linkPlugin, clickHandler];
+  return [linkPlugin, eventHandler];
 }
 
 export interface LinkConfig {
   /** Click Open in source mode @default 'controlOrCommand'  */
   clickToOpenInSource?: 'controlOrCommand' | 'click' | 'none';
-  /** Click Open in preview mode @default 'click' */
+  /** Click Open in preview mode @default 'controlOrCommand' */
   clickToOpenInPreview?: 'controlOrCommand' | 'click' | 'none';
   onLinkClickSource?: (url: string, event: MouseEvent) => void;
   onLinkClickPreview?: (url: string, event: MouseEvent) => void;

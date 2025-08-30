@@ -2,6 +2,7 @@ import { markdownLanguage } from '@codemirror/lang-markdown';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
+import { cursorTo } from 'readline';
 
 import { markdownTags } from '@/core/common/tags';
 import { linkClass as link } from '@/core/markdown';
@@ -23,25 +24,25 @@ export const linkBaseTheme = (dark: boolean): Extension => {
       color: 'var(--purrmd-link-color)',
       textDecoration: 'none',
     },
+    [`.${linkClass.link}:hover`]: {
+      opacity: '0.8',
+      textDecoration: 'underline',
+    },
     [`.${linkClass.linkURL}`]: {
       color: 'var(--purrmd-link-url-color)',
       textDecoration: 'underline',
     },
     [`.${linkClass.linkTitle}`]: {
       color: 'var(--purrmd-link-title-color)',
-      textDecoration: 'none',
+      textDecoration: 'underline',
     },
 
     [`.${linkClass.linkHideFormatting} .${linkClass.link}`]: {
       color: 'var(--purrmd-link-color)',
-      textDecoration: 'underline',
-      cursor: 'pointer',
+      textDecoration: 'none',
     },
     [`.${linkClass.linkHideFormatting} .${linkClass.link}:hover`]: {
       opacity: '0.8',
-    },
-    [`.${linkClass.linkHideFormatting} .${linkClass.linkTitle}`]: {
-      color: 'var(--purrmd-link-title-color)',
       textDecoration: 'underline',
     },
     [`.${linkClass.link}.${linkClass.linkFormatting}`]: {
@@ -51,6 +52,11 @@ export const linkBaseTheme = (dark: boolean): Extension => {
     },
     [`.${linkClass.linkHideFormatting}`]: {
       textDecoration: 'none',
+    },
+
+    [`.${linkClass.linkHideFormatting}.${linkClass.linkHover},
+      .${linkClass.linkFormatting}.${linkClass.linkHover}`]: {
+      cursor: 'pointer',
     },
   });
   const highlightStyle = HighlightStyle.define(

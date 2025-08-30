@@ -36,6 +36,10 @@ export const setSubNodeHideDecorations = (
   subNodeName: string | string[],
   isBlock: boolean,
   decoration?: Decoration | null,
+  customHide?: (
+    node: SyntaxNode,
+    decorations: Decoration,
+  ) => Range<Decoration> | Range<Decoration>[] | undefined,
 ) => {
   const isArray = Array.isArray(subNodeName);
   const cursor = node.cursor();
@@ -47,7 +51,18 @@ export const setSubNodeHideDecorations = (
       if (!decoration) {
         decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
       }
-      decorations.push(decoration.range(node.from, node.to));
+      if (customHide) {
+        const result = customHide(node.node, decoration);
+        if (result) {
+          if (Array.isArray(result)) {
+            decorations.push(...result);
+          } else {
+            decorations.push(result);
+          }
+        }
+      } else {
+        decorations.push(decoration.range(node.from, node.to));
+      }
     }
   });
 };
@@ -138,4 +153,17 @@ export function selectRange(view: EditorView, range: BaseRange) {
       selection: EditorSelection.single(range.to, range.from),
     });
   }, 0);
+}
+
+export function deviceIsDesktop(): boolean {
+  const userAgent = navigator.userAgent;
+  const isTablet = /(iPad|Android(?!.*mobile)|Tablet|Kindle|Silk)/i.test(userAgent);
+  if (isTablet) {
+    return false;
+  }
+  const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+  if (isMobile) {
+    return false;
+  }
+  return true;
 }
