@@ -53,6 +53,7 @@ const view = new EditorView({
 | **Bold** | `**bold**` |
 | **Italic** | `*italic*` |
 | **Strikethrough** | `~~strikethrough~~` |
+| **Highlight** | `==highlight==` |
 | **Inline Code** | `` `code` `` |
 | **Link** | `[text](url)` |
 | **Image** | `![alt](src)` |
