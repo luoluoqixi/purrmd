@@ -60,6 +60,9 @@ function imageDecorations(
       if (mode === 'show') return;
       if (node.type.name === 'Image') {
         const isSelect = isSelectRange(state, node);
+        if (!config?.imageAlwaysShow && isSelect) {
+          return;
+        }
         const parent = node.node.parent;
         const isImageLink = parent != null && parent.type.name === 'Link';
         let url = findNodeURL(state, node);
@@ -91,6 +94,8 @@ function imageDecorations(
 }
 
 export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extension {
+  if (config == null) config = {};
+  config.imageAlwaysShow ??= true;
   const imagePlugin: Extension = ViewPlugin.fromClass(
     class {
       decorations: DecorationSet;
@@ -115,4 +120,6 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
 export interface ImageConfig {
   /** Proxy URL, if provided, will be used to transform the URL */
   proxyURL?: (url: string) => string;
+  /** image alway show, @default true */
+  imageAlwaysShow?: boolean;
 }
