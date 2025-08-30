@@ -10,6 +10,7 @@ import {
   codeBlock,
   emphasis,
   heading,
+  highlight,
   horizontalRule,
   image,
   inlineCode,
@@ -57,6 +58,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
     features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
     features?.Heading && heading(mode, featuresConfigs?.[PurrMDFeatures.Heading]),
+    features?.Highlight && highlight(mode, featuresConfigs?.[PurrMDFeatures.Highlight]),
     features?.HorizontalRule &&
       horizontalRule(mode, featuresConfigs?.[PurrMDFeatures.HorizontalRule]),
     features?.Image && image(mode, featuresConfigs?.[PurrMDFeatures.Image]),

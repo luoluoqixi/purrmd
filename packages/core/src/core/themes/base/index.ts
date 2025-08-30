@@ -8,6 +8,7 @@ import { codeBaseTheme, codeClass } from './markdown/code';
 import { codeBlockBaseTheme, codeBlockClass } from './markdown/codeBlock';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
 import { headingBaseTheme, headingClass } from './markdown/heading';
+import { highlightBaseTheme } from './markdown/highlight';
 import { horizontalRuleBaseTheme, horizontalRuleClass } from './markdown/horizontalRule';
 import { imageBaseTheme } from './markdown/image';
 import { inlineCodeBaseTheme, inlineCodeClass } from './markdown/inlineCode';
@@ -57,6 +58,7 @@ export const base = (config: {
     emphasisBaseTheme(config.dark),
     codeBlockBaseTheme(config.dark),
     headingBaseTheme(config.dark),
+    highlightBaseTheme(config.dark),
     horizontalRuleBaseTheme(config.dark),
     imageBaseTheme(config.dark),
     inlineCodeBaseTheme(config.dark),

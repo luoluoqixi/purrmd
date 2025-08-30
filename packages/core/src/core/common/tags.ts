@@ -19,18 +19,23 @@ export const markdownTags = {
   heading6: tags.heading6,
   headerTag: Tag.define(),
 
+  highlight: Tag.define(),
+
   link: tags.link,
   linkTag: Tag.define(),
   linkTitle: Tag.define(),
   linkURLTag: Tag.define(),
 
   listTag: Tag.define(),
-  taskTag: Tag.define(),
+
+  processingInstruction: tags.processingInstruction,
 
   strong: tags.strong,
 
   strikethrough: tags.strikethrough,
   strikethroughTag: Tag.define(),
+
+  taskTag: Tag.define(),
 
   // inlineCode: Tag.define(),
   // fencedCode: Tag.define(),

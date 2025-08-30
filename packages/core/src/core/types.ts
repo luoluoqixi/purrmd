@@ -5,6 +5,7 @@ import {
   CodeBlockConfig,
   EmphasisConfig,
   HeadingConfig,
+  HighlightConfig,
   HorizontalRuleConfig,
   ImageConfig,
   InlineCodeConfig,
@@ -21,6 +22,7 @@ export enum PurrMDFeatures {
   CodeBlock = 'CodeBlock',
   Emphasis = 'Emphasis',
   Heading = 'Heading',
+  Highlight = 'Highlight',
   HorizontalRule = 'HorizontalRule',
   Image = 'Image',
   InlineCode = 'InlineCode',
@@ -35,6 +37,7 @@ export interface PurrMDFeatureConfig {
   [PurrMDFeatures.CodeBlock]?: CodeBlockConfig;
   [PurrMDFeatures.Emphasis]?: EmphasisConfig;
   [PurrMDFeatures.Heading]?: HeadingConfig;
+  [PurrMDFeatures.Highlight]?: HighlightConfig;
   [PurrMDFeatures.HorizontalRule]?: HorizontalRuleConfig;
   [PurrMDFeatures.Image]?: ImageConfig;
   [PurrMDFeatures.InlineCode]?: InlineCodeConfig;

@@ -2,6 +2,7 @@ export * from './blockquote';
 export * from './codeBlock';
 export * from './emphasis';
 export * from './heading';
+export * from './highlight';
 export * from './horizontalRule';
 export * from './image';
 export * from './inlineCode';

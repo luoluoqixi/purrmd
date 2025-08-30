@@ -15,6 +15,7 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
     CodeBlock: true,
     Emphasis: true,
     Heading: true,
+    Highlight: true,
     HorizontalRule: true,
     Image: true,
     InlineCode: true,
@@ -32,25 +33,49 @@ export const defaultThemeConfig = (): PurrMDThemeConfig => ({
   primaryColor: '#e957b6',
 });
 
-const getMarkdownSyntaxTags = (): MarkdownExtension => [
-  {
-    defineNodes: [],
-    props: [
-      styleTags({
-        CodeMark: markdownTags.codeTag,
-        CodeInfo: markdownTags.codeInfo,
-        EmphasisMark: markdownTags.emphasisTag,
-        HeaderMark: markdownTags.headerTag,
-        URL: markdownTags.linkURLTag,
-        LinkMark: markdownTags.linkTag,
-        LinkTitle: markdownTags.linkTitle,
-        ListMark: markdownTags.listTag,
-        QuoteMark: markdownTags.blockquoteTag,
-        StrikethroughMark: markdownTags.strikethroughTag,
-        TaskMarker: markdownTags.taskTag,
-        // InlineCode: markdownTags.inlineCode,
-        // FencedCode: markdownTags.fencedCode,
-      }),
-    ],
-  },
-];
+const getMarkdownSyntaxTags = (): MarkdownExtension => {
+  const HighlightDelim = { resolve: 'Highlight', mark: 'HighlightMark' };
+  return [
+    {
+      defineNodes: [],
+      props: [
+        styleTags({
+          CodeMark: markdownTags.codeTag,
+          CodeInfo: markdownTags.codeInfo,
+          EmphasisMark: markdownTags.emphasisTag,
+          HeaderMark: markdownTags.headerTag,
+          URL: markdownTags.linkURLTag,
+          LinkMark: markdownTags.linkTag,
+          LinkTitle: markdownTags.linkTitle,
+          ListMark: markdownTags.listTag,
+          QuoteMark: markdownTags.blockquoteTag,
+          StrikethroughMark: markdownTags.strikethroughTag,
+          TaskMarker: markdownTags.taskTag,
+          // InlineCode: markdownTags.inlineCode,
+          // FencedCode: markdownTags.fencedCode,
+        }),
+      ],
+    },
+    {
+      defineNodes: ['Highlight', 'HighlightMark'],
+      parseInline: [
+        {
+          name: 'Highlight',
+          parse(cx, next, pos) {
+            if (next != 61 /* '=' */ || cx.char(pos + 1) != 61) {
+              return -1;
+            }
+            return cx.addDelimiter(HighlightDelim, pos, pos + 2, true, true);
+          },
+          after: 'Emphasis',
+        },
+      ],
+      props: [
+        styleTags({
+          HighlightMark: markdownTags.emphasisTag,
+          'Highlight/...': markdownTags.highlight,
+        }),
+      ],
+    },
+  ];
+};
