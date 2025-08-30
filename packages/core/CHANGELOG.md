@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/luoluoqixi/purrmd/compare/v0.0.7...v0.0.8) (2025-08-30)
+
+
+### Features
+
+* highlight mark ([be796e7](https://github.com/luoluoqixi/purrmd/commit/be796e7b49ac4f48b2553c4df75dde3c0414b88d))
+* image always show config ([520e951](https://github.com/luoluoqixi/purrmd/commit/520e9519131f49078d1d8b2bccb2be558f88a05e))
+
+
+### Bug Fixes
+
+* add image block does not exist handler, close [#5](https://github.com/luoluoqixi/purrmd/issues/5) ([28017f5](https://github.com/luoluoqixi/purrmd/commit/28017f5f42197472f48eecac27e2d7a463fa0b1e))
+* code block, image dark mode color ([cc5f511](https://github.com/luoluoqixi/purrmd/commit/cc5f511055a07c1ccfc2d77ffe65d97cf5836192))
+* image block wrapping, close [#6](https://github.com/luoluoqixi/purrmd/issues/6) ([1ea6481](https://github.com/luoluoqixi/purrmd/commit/1ea6481ad3553cbb80adb89c5396887cce1a92b1))
+* image jitters [#5](https://github.com/luoluoqixi/purrmd/issues/5) ([2b29e70](https://github.com/luoluoqixi/purrmd/commit/2b29e702530322674a6061952ddbf5008bc164d1))
+
 ### [0.0.7](https://github.com/luoluoqixi/purrmd/compare/v0.0.6...v0.0.7) (2025-08-23)
 
 
