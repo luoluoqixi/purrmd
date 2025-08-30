@@ -1,6 +1,6 @@
 import { KeyBinding } from '@codemirror/view';
 
-import { insertNewlineContinueMarkup } from './command';
+import { insertNewlineContinueMarkup } from './newline';
 
 export const markdownKeymap = (): KeyBinding[] => {
   return [
