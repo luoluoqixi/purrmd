@@ -55,6 +55,8 @@ export interface PurrMDConfig {
   featuresConfigs?: PurrMDFeatureConfig;
   /** markdown formatting display mode, @default 'auto' */
   formattingDisplayMode?: FormattingDisplayMode;
+  /** default keymaps @default true */
+  addKeymap?: boolean;
 }
 
 export interface PurrMDThemeConfig {

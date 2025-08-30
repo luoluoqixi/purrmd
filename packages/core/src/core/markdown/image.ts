@@ -23,10 +23,13 @@ export const imageClass = {
 
 class Image extends WidgetType {
   constructor(
+    readonly failedImageUrls: Set<string>,
     readonly url: string | null | undefined,
     readonly alt: string | null | undefined,
     readonly isImageLink: boolean,
     readonly onImageDown: ((e: MouseEvent) => void) | null,
+    readonly noImageAvailableLabel?: string,
+    readonly imageLoadFailedLabel?: (url: string) => string,
   ) {
     super();
   }
@@ -35,30 +38,41 @@ class Image extends WidgetType {
     const el = document.createElement('span');
     el.className = this.isImageLink ? imageClass.imageLinkWrap : imageClass.imageWrap;
     if (this.url) {
-      const img = document.createElement('img');
-      img.className = imageClass.imageDom;
-      img.src = this.url;
+      const url = this.url;
+      const hasFailed = this.failedImageUrls.has(url);
 
-      if (this.alt) {
-        img.alt = this.alt;
-      }
-
-      img.onerror = () => {
-        img.style.display = 'none';
-
+      const appendError = () => {
         const fallbackText = document.createElement('span');
         fallbackText.className = imageClass.imageFallback;
-        fallbackText.textContent = this.alt || 'Image failed to load';
-        fallbackText.title = `Failed to load: ${this.url}`;
+        fallbackText.textContent =
+          this.imageLoadFailedLabel?.(url) || `Image failed to load: ${url}`;
 
         el.appendChild(fallbackText);
       };
 
-      el.appendChild(img);
+      if (hasFailed) {
+        appendError();
+      } else {
+        const img = document.createElement('img');
+        img.className = imageClass.imageDom;
+        img.src = url;
+
+        if (this.alt) {
+          img.alt = this.alt;
+        }
+
+        img.onerror = () => {
+          this.failedImageUrls.add(url);
+          img.style.display = 'none';
+          appendError();
+        };
+
+        el.appendChild(img);
+      }
     } else {
       const fallbackText = document.createElement('span');
       fallbackText.className = imageClass.imageFallback;
-      fallbackText.textContent = this.alt || 'No image available';
+      fallbackText.textContent = this.noImageAvailableLabel || 'No image available';
       el.appendChild(fallbackText);
     }
 
@@ -76,6 +90,7 @@ function imageDecorations(
   mode: FormattingDisplayMode,
   config: ImageConfig | undefined,
   view: EditorView,
+  failedImageUrls: Set<string>,
 ): DecorationSet {
   const state = view.state;
   const decorations: Range<Decoration>[] = [];
@@ -96,10 +111,18 @@ function imageDecorations(
         if (config?.proxyURL) {
           url = config.proxyURL(rawUrl || '');
         }
-        const image = new Image(url, null, isImageLink, (e) => {
-          selectRange(view, { from, to });
-          config?.onImageDown?.(e, url, rawUrl);
-        });
+        const image = new Image(
+          failedImageUrls,
+          url,
+          null,
+          isImageLink,
+          (e) => {
+            selectRange(view, { from, to });
+            config?.onImageDown?.(e, url, rawUrl);
+          },
+          config?.NoImageAvailableLabel,
+          config?.ImageLoadFailedLabel,
+        );
         if (isSelect) {
           const decoration = Decoration.widget({
             widget: image,
@@ -124,9 +147,11 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
   config.imageAlwaysShow ??= true;
   const imagePlugin: Extension = ViewPlugin.fromClass(
     class {
+      private readonly failedImageUrls = new Set<string>();
+      private updateCount = 0;
       decorations: DecorationSet;
       constructor(view: EditorView) {
-        this.decorations = imageDecorations(mode, config, view);
+        this.decorations = imageDecorations(mode, config, view, this.failedImageUrls);
       }
       update(update: ViewUpdate) {
         if (
@@ -134,8 +159,15 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
           update.viewportChanged ||
           update.selectionSet ||
           isFocusEventState(update.startState, update.state)
-        )
-          this.decorations = imageDecorations(mode, config, update.view);
+        ) {
+          this.decorations = imageDecorations(mode, config, update.view, this.failedImageUrls);
+          this.updateCount++;
+          if (this.updateCount > 1000) {
+            // 每 1000 次更新清理一次失败的图片 URL
+            this.updateCount = 0;
+            this.failedImageUrls.clear();
+          }
+        }
       }
     },
     { decorations: (v) => v.decorations },
@@ -148,6 +180,10 @@ export interface ImageConfig {
   proxyURL?: (url: string) => string;
   /** image alway show, @default true */
   imageAlwaysShow?: boolean;
+  /** Label when no image available, @default 'No image available' */
+  NoImageAvailableLabel?: string;
+  /** Label when image load failed, @default 'Image failed to load' */
+  ImageLoadFailedLabel?: (url: string) => string;
   /** on image down */
   onImageDown?: (
     e: MouseEvent,

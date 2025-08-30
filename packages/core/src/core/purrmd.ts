@@ -3,7 +3,7 @@ import { type Extension, Prec } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 import { merge } from 'ts-deepmerge';
 
-import { markdownKeymap } from './command';
+import { markdownKeymap, mdMarkdownKeymap } from './command';
 import { defaultConfig, defaultThemeConfig } from './common/config';
 import {
   blockquote,
@@ -39,9 +39,10 @@ export function purrmd(config?: PurrMDConfig): Extension {
 
   // 将默认的 addKeymap 禁用
   if (!mergedConfig.markdownExtConfig) mergedConfig.markdownExtConfig = {};
-  const addKeymap = mergedConfig.markdownExtConfig.addKeymap !== false;
+  const mdAddKeymap = mergedConfig.markdownExtConfig.addKeymap !== false;
   mergedConfig.markdownExtConfig.addKeymap = false;
 
+  const addKeymap = mergedConfig.addKeymap;
   const mode = mergedConfig.formattingDisplayMode || 'auto';
   const features = mergedConfig.features;
   const featuresConfigs = mergedConfig.featuresConfigs;
@@ -50,6 +51,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     focusState,
     focusListener,
     markdown(mergedConfig.markdownExtConfig),
+    mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
     addKeymap && Prec.high(keymap.of(markdownKeymap())),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),

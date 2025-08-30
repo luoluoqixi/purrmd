@@ -1,0 +1,1 @@
+export { insertNewlineContinueMarkup } from './newline';
