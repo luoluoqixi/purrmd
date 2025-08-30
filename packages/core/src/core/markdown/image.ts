@@ -57,8 +57,9 @@ function imageDecorations(
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (mode === 'show' || isSelectRange(state, node)) return;
+      if (mode === 'show') return;
       if (node.type.name === 'Image') {
+        const isSelect = isSelectRange(state, node);
         const parent = node.node.parent;
         const isImageLink = parent != null && parent.type.name === 'Link';
         let url = findNodeURL(state, node);
@@ -70,11 +71,19 @@ function imageDecorations(
         const image = new Image(url, null, isImageLink, () => {
           selectRange(view, { from, to });
         });
-        const decoration = Decoration.replace({
-          widget: image,
-          side: -1,
-        }).range(node.from, node.to);
-        decorations.push(decoration);
+        if (isSelect) {
+          const decoration = Decoration.widget({
+            widget: image,
+            side: 1,
+          }).range(node.to);
+          decorations.push(decoration);
+        } else {
+          const decoration = Decoration.replace({
+            widget: image,
+            side: -1,
+          }).range(node.from, node.to);
+          decorations.push(decoration);
+        }
       }
     },
   });

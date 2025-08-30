@@ -30,6 +30,11 @@ export const base = (config: {
     [`.${hiddenClass.inline}`]: {
       fontSize: '0px',
     },
+    // fix image block warpping
+    ':is(.cm-widgetBuffer:has(+ .purrmd-cm-image-wrap), .purrmd-cm-image-wrap + .cm-widgetBuffer)':
+      {
+        display: 'none',
+      },
   });
   const formattingColor = config.formattingColor || 'var(--purrmd-primary-color)';
   const theme = EditorView.theme(
