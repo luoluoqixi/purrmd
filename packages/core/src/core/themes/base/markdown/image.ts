@@ -5,12 +5,10 @@ import { imageClass as image } from '@/core/markdown';
 
 export const imageClass = image;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const imageBaseTheme = (dark: boolean): Extension => {
-  const theme = EditorView.baseTheme({
+  const baseTheme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-image-fallback-border-radius': '0.5rem',
-      '--purrmd-image-fallback-bg-color': dark ? '#ffffff1a' : '#0000001a',
       '--purrmd-image-fallback-color': 'inherit',
     },
     [`.${imageClass.imageWrap}, .${imageClass.imageLinkWrap}`]: {},
@@ -39,5 +37,10 @@ export const imageBaseTheme = (dark: boolean): Extension => {
       padding: '0 1.5rem',
     },
   });
-  return theme;
+  const theme = EditorView.theme({
+    '.cm-content': {
+      '--purrmd-image-fallback-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
+    },
+  });
+  return [theme, baseTheme];
 };

@@ -8,14 +8,12 @@ import { codeClass } from './code';
 export const codeBlockClass = codeBlock;
 
 export const codeBlockBaseTheme = (dark: boolean): Extension => {
-  const theme = EditorView.baseTheme({
+  const baseTheme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-code-block-border-radius': '0.5rem',
       '--purrmd-code-block-info-bg-color': 'transparent',
       '--purrmd-formatting-code-block-color': 'var(--purrmd-formatting-color)',
       '--purrmd-formatting-code-opacity': 'var(--purrmd-formatting-opacity)',
-      '--purrmd-code-block-bg-color': dark ? '#ffffff05' : '#00000005',
-      '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
     },
     [`.${codeBlockClass.codeBlockLine}`]: {
       backgroundColor: 'var(--purrmd-code-block-bg-color)',
@@ -48,5 +46,11 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
       opacity: 'var(--purrmd-formatting-code-opacity)',
     },
   });
-  return theme;
+  const theme = EditorView.theme({
+    '.cm-content': {
+      '--purrmd-code-block-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
+      '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
+    },
+  });
+  return [theme, baseTheme];
 };
