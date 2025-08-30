@@ -18,6 +18,7 @@ export const imageClass = {
   imageLinkWrap: 'purrmd-cm-image-link-wrap',
   imageWrap: 'purrmd-cm-image-wrap',
   imageDom: 'purrmd-cm-image-dom',
+  imageFallback: 'purrmd-cm-image-fallback',
 };
 
 class Image extends WidgetType {
@@ -34,8 +35,31 @@ class Image extends WidgetType {
     const el = document.createElement('span');
     el.className = this.isImageLink ? imageClass.imageLinkWrap : imageClass.imageWrap;
     if (this.url) {
-      const alt = this.alt ? `alt="${this.alt}"` : '';
-      el.innerHTML = `<img class="${imageClass.imageDom}" src="${this.url}" ${alt} />`;
+      const img = document.createElement('img');
+      img.className = imageClass.imageDom;
+      img.src = this.url;
+
+      if (this.alt) {
+        img.alt = this.alt;
+      }
+
+      img.onerror = () => {
+        img.style.display = 'none';
+
+        const fallbackText = document.createElement('span');
+        fallbackText.className = imageClass.imageFallback;
+        fallbackText.textContent = this.alt || 'Image failed to load';
+        fallbackText.title = `Failed to load: ${this.url}`;
+
+        el.appendChild(fallbackText);
+      };
+
+      el.appendChild(img);
+    } else {
+      const fallbackText = document.createElement('span');
+      fallbackText.className = imageClass.imageFallback;
+      fallbackText.textContent = this.alt || 'No image available';
+      el.appendChild(fallbackText);
     }
 
     el.onmousedown = this.onImageDown;
@@ -65,14 +89,16 @@ function imageDecorations(
         }
         const parent = node.node.parent;
         const isImageLink = parent != null && parent.type.name === 'Link';
-        let url = findNodeURL(state, node);
+        let rawUrl = findNodeURL(state, node);
         const from = node.from;
         const to = node.to;
+        let url = rawUrl;
         if (config?.proxyURL) {
-          url = config.proxyURL(url || '');
+          url = config.proxyURL(rawUrl || '');
         }
-        const image = new Image(url, null, isImageLink, () => {
+        const image = new Image(url, null, isImageLink, (e) => {
           selectRange(view, { from, to });
+          config?.onImageDown?.(e, url, rawUrl);
         });
         if (isSelect) {
           const decoration = Decoration.widget({
@@ -122,4 +148,10 @@ export interface ImageConfig {
   proxyURL?: (url: string) => string;
   /** image alway show, @default true */
   imageAlwaysShow?: boolean;
+  /** on image down */
+  onImageDown?: (
+    e: MouseEvent,
+    url: string | null | undefined,
+    rawUrl: string | null | undefined,
+  ) => void;
 }
