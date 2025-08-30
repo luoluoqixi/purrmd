@@ -72,6 +72,7 @@ const getMarkdownSyntaxTags = (): MarkdownExtension => {
       ],
       props: [
         styleTags({
+          // eslint-disable-next-line quote-props
           HighlightMark: markdownTags.emphasisTag,
           'Highlight/...': markdownTags.highlight,
         }),

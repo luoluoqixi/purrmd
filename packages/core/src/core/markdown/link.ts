@@ -39,18 +39,11 @@ function updateLinkDecorations(
       if (node.type.name === 'Link') {
         if (mode === 'show' || isSelectRange(state, node)) {
           decorations.push(linkDecoration.range(node.from, node.to));
-          setSubNodeHideDecorations(
-            node.node,
-            decorations,
-            ['LinkTitle'],
-            false,
-            null,
-            (node, decoration) => {
-              if (node.name === 'LinkTitle') {
-                return linkTitleDecoration.range(node.from - 1, node.to);
-              }
-            },
-          );
+          setSubNodeHideDecorations(node.node, decorations, ['LinkTitle'], false, null, (node) => {
+            if (node.name === 'LinkTitle') {
+              return linkTitleDecoration.range(node.from - 1, node.to);
+            }
+          });
         } else {
           decorations.push(linkHideDecoration.range(node.from, node.to));
           setSubNodeHideDecorations(
@@ -62,9 +55,8 @@ function updateLinkDecorations(
             (node, decoration) => {
               if (node.name === 'LinkTitle') {
                 return decoration.range(node.from - 1, node.to);
-              } else {
-                return decoration.range(node.from, node.to);
               }
+              return decoration.range(node.from, node.to);
             },
           );
         }

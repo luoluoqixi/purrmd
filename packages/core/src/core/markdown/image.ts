@@ -104,7 +104,7 @@ function imageDecorations(
         }
         const parent = node.node.parent;
         const isImageLink = parent != null && parent.type.name === 'Link';
-        let rawUrl = findNodeURL(state, node);
+        const rawUrl = findNodeURL(state, node);
         const from = node.from;
         const to = node.to;
         let url = rawUrl;

@@ -2,7 +2,6 @@ import { markdownLanguage } from '@codemirror/lang-markdown';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
-import { cursorTo } from 'readline';
 
 import { markdownTags } from '@/core/common/tags';
 import { linkClass as link } from '@/core/markdown';
