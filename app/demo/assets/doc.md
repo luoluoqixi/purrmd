@@ -17,43 +17,6 @@ This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 ##### H5
 ###### H6
 
-## Lists
-
-### Unordered
-
-- Item 1
-- Item 2
-    - Nested item 2.1
-    - Nested item 2.2
-        - Nested item 2.2.1
-        - Nested item 2.2.2
-        - Nested item 2.2.3
-- Item 3
-    * Nested item 3.1
-    * Nested item 3.2
-        1. Nested ordered 3.2.1
-        2. Nested ordered 3.2.2
-        3. Nested ordered 3.2.3
-            + Nested item 3.2.3.1
-            + Nested item 3.2.3.2
-            + Nested item 3.2.3.3
-
-### Ordered
-
-1. First item
-2. Second item
-    1. Nested ordered 2.1
-    2. Nested ordered 2.2
-        1. Nested ordered 2.2.1
-        2. Nested ordered 2.2.2
-        3. Nested ordered 2.2.3
-3. Third item
-    - Nested item 3.1
-    - Nested item 3.2
-        * Nested item 3.2.1
-        * Nested item 3.2.2
-        * Nested item 3.2.3
-
 ## Code Blocks
 
 ### Inline
@@ -80,16 +43,27 @@ function hello() {
 
 [Link with title](https://github.com/luoluoqixi/purrmd "PurrMD")
 
-## Image
+## Lists
 
-![Image](https://i0.pickpik.com/photos/548/90/482/sunrise-phu-quoc-island-ocean-preview.jpg)
+### Unordered
 
-## Tables
+- Item 1
+- Item 2
+    - Nested item 2.1
+    - Nested item 2.2
+        - Nested item 2.2.1
+        - Nested item 2.2.2
+        - Nested item 2.2.3
 
-| Name   | Age | City    |
-| ------ | --- | ------- |
-| Alice  | 24  | London  |
-| Bob    | 29  | Paris   |
+### Ordered
+
+1. First item
+2. Second item
+    1. Nested ordered 2.1
+    2. Nested ordered 2.2
+        1. Nested ordered 2.2.1
+        2. Nested ordered 2.2.2
+        3. Nested ordered 2.2.3
 
 ## Task Lists
 
@@ -103,12 +77,6 @@ function hello() {
     - [ ] Nested Incomplete task
         - [ ] Nested Incomplete task
         - [ ] Nested Incomplete task
-- [ ] Incomplete task
-    1. [ ] Nested Ordered task
-    2. [ ] Nested Ordered task
-    3. [ ] Nested Ordered task
-        1. [ ] Nested Ordered task
-        2. [ ] Nested Ordered task
 
 ### Ordered
 
@@ -120,12 +88,18 @@ function hello() {
     2. [ ] Nested Incomplete task
         1. [ ] Nested Incomplete task
         2. [ ] Nested Incomplete task
-3. [ ] Incomplete task
-    - [ ] Nested Unordered task
-    - [ ] Nested Unordered task
-    - [ ] Nested Unordered task
-        1. [ ] Nested Incomplete task
-        2. [ ] Nested Incomplete task
+
+## Image
+
+![Image](https://i0.pickpik.com/photos/548/90/482/sunrise-phu-quoc-island-ocean-preview.jpg)
+
+## Tables
+
+| Name   | Age | City    |
+| ------ | --- | ------- |
+| Alice  | 24  | London  |
+| Bob    | 29  | Paris   |
+
 
 ## Horizontal Rule
 
