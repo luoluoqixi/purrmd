@@ -1,1 +1,2 @@
-export { insertNewlineContinueMarkup } from './newline';
+export * from './newline';
+export * from './textStyle';

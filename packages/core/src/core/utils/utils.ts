@@ -30,6 +30,46 @@ export const isSelectLine = (state: EditorState, node: SyntaxNodeRef) => {
   });
 };
 
+export const iterSubNodes = (
+  node: SyntaxNode,
+  subNodeName?: string | string[],
+  cb?: (node: SyntaxNodeRef) => void,
+) => {
+  const isArray = Array.isArray(subNodeName);
+  const isNeedMatch = subNodeName != null;
+  const cursor = node.cursor();
+  cursor.iterate((node) => {
+    const isMatch =
+      !isNeedMatch ||
+      (isArray
+        ? subNodeName.some((name) => node.type.name === name)
+        : node.type.name === subNodeName);
+    if (isMatch) {
+      cb?.(node);
+    }
+  });
+};
+
+export const iterParentNodes = (
+  node: SyntaxNode,
+  parentNodeName?: string | string[],
+  cb?: (node: SyntaxNodeRef) => void,
+) => {
+  const isArray = Array.isArray(parentNodeName);
+  const isNeedMatch = parentNodeName != null;
+  while (node.parent) {
+    node = node.parent;
+    const isMatch =
+      !isNeedMatch ||
+      (isArray
+        ? parentNodeName.some((name) => node.type.name === name)
+        : node.type.name === parentNodeName);
+    if (isMatch) {
+      cb?.(node);
+    }
+  }
+};
+
 export const setSubNodeHideDecorations = (
   node: SyntaxNode,
   decorations: Range<Decoration>[],
@@ -41,28 +81,21 @@ export const setSubNodeHideDecorations = (
     decorations: Decoration,
   ) => Range<Decoration> | Range<Decoration>[] | undefined,
 ) => {
-  const isArray = Array.isArray(subNodeName);
-  const cursor = node.cursor();
-  cursor.iterate((node) => {
-    const isMatch = isArray
-      ? subNodeName.some((name) => node.type.name === name)
-      : node.type.name === subNodeName;
-    if (isMatch) {
-      if (!decoration) {
-        decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
-      }
-      if (customHide) {
-        const result = customHide(node.node, decoration);
-        if (result) {
-          if (Array.isArray(result)) {
-            decorations.push(...result);
-          } else {
-            decorations.push(result);
-          }
+  iterSubNodes(node, subNodeName, (node) => {
+    if (!decoration) {
+      decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
+    }
+    if (customHide) {
+      const result = customHide(node.node, decoration);
+      if (result) {
+        if (Array.isArray(result)) {
+          decorations.push(...result);
+        } else {
+          decorations.push(result);
         }
-      } else {
-        decorations.push(decoration.range(node.from, node.to));
       }
+    } else {
+      decorations.push(decoration.range(node.from, node.to));
     }
   });
 };
@@ -75,19 +108,12 @@ export const setSubNodeHideDecorationsLine = (
   isBlock: boolean,
   decoration?: Decoration | null,
 ) => {
-  const isArray = Array.isArray(subNodeName);
-  const cursor = node.cursor();
-  cursor.iterate((sub) => {
-    const isMatch = isArray
-      ? subNodeName.some((name) => sub.type.name === name)
-      : sub.type.name === subNodeName;
-    if (isMatch) {
-      if (!isSelectLine(state, sub)) {
-        if (!decoration) {
-          decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
-        }
-        decorations.push(decoration.range(sub.from, sub.to));
+  iterSubNodes(node, subNodeName, (sub) => {
+    if (!isSelectLine(state, sub)) {
+      if (!decoration) {
+        decoration = isBlock ? hiddenBlockDecoration : hiddenInlineDecoration;
       }
+      decorations.push(decoration.range(sub.from, sub.to));
     }
   });
 };

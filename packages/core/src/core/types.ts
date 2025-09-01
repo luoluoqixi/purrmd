@@ -49,6 +49,17 @@ export interface PurrMDFeatureConfig {
 
 export type FormattingDisplayMode = 'auto' | 'show';
 
+export interface DefaultKeyMapsConfig {
+  /** strong switch or keymap */
+  strong?: boolean | string;
+  /** italic switch or keymap */
+  italic?: boolean | string;
+  /** highlight switch or keymap */
+  highlight?: boolean | string;
+  /** strikethrough switch or keymap */
+  strikethrough?: boolean | string;
+}
+
 export interface PurrMDConfig {
   /** markdown extension config */
   markdownExtConfig?: MarkdownExtConfig;
@@ -60,6 +71,8 @@ export interface PurrMDConfig {
   formattingDisplayMode?: FormattingDisplayMode;
   /** default keymaps @default true */
   addKeymap?: boolean;
+  /** default keymaps config */
+  defaultKeymaps?: DefaultKeyMapsConfig;
 }
 
 export interface PurrMDThemeConfig {

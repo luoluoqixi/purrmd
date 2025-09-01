@@ -53,7 +53,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     focusListener,
     markdown(mergedConfig.markdownExtConfig),
     mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
-    addKeymap && Prec.high(keymap.of(markdownKeymap())),
+    addKeymap && Prec.high(keymap.of(markdownKeymap(mergedConfig.defaultKeymaps))),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
     features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
