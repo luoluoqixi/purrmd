@@ -131,9 +131,3 @@ function hello() {
 
 ---
 
-## Footnotes
-
-This is a footnote example.[^1]
-
-[^1]: Here is the footnote content.
-
