@@ -1,0 +1,150 @@
+import { EditorState, StateCommand } from '@codemirror/state';
+
+const allIsHeading = (state: EditorState, level?: number): boolean => {
+  const { doc, selection } = state;
+  const range = selection.main;
+  const fromLine = doc.lineAt(range.from);
+  const toLine = doc.lineAt(range.to);
+
+  if (level === 0) {
+    const regex = /^\s*#{1,6}\s+/;
+
+    for (let i = fromLine.number; i <= toLine.number; i++) {
+      const line = doc.line(i);
+      if (regex.test(line.text)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  const regex = level ? new RegExp(`^\\s*#{${level}}\\s+`) : /^\s*#{1,6}\s+/;
+
+  for (let i = fromLine.number; i <= toLine.number; i++) {
+    const line = doc.line(i);
+    if (!regex.test(line.text)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const setHeading = (level: number): StateCommand => {
+  return ({ state, dispatch }): boolean => {
+    const { doc, selection } = state;
+    const range = selection.main;
+    const fromLine = doc.lineAt(range.from);
+    const toLine = doc.lineAt(range.to);
+
+    const changes = [];
+
+    for (let i = fromLine.number; i <= toLine.number; i++) {
+      const line = doc.line(i);
+      const text = line.text.replace(/^\s*#{1,6}\s+/, '').trimStart();
+
+      const newText = level > 0 ? `${'#'.repeat(level)} ${text}` : text;
+
+      if (newText !== line.text) {
+        changes.push({
+          from: line.from,
+          to: line.to,
+          insert: newText,
+        });
+      }
+    }
+
+    if (changes.length === 0) return false;
+    dispatch(
+      state.update({
+        changes,
+        scrollIntoView: true,
+        userEvent: 'setHeading',
+      }),
+    );
+    return false;
+  };
+};
+
+/**
+ * Create a command to set the current selection to headings of a specific level or paragraphs if level is 0.
+ * @param level Heading level (1-6) or 0 for paragraph
+ * @returns StateCommand
+ */
+export const headingCommand = (level: number) => setHeading(level);
+/**
+ * Command to set the current selection to heading 1
+ */
+export const heading1Command = setHeading(1);
+/**
+ * Command to set the current selection to heading 2
+ */
+export const heading2Command = setHeading(2);
+/**
+ * Command to set the current selection to heading 3
+ */
+export const heading3Command = setHeading(3);
+/**
+ * Command to set the current selection to heading 4
+ */
+export const heading4Command = setHeading(4);
+/**
+ * Command to set the current selection to heading 5
+ */
+export const heading5Command = setHeading(5);
+/**
+ * Command to set the current selection to heading 6
+ */
+export const heading6Command = setHeading(6);
+/**
+ * Command to set the current selection to paragraphs (not headings)
+ */
+export const paragraphCommand = setHeading(0);
+
+/**
+ * Check if the current selection is all headings of a specific level or paragraphs if level is 0.
+ * @param state EditorState
+ * @param level Heading level (1-6) or 0 for paragraphs, if undefined checks for any heading level (1-6)
+ * @returns boolean
+ */
+export const isHeading = (state: EditorState, level?: number) => allIsHeading(state, level);
+/**
+ * Check if the current selection is all heading 1
+ * @param state EditorState
+ * @returns boolean
+ */
+export const isHeading1 = (state: EditorState) => allIsHeading(state, 1);
+/**
+ * Check if the current selection is all heading 2
+ * @param state EditorState
+ * @returns boolean
+ */
+export const isHeading2 = (state: EditorState) => allIsHeading(state, 2);
+/**
+ * Check if the current selection is all heading 3
+ * @param state EditorState
+ * @returns boolean
+ */
+export const isHeading3 = (state: EditorState) => allIsHeading(state, 3);
+/**
+ * Check if the current selection is all heading 4
+ * @param state EditorState
+ * @returns boolean
+ */
+export const isHeading4 = (state: EditorState) => allIsHeading(state, 4);
+/**
+ * Check if the current selection is all heading 5
+ * @param state EditorState
+ * @returns boolean
+ */
+export const isHeading5 = (state: EditorState) => allIsHeading(state, 5);
+/**
+ * Check if the current selection is all heading 6
+ * @param state EditorState
+ * @returns boolean
+ */
+export const isHeading6 = (state: EditorState) => allIsHeading(state, 6);
+/**
+ * Check if the current selection is all paragraphs (not headings)
+ * @param state EditorState
+ * @returns boolean
+ */
+export const isParagraph = (state: EditorState) => allIsHeading(state, 0);

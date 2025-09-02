@@ -449,69 +449,69 @@ const hasTextStyle = (
 /**
  * Clear all text style in selection
  */
-export const clearSelectionAllTextStyle = clearTextStyle([...textStyleNodeTypes]);
+export const clearSelectionAllTextStyleCommand = clearTextStyle([...textStyleNodeTypes]);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionStrong = clearTextStyle(['StrongEmphasis']);
+export const clearSelectionStrongCommand = clearTextStyle(['StrongEmphasis']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionItalic = clearTextStyle(['Emphasis']);
+export const clearSelectionItalicCommand = clearTextStyle(['Emphasis']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionStrikethrough = clearTextStyle(['Strikethrough']);
+export const clearSelectionStrikethroughCommand = clearTextStyle(['Strikethrough']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionHighlight = clearTextStyle(['Highlight']);
+export const clearSelectionHighlightCommand = clearTextStyle(['Highlight']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionInlineCode = clearTextStyle(['InlineCode']);
+export const clearSelectionInlineCodeCommand = clearTextStyle(['InlineCode']);
 
 /**
  * Clear text style command map
  */
 export const clearSelectionTextStyle: Record<TextStyleNodeType, StateCommand> = {
-  StrongEmphasis: clearSelectionStrong,
-  Emphasis: clearSelectionItalic,
-  Strikethrough: clearSelectionStrikethrough,
-  Highlight: clearSelectionHighlight,
-  InlineCode: clearSelectionInlineCode,
+  StrongEmphasis: clearSelectionStrongCommand,
+  Emphasis: clearSelectionItalicCommand,
+  Strikethrough: clearSelectionStrikethroughCommand,
+  Highlight: clearSelectionHighlightCommand,
+  InlineCode: clearSelectionInlineCodeCommand,
 };
 
 /**
  * Toggle strong emphasis command
  */
-export const toggleSelectionStrong = toggleTextStyle(textStyleConfig.StrongEmphasis);
+export const toggleSelectionStrongCommand = toggleTextStyle(textStyleConfig.StrongEmphasis);
 /**
  * Toggle emphasis command
  */
-export const toggleSelectionItalic = toggleTextStyle(textStyleConfig.Emphasis);
+export const toggleSelectionItalicCommand = toggleTextStyle(textStyleConfig.Emphasis);
 /**
  * Toggle highlight command
  */
-export const toggleSelectionHighlight = toggleTextStyle(textStyleConfig.Highlight);
+export const toggleSelectionHighlightCommand = toggleTextStyle(textStyleConfig.Highlight);
 /**
  * Toggle strikethrough command
  */
-export const toggleSelectionStrikethrough = toggleTextStyle(textStyleConfig.Strikethrough);
+export const toggleSelectionStrikethroughCommand = toggleTextStyle(textStyleConfig.Strikethrough);
 /**
  * Toggle inline code command
  */
-export const toggleSelectionInlineCode = toggleTextStyle(textStyleConfig.InlineCode);
+export const toggleSelectionInlineCodeCommand = toggleTextStyle(textStyleConfig.InlineCode);
 
 /**
  * Toggle text style command map
  */
 export const toggleSelectionTextStyle: Record<TextStyleNodeType, StateCommand> = {
-  StrongEmphasis: toggleSelectionStrong,
-  Emphasis: toggleSelectionItalic,
-  Strikethrough: toggleSelectionStrikethrough,
-  Highlight: toggleSelectionHighlight,
-  InlineCode: toggleSelectionInlineCode,
+  StrongEmphasis: toggleSelectionStrongCommand,
+  Emphasis: toggleSelectionItalicCommand,
+  Strikethrough: toggleSelectionStrikethroughCommand,
+  Highlight: toggleSelectionHighlightCommand,
+  InlineCode: toggleSelectionInlineCodeCommand,
 };
 
 /**
