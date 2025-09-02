@@ -4,8 +4,51 @@ import { Tree } from '@lezer/common';
 
 import { iterParentNodes, iterSubNodes } from '../utils';
 
+export const textStyleNodeTypes = [
+  'StrongEmphasis',
+  'Emphasis',
+  'Strikethrough',
+  'Highlight',
+  'InlineCode',
+] as const;
+
+export type TextStyleNodeType = (typeof textStyleNodeTypes)[number];
+
+const textStyleConfig: Record<TextStyleNodeType, StyleConfig> = {
+  StrongEmphasis: {
+    nodeType: 'StrongEmphasis',
+    subType: 'EmphasisMark',
+    markup: '**',
+    placeholder: '',
+  },
+  Emphasis: {
+    nodeType: 'Emphasis',
+    subType: 'EmphasisMark',
+    markup: '*',
+    placeholder: '',
+  },
+  Highlight: {
+    nodeType: 'Highlight',
+    subType: 'HighlightMark',
+    markup: '==',
+    placeholder: '',
+  },
+  Strikethrough: {
+    nodeType: 'Strikethrough',
+    subType: 'StrikethroughMark',
+    markup: '~~',
+    placeholder: '',
+  },
+  InlineCode: {
+    nodeType: 'InlineCode',
+    subType: 'CodeMark',
+    markup: '`',
+    placeholder: '',
+  },
+};
+
 interface StyleConfig {
-  nodeType: string;
+  nodeType: TextStyleNodeType;
   subType: string;
   markup: string;
   placeholder?: string;
@@ -103,18 +146,29 @@ const removeRangeMarkups = (
   return lineText;
 };
 
-const isCharInMarkup = (tree: Tree, pos: number, nodeType: string) => {
+const isCharInMarkup = (tree: Tree, pos: number, nodeType: string | string[]) => {
+  const isArray = Array.isArray(nodeType);
   let charInMarkup = false;
   tree.iterate({
     from: pos,
     to: pos + 1,
     enter: (node) => {
-      if (node.type.name === nodeType) {
-        charInMarkup = true;
-      } else {
-        iterParentNodes(node.node, nodeType, () => {
+      if (isArray) {
+        if (nodeType.includes(node.type.name as TextStyleNodeType)) {
           charInMarkup = true;
-        });
+        } else {
+          iterParentNodes(node.node, nodeType, () => {
+            charInMarkup = true;
+          });
+        }
+      } else {
+        if (node.type.name === nodeType) {
+          charInMarkup = true;
+        } else {
+          iterParentNodes(node.node, nodeType, () => {
+            charInMarkup = true;
+          });
+        }
       }
     },
   });
@@ -247,37 +301,159 @@ const toggleTextStyle =
     return false;
   };
 
-export const toggleStrong = toggleTextStyle({
-  nodeType: 'StrongEmphasis',
-  subType: 'EmphasisMark',
-  markup: '**',
-  placeholder: '',
-});
+const clearTextStyle = (nodeTypes: TextStyleNodeType[]): StateCommand => {
+  return ({ state, dispatch }) => {
+    const { selection, doc } = state;
+    const changes: { from: number; to: number; insert: string }[] = [];
+    const newRanges: { from: number; to: number }[] = [];
+    const tree = syntaxTree(state);
 
-export const toggleItalic = toggleTextStyle({
-  nodeType: 'Emphasis',
-  subType: 'EmphasisMark',
-  markup: '*',
-  placeholder: '',
-});
+    selection.ranges.forEach((range) => {
+      if (range.empty) {
+        const pos = range.from;
+        const charInMarkup = isCharInMarkup(tree, pos, nodeTypes);
+        if (charInMarkup) {
+          const updateChanges: UpdataChange[] = [];
+          const rangeCalculator = new SelectionRangeCalculator(pos, pos);
+          for (let i = 0; i < nodeTypes.length; i++) {
+            const nodeType = nodeTypes[i];
+            const config = textStyleConfig[nodeType];
+            removeRangeMarkups(tree, pos, pos + 1, config, rangeCalculator, updateChanges);
+          }
+          changes.push(...updateChanges);
+          const to = rangeCalculator.getRange().to;
+          newRanges.push({
+            from: to,
+            to,
+          });
+        }
+      } else {
+        const fromLine = doc.lineAt(range.from);
+        const toLine = doc.lineAt(range.to);
 
-export const toggleHighlight = toggleTextStyle({
-  nodeType: 'Highlight',
-  subType: 'HighlightMark',
-  markup: '==',
-  placeholder: '',
-});
+        const linesToProcess = [];
+        for (let i = fromLine.number; i <= toLine.number; i++) {
+          const line = doc.line(i);
+          const lineStart = Math.max(range.from, line.from);
+          const lineEnd = Math.min(range.to, line.to);
+          if (lineStart < lineEnd) {
+            linesToProcess.push({
+              from: lineStart,
+              to: lineEnd,
+            });
+          }
+        }
 
-export const toggleStrikethrough = toggleTextStyle({
-  nodeType: 'Strikethrough',
-  subType: 'StrikethroughMark',
-  markup: '~~',
-  placeholder: '',
-});
+        const updateChanges: UpdataChange[] = [];
+        const rangeCalculator = new SelectionRangeCalculator(range.from, range.to);
 
-export const toggleInlineCode = toggleTextStyle({
-  nodeType: 'InlineCode',
-  subType: 'CodeMark',
-  markup: '`',
-  placeholder: '',
-});
+        linesToProcess.forEach((lineProcess) => {
+          const { from, to } = lineProcess;
+          const lineText = doc.sliceString(from, to);
+          let deleteCount = 0;
+
+          for (let i = 0; i < nodeTypes.length; i++) {
+            const nodeType = nodeTypes[i];
+            const config = textStyleConfig[nodeType];
+            const newLineText = removeRangeMarkups(
+              tree,
+              from,
+              to,
+              config,
+              rangeCalculator,
+              updateChanges,
+              deleteCount,
+              lineText,
+            )!;
+            deleteCount += lineText.length - newLineText.length;
+          }
+        });
+
+        changes.push(...updateChanges);
+        newRanges.push(rangeCalculator.getRange());
+      }
+    });
+
+    if (changes.length > 0) {
+      const transaction = state.update({
+        changes,
+        selection: EditorSelection.create(
+          newRanges.map((range) => EditorSelection.range(range.from, range.to)),
+        ),
+      });
+
+      dispatch(transaction);
+      return true;
+    }
+
+    return false;
+  };
+};
+
+/**
+ * Clear all text style in selection
+ */
+export const clearSelectionAllTextStyle = clearTextStyle([...textStyleNodeTypes]);
+/**
+ * Clear specific text style in selection
+ */
+export const clearSelectionStrong = clearTextStyle(['StrongEmphasis']);
+/**
+ * Clear specific text style in selection
+ */
+export const clearSelectionItalic = clearTextStyle(['Emphasis']);
+/**
+ * Clear specific text style in selection
+ */
+export const clearSelectionStrikethrough = clearTextStyle(['Strikethrough']);
+/**
+ * Clear specific text style in selection
+ */
+export const clearSelectionHighlight = clearTextStyle(['Highlight']);
+/**
+ * Clear specific text style in selection
+ */
+export const clearSelectionInlineCode = clearTextStyle(['InlineCode']);
+
+/**
+ * Toggle strong emphasis command
+ */
+export const toggleSelectionStrong = toggleTextStyle(textStyleConfig.StrongEmphasis);
+/**
+ * Toggle emphasis command
+ */
+export const toggleSelectionItalic = toggleTextStyle(textStyleConfig.Emphasis);
+/**
+ * Toggle highlight command
+ */
+export const toggleSelectionHighlight = toggleTextStyle(textStyleConfig.Highlight);
+/**
+ * Toggle strikethrough command
+ */
+export const toggleSelectionStrikethrough = toggleTextStyle(textStyleConfig.Strikethrough);
+/**
+ * Toggle inline code command
+ */
+export const toggleSelectionInlineCode = toggleTextStyle(textStyleConfig.InlineCode);
+
+/**
+ * Toggle text style command map
+ */
+export const toggleSelectionTextStyle: Record<TextStyleNodeType, StateCommand> = {
+  StrongEmphasis: toggleSelectionStrong,
+  Emphasis: toggleSelectionItalic,
+  Strikethrough: toggleSelectionStrikethrough,
+  Highlight: toggleSelectionHighlight,
+  InlineCode: toggleSelectionInlineCode,
+};
+
+/**
+ * Clear text style command map
+ */
+export const clearSelectionTextStyle: Record<TextStyleNodeType, StateCommand> = {
+  StrongEmphasis: clearSelectionStrong,
+  Emphasis: clearSelectionItalic,
+  Strikethrough: clearSelectionStrikethrough,
+  Highlight: clearSelectionHighlight,
+  InlineCode: clearSelectionInlineCode,
+};
