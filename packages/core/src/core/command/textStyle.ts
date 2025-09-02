@@ -1,5 +1,6 @@
 import { syntaxTree } from '@codemirror/language';
 import { EditorSelection, StateCommand } from '@codemirror/state';
+import { Tree } from '@lezer/common';
 
 import { iterParentNodes, iterSubNodes } from '../utils';
 
@@ -50,7 +51,75 @@ class SelectionRangeCalculator {
       to: this.originalTo + this.toOffset,
     };
   }
+
+  getAdjustedPos(originalPos: number): number {
+    return originalPos + this.fromOffset;
+  }
 }
+
+interface UpdataChange {
+  from: number;
+  to: number;
+  insert: string;
+}
+
+const removeRangeMarkups = (
+  tree: Tree,
+  from: number,
+  to: number,
+  config: StyleConfig,
+  rangeCalculator: SelectionRangeCalculator,
+  updateChanges: UpdataChange[],
+  deleteCount?: number,
+  lineText?: string | null,
+): string | undefined | null => {
+  let delCount = deleteCount == null ? 0 : deleteCount;
+  tree.iterate({
+    from,
+    to,
+    enter: (node) => {
+      if (node.type.name === config.nodeType) {
+        iterSubNodes(node.node, config.subType, (sub) => {
+          if (sub.node.parent == null || sub.node.parent.type.name !== config.nodeType) {
+            return;
+          }
+          updateChanges.push({
+            from: sub.from,
+            to: sub.to,
+            insert: '',
+          });
+          rangeCalculator.addDeletion(sub.from, sub.to);
+
+          const start = sub.from - from - delCount;
+          const length = sub.to - sub.from;
+          if (lineText != null) {
+            lineText = lineText.substring(0, start) + lineText.substring(start + length);
+          }
+          delCount += length;
+        });
+      }
+    },
+  });
+  return lineText;
+};
+
+const isCharInMarkup = (tree: Tree, pos: number, nodeType: string) => {
+  let charInMarkup = false;
+  tree.iterate({
+    from: pos,
+    to: pos + 1,
+    enter: (node) => {
+      if (node.type.name === nodeType) {
+        charInMarkup = true;
+      } else {
+        iterParentNodes(node.node, nodeType, () => {
+          charInMarkup = true;
+        });
+      }
+    },
+  });
+  return charInMarkup;
+};
 
 const toggleTextStyle =
   (config: StyleConfig): StateCommand =>
@@ -58,26 +127,37 @@ const toggleTextStyle =
     const { selection, doc } = state;
     const changes: { from: number; to: number; insert: string }[] = [];
     const newRanges: { from: number; to: number }[] = [];
+    const nodeType = config.nodeType;
+    const tree = syntaxTree(state);
 
     selection.ranges.forEach((range) => {
       if (range.empty) {
-        const insertText = `${config.markup}${config.placeholder || ''}${config.markup}`;
-        changes.push({
-          from: range.from,
-          to: range.to,
-          insert: insertText,
-        });
-        const cursorPos = range.from + config.markup.length;
-        newRanges.push({
-          from: cursorPos,
-          to: cursorPos + (config.placeholder?.length || 0),
-        });
+        const pos = range.from;
+        const charInMarkup = isCharInMarkup(tree, pos, nodeType);
+        if (charInMarkup) {
+          const updateChanges: UpdataChange[] = [];
+          const rangeCalculator = new SelectionRangeCalculator(pos, pos);
+          removeRangeMarkups(tree, pos, pos + 1, config, rangeCalculator, updateChanges);
+          changes.push(...updateChanges);
+          const to = rangeCalculator.getRange().to;
+          newRanges.push({
+            from: to,
+            to,
+          });
+        } else {
+          const insertText = `${config.markup}${config.placeholder || ''}${config.markup}`;
+          changes.push({
+            from: range.from,
+            to: range.to,
+            insert: insertText,
+          });
+          const cursorPos = range.from + config.markup.length;
+          newRanges.push({
+            from: cursorPos,
+            to: cursorPos + (config.placeholder?.length || 0),
+          });
+        }
       } else {
-        const tree = syntaxTree(state);
-
-        const markTypeName = config.subType;
-        const nodeType = config.nodeType;
-
         const fromLine = doc.lineAt(range.from);
         const toLine = doc.lineAt(range.to);
 
@@ -91,23 +171,7 @@ const toggleTextStyle =
             let allMarkup = true;
 
             for (let pos = lineStart; pos < lineEnd; pos++) {
-              let charInMarkup = false;
-
-              tree.iterate({
-                from: pos,
-                to: pos + 1,
-                enter: (node) => {
-                  if (node.type.name === nodeType) {
-                    charInMarkup = true;
-                  } else {
-                    iterParentNodes(node.node, nodeType, () => {
-                      charInMarkup = true;
-                    });
-                  }
-                },
-              });
-
-              if (!charInMarkup) {
+              if (!isCharInMarkup(tree, pos, nodeType)) {
                 allMarkup = false;
                 break;
               }
@@ -124,41 +188,37 @@ const toggleTextStyle =
           }
         }
 
-        console.log(notInAllMarkup);
-
         const targetAddMarkup = notInAllMarkup;
-        const updateChanges: Array<{ from: number; to: number; insert: string }> = [];
-
+        const updateChanges: UpdataChange[] = [];
         const rangeCalculator = new SelectionRangeCalculator(range.from, range.to);
 
-        linesToProcess.forEach((lineProcess) => {
+        const lineCount = linesToProcess.length;
+        linesToProcess.forEach((lineProcess, index) => {
           const { from, to } = lineProcess;
+          let lineText = doc.sliceString(from, to);
+          let deleteCount = 0;
+
           // remove markup
-          tree.iterate({
+          const newLineText = removeRangeMarkups(
+            tree,
             from,
             to,
-            enter: (node) => {
-              if (node.type.name === nodeType) {
-                iterSubNodes(node.node, markTypeName, (sub) => {
-                  if (sub.node.parent == null || sub.node.parent.type.name !== nodeType) {
-                    return;
-                  }
-                  updateChanges.push({
-                    from: sub.from,
-                    to: sub.to,
-                    insert: '',
-                  });
-                  rangeCalculator.addDeletion(sub.from, sub.to);
-                });
-              }
-            },
-          });
+            config,
+            rangeCalculator,
+            updateChanges,
+            deleteCount,
+            lineText,
+          )!;
+          deleteCount += lineText.length - newLineText.length;
+          lineText = newLineText;
+
           if (targetAddMarkup) {
             // add markup
-            const lineText = doc.sliceString(from, to);
             const newText = `${config.markup}${lineText}${config.markup}`;
             rangeCalculator.addInsertion(from, config.markup.length);
-            // rangeCalculator.addInsertion(to, config.markup.length);
+            if (index < lineCount - 1) {
+              rangeCalculator.addInsertion(to, config.markup.length);
+            }
             updateChanges.push({
               from,
               to,
