@@ -21,6 +21,7 @@ export const slashMenuBaseTheme = (dark: boolean): Extension => {
       boxShadow: dark ? '0 2px 8px rgba(0,0,0,0.5)' : '0 2px 8px rgba(0,0,0,0.15)',
       padding: '2px 0',
       zIndex: '1000',
+      width: '200px',
     },
     [`.${slashMenuClass.slashMenuItem}`]: {
       padding: '4px 12px',
@@ -43,7 +44,7 @@ export const slashMenuBaseTheme = (dark: boolean): Extension => {
       fontWeight: 'bold',
       fontSize: '12px',
       color: dark ? '#aaa' : '#888',
-      height: '20px',
+      height: '24px',
     },
     [`.${slashMenuClass.slashMenuContent}`]: {
       maxHeight: '300px',
