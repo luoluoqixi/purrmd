@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/luoluoqixi/purrmd/compare/v0.0.8...v0.0.9) (2025-09-03)
+
+
+### Features
+
+* blockquote commands ([a8f2bec](https://github.com/luoluoqixi/purrmd/commit/a8f2becbcb1167f9ce1b4de780d2fef60dff24b5))
+* clear text style commands ([99a4a8e](https://github.com/luoluoqixi/purrmd/commit/99a4a8e02bd152aebf9fd2b620653156b966785b))
+* has selection text style commands ([95a64e3](https://github.com/luoluoqixi/purrmd/commit/95a64e3860b28e8a1f0ffe33d48399347b0847e5))
+* heading commands ([099a1e5](https://github.com/luoluoqixi/purrmd/commit/099a1e574517fe1843cb2a8d538a46250c28a90c))
+* insert commands ([5bb2e79](https://github.com/luoluoqixi/purrmd/commit/5bb2e79b3fe9699467fc190101608f58382bcb8a))
+* list commands ([aeef6db](https://github.com/luoluoqixi/purrmd/commit/aeef6db7e95f521de7ec6713eee90186639ed222))
+* slash menu, close [#9](https://github.com/luoluoqixi/purrmd/issues/9) ([59e0e64](https://github.com/luoluoqixi/purrmd/commit/59e0e647831348b6bea6df0c81cb60b87149f733))
+* text style command, [#9](https://github.com/luoluoqixi/purrmd/issues/9) ([0e0d79a](https://github.com/luoluoqixi/purrmd/commit/0e0d79a4bb4e231b2f918b30c8583a82f828b79e))
+* text style keymap and command ([7bf2b7a](https://github.com/luoluoqixi/purrmd/commit/7bf2b7affa5f76da04c20df7c4c39c583f63f6f2))
+
 ### [0.0.8](https://github.com/luoluoqixi/purrmd/compare/v0.0.7...v0.0.8) (2025-08-30)
 
 
