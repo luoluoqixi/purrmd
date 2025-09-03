@@ -88,7 +88,7 @@
     "changelogFile": "CHANGELOG.md",
     "skip": {
       "commit": true,
-      "tag": false
+      "tag": true
     }
   }
 }
