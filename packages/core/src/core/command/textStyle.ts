@@ -4,7 +4,17 @@ import { Tree } from '@lezer/common';
 
 import { iterParentNodes, iterSubNodes } from '../utils';
 
-export const textStyleNodeTypes = [
+export const textStyleKeys = [
+  'Strong',
+  'Emphasis',
+  'Strikethrough',
+  'Highlight',
+  'InlineCode',
+] as const;
+
+export type TextStyleKeyType = (typeof textStyleKeys)[number];
+
+const textStyleNodeTypes = [
   'StrongEmphasis',
   'Emphasis',
   'Strikethrough',
@@ -12,10 +22,10 @@ export const textStyleNodeTypes = [
   'InlineCode',
 ] as const;
 
-export type TextStyleNodeType = (typeof textStyleNodeTypes)[number];
+type TextStyleNodeType = (typeof textStyleNodeTypes)[number];
 
-const textStyleConfig: Record<TextStyleNodeType, StyleConfig> = {
-  StrongEmphasis: {
+const textStyleConfig: Record<TextStyleKeyType, StyleConfig> = {
+  Strong: {
     nodeType: 'StrongEmphasis',
     subType: 'EmphasisMark',
     markup: '**',
@@ -146,7 +156,12 @@ const removeRangeMarkups = (
   return lineText;
 };
 
-const isCharInMarkup = (tree: Tree, from: number, nodeType: string | string[], to?: number) => {
+const isCharInMarkup = (
+  tree: Tree,
+  from: number,
+  nodeType: TextStyleNodeType | TextStyleNodeType[],
+  to?: number,
+) => {
   to = to == null ? from + 1 : to;
   const isArray = Array.isArray(nodeType);
   let charInMarkup = false;
@@ -176,7 +191,7 @@ const isCharInMarkup = (tree: Tree, from: number, nodeType: string | string[], t
   return charInMarkup;
 };
 
-const toggleTextStyle =
+const toggleTextStyleCommand =
   (config: StyleConfig): StateCommand =>
   ({ state, dispatch }): boolean => {
     const { selection, doc } = state;
@@ -302,12 +317,13 @@ const toggleTextStyle =
     return false;
   };
 
-const clearTextStyle = (nodeTypes: TextStyleNodeType[]): StateCommand => {
+const clearTextStyleCommand = (nodeKeys: TextStyleKeyType[]): StateCommand => {
   return ({ state, dispatch }) => {
     const { selection, doc } = state;
     const changes: { from: number; to: number; insert: string }[] = [];
     const newRanges: { from: number; to: number }[] = [];
     const tree = syntaxTree(state);
+    const nodeTypes = nodeKeys.map((key) => textStyleConfig[key].nodeType);
 
     const range = selection.main;
     if (range.empty) {
@@ -316,9 +332,9 @@ const clearTextStyle = (nodeTypes: TextStyleNodeType[]): StateCommand => {
       if (charInMarkup) {
         const updateChanges: UpdataChange[] = [];
         const rangeCalculator = new SelectionRangeCalculator(pos, pos);
-        for (let i = 0; i < nodeTypes.length; i++) {
-          const nodeType = nodeTypes[i];
-          const config = textStyleConfig[nodeType];
+        for (let i = 0; i < nodeKeys.length; i++) {
+          const nodeKey = nodeKeys[i];
+          const config = textStyleConfig[nodeKey];
           removeRangeMarkups(tree, pos, pos + 1, config, rangeCalculator, updateChanges);
         }
         changes.push(...updateChanges);
@@ -353,8 +369,8 @@ const clearTextStyle = (nodeTypes: TextStyleNodeType[]): StateCommand => {
         const lineText = doc.sliceString(from, to);
         let deleteCount = 0;
 
-        for (let i = 0; i < nodeTypes.length; i++) {
-          const nodeType = nodeTypes[i];
+        for (let i = 0; i < nodeKeys.length; i++) {
+          const nodeType = nodeKeys[i];
           const config = textStyleConfig[nodeType];
           const newLineText = removeRangeMarkups(
             tree,
@@ -390,7 +406,7 @@ const clearTextStyle = (nodeTypes: TextStyleNodeType[]): StateCommand => {
   };
 };
 
-const hasTextStyle = (
+const hasTextStyleCommand = (
   state: EditorState,
   allRange: boolean,
   nodeTypes: TextStyleNodeType[],
@@ -449,69 +465,69 @@ const hasTextStyle = (
 /**
  * Clear all text style in selection
  */
-export const clearSelectionAllTextStyleCommand = clearTextStyle([...textStyleNodeTypes]);
+export const clearAllTextStyleCommand = clearTextStyleCommand([...textStyleKeys]);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionStrongCommand = clearTextStyle(['StrongEmphasis']);
+export const clearStrongCommand = clearTextStyleCommand(['Strong']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionItalicCommand = clearTextStyle(['Emphasis']);
+export const clearItalicCommand = clearTextStyleCommand(['Emphasis']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionStrikethroughCommand = clearTextStyle(['Strikethrough']);
+export const clearStrikethroughCommand = clearTextStyleCommand(['Strikethrough']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionHighlightCommand = clearTextStyle(['Highlight']);
+export const clearHighlightCommand = clearTextStyleCommand(['Highlight']);
 /**
  * Clear specific text style in selection
  */
-export const clearSelectionInlineCodeCommand = clearTextStyle(['InlineCode']);
+export const clearInlineCodeCommand = clearTextStyleCommand(['InlineCode']);
 
 /**
  * Clear text style command map
  */
-export const clearSelectionTextStyle: Record<TextStyleNodeType, StateCommand> = {
-  StrongEmphasis: clearSelectionStrongCommand,
-  Emphasis: clearSelectionItalicCommand,
-  Strikethrough: clearSelectionStrikethroughCommand,
-  Highlight: clearSelectionHighlightCommand,
-  InlineCode: clearSelectionInlineCodeCommand,
+export const clearTextStyle: Record<TextStyleNodeType, StateCommand> = {
+  StrongEmphasis: clearStrongCommand,
+  Emphasis: clearItalicCommand,
+  Strikethrough: clearStrikethroughCommand,
+  Highlight: clearHighlightCommand,
+  InlineCode: clearInlineCodeCommand,
 };
 
 /**
  * Toggle strong emphasis command
  */
-export const toggleSelectionStrongCommand = toggleTextStyle(textStyleConfig.StrongEmphasis);
+export const toggleStrongCommand = toggleTextStyleCommand(textStyleConfig.Strong);
 /**
  * Toggle emphasis command
  */
-export const toggleSelectionItalicCommand = toggleTextStyle(textStyleConfig.Emphasis);
+export const toggleItalicCommand = toggleTextStyleCommand(textStyleConfig.Emphasis);
 /**
  * Toggle highlight command
  */
-export const toggleSelectionHighlightCommand = toggleTextStyle(textStyleConfig.Highlight);
+export const toggleHighlightCommand = toggleTextStyleCommand(textStyleConfig.Highlight);
 /**
  * Toggle strikethrough command
  */
-export const toggleSelectionStrikethroughCommand = toggleTextStyle(textStyleConfig.Strikethrough);
+export const toggleStrikethroughCommand = toggleTextStyleCommand(textStyleConfig.Strikethrough);
 /**
  * Toggle inline code command
  */
-export const toggleSelectionInlineCodeCommand = toggleTextStyle(textStyleConfig.InlineCode);
+export const toggleInlineCodeCommand = toggleTextStyleCommand(textStyleConfig.InlineCode);
 
 /**
  * Toggle text style command map
  */
-export const toggleSelectionTextStyle: Record<TextStyleNodeType, StateCommand> = {
-  StrongEmphasis: toggleSelectionStrongCommand,
-  Emphasis: toggleSelectionItalicCommand,
-  Strikethrough: toggleSelectionStrikethroughCommand,
-  Highlight: toggleSelectionHighlightCommand,
-  InlineCode: toggleSelectionInlineCodeCommand,
+export const toggleTextStyle: Record<TextStyleKeyType, StateCommand> = {
+  Strong: toggleStrongCommand,
+  Emphasis: toggleItalicCommand,
+  Strikethrough: toggleStrikethroughCommand,
+  Highlight: toggleHighlightCommand,
+  InlineCode: toggleInlineCodeCommand,
 };
 
 /**
@@ -519,56 +535,56 @@ export const toggleSelectionTextStyle: Record<TextStyleNodeType, StateCommand> =
  * @param state Editor state
  * @returns has any text style
  */
-export const hasSelectionAnyTextStyle = (state: EditorState) => {
-  return hasTextStyle(state, true, [...textStyleNodeTypes]);
+export const hasAnyTextStyle = (state: EditorState) => {
+  return hasTextStyleCommand(state, true, [...textStyleNodeTypes]);
 };
 /**
  * Check if selection has strong emphasis
  * @param state Editor state
  * @returns has strong emphasis
  */
-export const hasSelectionStrongEmphasis = (state: EditorState) => {
-  return hasTextStyle(state, true, ['StrongEmphasis']);
+export const hasStrong = (state: EditorState) => {
+  return hasTextStyleCommand(state, true, ['StrongEmphasis']);
 };
 /**
  * Check if selection has emphasis
  * @param state Editor state
  * @returns has emphasis
  */
-export const hasSelectionEmphasis = (state: EditorState) => {
-  return hasTextStyle(state, true, ['Emphasis']);
+export const hasEmphasis = (state: EditorState) => {
+  return hasTextStyleCommand(state, true, ['Emphasis']);
 };
 /**
  * Check if selection has strikethrough
  * @param state Editor state
  * @returns has strikethrough
  */
-export const hasSelectionStrikethrough = (state: EditorState) => {
-  return hasTextStyle(state, true, ['Strikethrough']);
+export const hasStrikethrough = (state: EditorState) => {
+  return hasTextStyleCommand(state, true, ['Strikethrough']);
 };
 /**
  * Check if selection has highlight
  * @param state Editor state
  * @returns has highlight
  */
-export const hasSelectionHighlight = (state: EditorState) => {
-  return hasTextStyle(state, true, ['Highlight']);
+export const hasHighlight = (state: EditorState) => {
+  return hasTextStyleCommand(state, true, ['Highlight']);
 };
 /**
  * Check if selection has inline code
  * @param state Editor state
  * @returns has inline code
  */
-export const hasSelectionInlineCode = (state: EditorState) => {
-  return hasTextStyle(state, true, ['InlineCode']);
+export const hasInlineCode = (state: EditorState) => {
+  return hasTextStyleCommand(state, true, ['InlineCode']);
 };
 /**
  * Check if selection has specific text style
  */
-export const hasSelectionTextStyle: Record<TextStyleNodeType, (state: EditorState) => boolean> = {
-  StrongEmphasis: hasSelectionStrongEmphasis,
-  Emphasis: hasSelectionEmphasis,
-  Strikethrough: hasSelectionStrikethrough,
-  Highlight: hasSelectionHighlight,
-  InlineCode: hasSelectionInlineCode,
+export const hasTextStyle: Record<TextStyleKeyType, (state: EditorState) => boolean> = {
+  Strong: hasStrong,
+  Emphasis: hasEmphasis,
+  Strikethrough: hasStrikethrough,
+  Highlight: hasHighlight,
+  InlineCode: hasInlineCode,
 };

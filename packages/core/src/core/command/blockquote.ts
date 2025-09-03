@@ -26,6 +26,9 @@ const setBlockquote = (): StateCommand => {
 
     const changes = [];
 
+    const regex1 = /^\s*>\s+/;
+    const regex2 = /^\s*>/;
+
     const allBlockquote = isBlockquoteAllLine(state);
 
     for (let i = fromLine.number; i <= toLine.number; i++) {
@@ -33,9 +36,9 @@ const setBlockquote = (): StateCommand => {
       let newText: string;
 
       if (allBlockquote) {
-        newText = line.text.replace(/^\s*>\s+/, '');
+        newText = line.text.replace(regex1, '');
         if (newText === line.text) {
-          newText = line.text.replace(/^\s*>/, '').trimStart();
+          newText = line.text.replace(regex2, '').trimStart();
         }
       } else {
         const text = line.text;
@@ -67,10 +70,51 @@ const setBlockquote = (): StateCommand => {
   };
 };
 
+const clearBlockquote = (): StateCommand => {
+  return ({ state, dispatch }): boolean => {
+    const { doc, selection } = state;
+    const range = selection.main;
+    const fromLine = doc.lineAt(range.from);
+    const toLine = doc.lineAt(range.to);
+
+    const changes = [];
+
+    const regex = /^(\s*)>+\s*/;
+
+    for (let i = fromLine.number; i <= toLine.number; i++) {
+      const line = doc.line(i);
+      const newText = line.text.replace(regex, (_, indent) => indent);
+
+      if (newText !== line.text) {
+        changes.push({
+          from: line.from,
+          to: line.to,
+          insert: newText,
+        });
+      }
+    }
+
+    if (changes.length === 0) return false;
+    dispatch(
+      state.update({
+        changes,
+        scrollIntoView: true,
+        userEvent: 'clearBlockquote',
+      }),
+    );
+    return false;
+  };
+};
+
 /**
  * Command to set the current selection to blockquote
  */
-export const blockquoteCommand = setBlockquote();
+export const setBlockquoteCommand = setBlockquote();
+
+/**
+ * Command to clear the current selection to blockquote
+ */
+export const clearBlockquoteCommand = clearBlockquote();
 
 /**
  * Check if the current selection is all blockquote

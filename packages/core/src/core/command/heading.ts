@@ -69,35 +69,35 @@ const setHeading = (level: number): StateCommand => {
  * @param level Heading level (1-6) or 0 for paragraph
  * @returns StateCommand
  */
-export const headingCommand = (level: number) => setHeading(level);
+export const setHeadingCommand = (level: number) => setHeading(level);
 /**
  * Command to set the current selection to heading 1
  */
-export const heading1Command = setHeading(1);
+export const setHeading1Command = setHeading(1);
 /**
  * Command to set the current selection to heading 2
  */
-export const heading2Command = setHeading(2);
+export const setHeading2Command = setHeading(2);
 /**
  * Command to set the current selection to heading 3
  */
-export const heading3Command = setHeading(3);
+export const setHeading3Command = setHeading(3);
 /**
  * Command to set the current selection to heading 4
  */
-export const heading4Command = setHeading(4);
+export const setHeading4Command = setHeading(4);
 /**
  * Command to set the current selection to heading 5
  */
-export const heading5Command = setHeading(5);
+export const setHeading5Command = setHeading(5);
 /**
  * Command to set the current selection to heading 6
  */
-export const heading6Command = setHeading(6);
+export const setHeading6Command = setHeading(6);
 /**
  * Command to set the current selection to paragraphs (not headings)
  */
-export const paragraphCommand = setHeading(0);
+export const setParagraphCommand = setHeading(0);
 
 /**
  * Check if the current selection is all headings of a specific level or paragraphs if level is 0.

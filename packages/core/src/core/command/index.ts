@@ -4,10 +4,10 @@ import { KeyBinding } from '@codemirror/view';
 import { DefaultKeyMapsConfig } from '../types';
 import {
   insertNewlineContinueMarkup,
-  toggleSelectionHighlightCommand,
-  toggleSelectionItalicCommand,
-  toggleSelectionStrikethroughCommand,
-  toggleSelectionStrongCommand,
+  toggleHighlightCommand,
+  toggleItalicCommand,
+  toggleStrikethroughCommand,
+  toggleStrongCommand,
 } from './command';
 
 export const mdMarkdownKeymap = (): KeyBinding[] => {
@@ -28,9 +28,9 @@ export const markdownKeymap = (config?: DefaultKeyMapsConfig): KeyBinding[] => {
     return { key, run: command };
   };
   return [
-    getKeyBinding(config?.strong, 'Mod-b', toggleSelectionStrongCommand),
-    getKeyBinding(config?.italic, 'Mod-i', toggleSelectionItalicCommand),
-    getKeyBinding(config?.strikethrough, 'Mod-d', toggleSelectionStrikethroughCommand),
-    getKeyBinding(config?.highlight, 'Mod-h', toggleSelectionHighlightCommand),
+    getKeyBinding(config?.strong, 'Mod-b', toggleStrongCommand),
+    getKeyBinding(config?.italic, 'Mod-i', toggleItalicCommand),
+    getKeyBinding(config?.strikethrough, 'Mod-d', toggleStrikethroughCommand),
+    getKeyBinding(config?.highlight, 'Mod-h', toggleHighlightCommand),
   ].filter((x) => x != null);
 };
