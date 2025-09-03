@@ -1,6 +1,6 @@
 import { EditorState, StateCommand } from '@codemirror/state';
 
-const allIsHeading = (state: EditorState, level?: number): boolean => {
+const isHeadingAllLine = (state: EditorState, level?: number): boolean => {
   const { doc, selection } = state;
   const range = selection.main;
   const fromLine = doc.lineAt(range.from);
@@ -105,46 +105,46 @@ export const paragraphCommand = setHeading(0);
  * @param level Heading level (1-6) or 0 for paragraphs, if undefined checks for any heading level (1-6)
  * @returns boolean
  */
-export const isHeading = (state: EditorState, level?: number) => allIsHeading(state, level);
+export const isHeading = (state: EditorState, level?: number) => isHeadingAllLine(state, level);
 /**
  * Check if the current selection is all heading 1
  * @param state EditorState
  * @returns boolean
  */
-export const isHeading1 = (state: EditorState) => allIsHeading(state, 1);
+export const isHeading1 = (state: EditorState) => isHeadingAllLine(state, 1);
 /**
  * Check if the current selection is all heading 2
  * @param state EditorState
  * @returns boolean
  */
-export const isHeading2 = (state: EditorState) => allIsHeading(state, 2);
+export const isHeading2 = (state: EditorState) => isHeadingAllLine(state, 2);
 /**
  * Check if the current selection is all heading 3
  * @param state EditorState
  * @returns boolean
  */
-export const isHeading3 = (state: EditorState) => allIsHeading(state, 3);
+export const isHeading3 = (state: EditorState) => isHeadingAllLine(state, 3);
 /**
  * Check if the current selection is all heading 4
  * @param state EditorState
  * @returns boolean
  */
-export const isHeading4 = (state: EditorState) => allIsHeading(state, 4);
+export const isHeading4 = (state: EditorState) => isHeadingAllLine(state, 4);
 /**
  * Check if the current selection is all heading 5
  * @param state EditorState
  * @returns boolean
  */
-export const isHeading5 = (state: EditorState) => allIsHeading(state, 5);
+export const isHeading5 = (state: EditorState) => isHeadingAllLine(state, 5);
 /**
  * Check if the current selection is all heading 6
  * @param state EditorState
  * @returns boolean
  */
-export const isHeading6 = (state: EditorState) => allIsHeading(state, 6);
+export const isHeading6 = (state: EditorState) => isHeadingAllLine(state, 6);
 /**
  * Check if the current selection is all paragraphs (not headings)
  * @param state EditorState
  * @returns boolean
  */
-export const isParagraph = (state: EditorState) => allIsHeading(state, 0);
+export const isParagraph = (state: EditorState) => isHeadingAllLine(state, 0);
