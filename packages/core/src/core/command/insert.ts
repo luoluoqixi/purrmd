@@ -4,12 +4,17 @@ function insertBelow(text: string, userEvent: string): StateCommand {
   return ({ state, dispatch }) => {
     const { doc, selection } = state;
     const range = selection.main;
-
     const line = doc.lineAt(range.to);
-    const indentMatch = line.text.match(/^(\s*)/);
-    const indent = indentMatch ? indentMatch[1] : '';
 
-    const insertText = `\n${indent}${text}`;
+    let insertText: string;
+    if (range.from === range.to && line.text.length === 0) {
+      insertText = text;
+    } else {
+      const indentMatch = line.text.match(/^(\s*)/);
+      const indent = indentMatch ? indentMatch[1] : '';
+
+      insertText = `\n${indent}${text}`;
+    }
 
     dispatch(
       state.update({
@@ -75,7 +80,7 @@ export const insertBlockquote = insertBelow('> ', 'insertBlockquote');
 /**
  * Insert Horizontal Rule
  */
-export const insertHorizontalRule = insertBelow('---', 'insertHorizontalRule');
+export const insertHorizontalRule = insertBelow('---\n', 'insertHorizontalRule');
 
 /**
  * Insert Code Block

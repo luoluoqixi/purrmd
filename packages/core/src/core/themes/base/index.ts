@@ -16,6 +16,7 @@ import { linkBaseTheme, linkClass } from './markdown/link';
 import { listBaseTheme, listClass } from './markdown/list';
 import { strikethroughBaseTheme, strikethroughClass } from './markdown/strikethrough';
 import { strongBaseTheme, strongClass } from './markdown/strong';
+import { slashMenuBaseTheme, slashMenuClass } from './slashMenu';
 
 export const base = (config: {
   primaryColor: string;
@@ -45,6 +46,9 @@ export const base = (config: {
         '--purrmd-formatting-color': formattingColor,
         '--purrmd-formatting-opacity': config.formattingColor || '0.8',
       },
+      '&': {
+        '--purrmd-primary-color': config.primaryColor,
+      },
     },
     {
       dark: config.dark,
@@ -66,6 +70,7 @@ export const base = (config: {
     listBaseTheme(config.dark),
     strongBaseTheme(config.dark),
     strikethroughBaseTheme(config.dark),
+    slashMenuBaseTheme(config.dark),
   ];
 };
 
@@ -81,4 +86,5 @@ export const themeClass = {
   list: listClass,
   strikethrough: strikethroughClass,
   strong: strongClass,
+  slashMenu: slashMenuClass,
 };

@@ -14,6 +14,7 @@ import {
   StrikethroughConfig,
   StrongConfig,
 } from './markdown';
+import { SlashCommand } from './view/slashMenu';
 
 export type MarkdownExtConfig = Parameters<typeof markdown>[0];
 
@@ -60,6 +61,88 @@ export interface DefaultKeyMapsConfig {
   strikethrough?: boolean | string;
 }
 
+export interface DefaultSlashMenuConfig {
+  /** whether to show the slash menu, default is true */
+  show?: boolean;
+  /** slash menu title, if false, no title */
+  title?: boolean | string;
+  /** slash menu class name */
+  className?: string;
+  /** slash menu title class name */
+  classNameTitle?: string;
+  /** slash menu content class name */
+  classNameContent?: string;
+  /** slash menu item class name */
+  classNameItem?: string;
+  /** slash menu item active class name */
+  classNameItemActive?: string;
+  /** custom commands */
+  customCommands?: SlashCommand[];
+  /** default commands config */
+  defaultCommands?: {
+    heading1?: {
+      show?: boolean;
+      label?: string;
+    };
+    heading2?: {
+      show?: boolean;
+      label?: string;
+    };
+    heading3?: {
+      show?: boolean;
+      label?: string;
+    };
+    heading4?: {
+      show?: boolean;
+      label?: string;
+    };
+    heading5?: {
+      show?: boolean;
+      label?: string;
+    };
+    heading6?: {
+      show?: boolean;
+      label?: string;
+    };
+    unorderedList?: {
+      show?: boolean;
+      label?: string;
+    };
+    orderedList?: {
+      show?: boolean;
+      label?: string;
+    };
+    taskList?: {
+      show?: boolean;
+      label?: string;
+    };
+    blockquote?: {
+      show?: boolean;
+      label?: string;
+    };
+    codeBlock?: {
+      show?: boolean;
+      label?: string;
+    };
+    horizontalRule?: {
+      show?: boolean;
+      label?: string;
+    };
+    link?: {
+      show?: boolean;
+      label?: string;
+    };
+    image?: {
+      show?: boolean;
+      label?: string;
+    };
+    table?: {
+      show?: boolean;
+      label?: string;
+    };
+  };
+}
+
 export interface PurrMDConfig {
   /** markdown extension config */
   markdownExtConfig?: MarkdownExtConfig;
@@ -73,6 +156,8 @@ export interface PurrMDConfig {
   addKeymap?: boolean;
   /** default keymaps config */
   defaultKeymaps?: DefaultKeyMapsConfig;
+  /** default slash menu config */
+  defaultSlashMenu?: DefaultSlashMenuConfig;
 }
 
 export interface PurrMDThemeConfig {

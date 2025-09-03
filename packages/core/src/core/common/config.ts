@@ -26,6 +26,9 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
   },
   formattingDisplayMode: 'auto',
   addKeymap: true,
+  defaultSlashMenu: {
+    show: true,
+  },
 });
 
 export const defaultThemeConfig = (): PurrMDThemeConfig => ({

@@ -23,6 +23,7 @@ import { focusListener, focusState } from './state/focus';
 import { base, defaultTheme } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 import { PurrMDFeatures } from './types';
+import { slashMenuPlugin } from './view/slashMenu';
 
 export function purrmd(config?: PurrMDConfig): Extension {
   const defaultMdConfig = defaultConfig();
@@ -47,6 +48,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
   const mode = mergedConfig.formattingDisplayMode || 'auto';
   const features = mergedConfig.features;
   const featuresConfigs = mergedConfig.featuresConfigs;
+  const slashMenuConfig = mergedConfig.defaultSlashMenu;
 
   return [
     focusState,
@@ -54,6 +56,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     markdown(mergedConfig.markdownExtConfig),
     mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
     addKeymap && Prec.high(keymap.of(markdownKeymap(mergedConfig.defaultKeymaps))),
+    slashMenuConfig?.show && slashMenuPlugin(slashMenuConfig),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
     features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),
