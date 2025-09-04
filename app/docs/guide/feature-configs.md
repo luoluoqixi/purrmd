@@ -125,7 +125,7 @@ interface InlineCodeConfig {}
   - `'click'` Click to open the link
   - `'none'` Do not open the link
 
-- `clickToOpenInSource` How to open links in preview mode:
+- `clickToOpenInPreview` How to open links in preview mode:
   - `'controlOrCommand'` Hold Control or Command key and click to open the link
   - `'click'` Click to open the link
   - `'none'` Do not open the link
