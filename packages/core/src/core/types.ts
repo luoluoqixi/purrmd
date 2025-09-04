@@ -51,34 +51,64 @@ export interface PurrMDFeatureConfig {
 export type FormattingDisplayMode = 'auto' | 'show';
 
 export interface DefaultKeyMapsConfig {
-  /** strong switch or keymap */
+  /**
+   * strong switch or keymap
+   */
   strong?: boolean | string;
-  /** italic switch or keymap */
+  /**
+   * italic switch or keymap
+   */
   italic?: boolean | string;
-  /** highlight switch or keymap */
+  /**
+   * highlight switch or keymap
+   */
   highlight?: boolean | string;
-  /** strikethrough switch or keymap */
+  /**
+   * strikethrough switch or keymap
+   */
   strikethrough?: boolean | string;
 }
 
 export interface DefaultSlashMenuConfig {
-  /** whether to show the slash menu, default is true */
+  /**
+   * whether to show the slash menu, default is true
+   */
   show?: boolean;
-  /** slash menu title, if false, no title */
+  /**
+   * slash menu trigger key @default '/'
+   */
+  openKey?: string;
+  /**
+   * slash menu title, if false, no title
+   */
   title?: boolean | string;
-  /** slash menu class name */
+  /**
+   * slash menu class name
+   */
   className?: string;
-  /** slash menu title class name */
+  /**
+   * slash menu title class name
+   */
   classNameTitle?: string;
-  /** slash menu content class name */
+  /**
+   * slash menu content class name
+   */
   classNameContent?: string;
-  /** slash menu item class name */
+  /**
+   * slash menu item class name
+   */
   classNameItem?: string;
-  /** slash menu item active class name */
+  /**
+   * slash menu item active class name
+   */
   classNameItemActive?: string;
-  /** custom commands */
+  /**
+   * custom commands
+   */
   customCommands?: SlashCommand[];
-  /** default commands config */
+  /**
+   * default commands config
+   */
   defaultCommands?: {
     heading1?: {
       show?: boolean;
@@ -144,31 +174,55 @@ export interface DefaultSlashMenuConfig {
 }
 
 export interface PurrMDConfig {
-  /** markdown extension config */
+  /**
+   * markdown extension config
+   */
   markdownExtConfig?: MarkdownExtConfig;
-  /** features enable, default all are set to true. */
+  /**
+   * features enable, default all are set to true.
+   */
   features?: Partial<Record<PurrMDFeatures, boolean>>;
-  /** features config */
+  /**
+   * features config
+   */
   featuresConfigs?: PurrMDFeatureConfig;
-  /** markdown formatting display mode, @default 'auto' */
+  /**
+   * markdown formatting display mode, @default 'auto'
+   */
   formattingDisplayMode?: FormattingDisplayMode;
-  /** default keymaps @default true */
+  /**
+   * default keymaps @default true
+   */
   addKeymap?: boolean;
-  /** default keymaps config */
+  /**
+   * default keymaps config
+   */
   defaultKeymaps?: DefaultKeyMapsConfig;
-  /** default slash menu config */
+  /**
+   * default slash menu config
+   */
   defaultSlashMenu?: DefaultSlashMenuConfig;
 }
 
 export interface PurrMDThemeConfig {
-  /** theme mode @default 'light' */
+  /**
+   * theme mode @default 'light'
+   */
   mode?: 'light' | 'dark' | 'dracula' | 'base';
-  /** primary color, support 'light' or 'dark' */
+  /**
+   * primary color, support 'light' or 'dark'
+   */
   primaryColor?: string;
-  /** formatting color, support 'light' or 'dark' */
+  /**
+   * formatting color, support 'light' or 'dark'
+   */
   formattingColor?: string;
-  /** formatting opacity @default '0.8' */
+  /**
+   * formatting opacity @default '0.8'
+   */
   formattingOpacity?: string;
-  /** whether the theme is dark mode, default from mode */
+  /**
+   * whether the theme is dark mode, default from mode
+   */
   isDark?: boolean;
 }

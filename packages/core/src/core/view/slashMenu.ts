@@ -26,14 +26,6 @@ export interface SlashCommand {
   command?: (view: EditorView) => void;
 }
 
-function isSlashBeforeCursor(view: EditorView) {
-  const pos = view.state.selection.main.from;
-  if (pos === 0) return false;
-  const line = view.state.doc.lineAt(pos);
-  const textBeforeCursor = view.state.doc.sliceString(line.from, pos);
-  return /^\s*\/$/.test(textBeforeCursor);
-}
-
 export const slashMenu = (
   commands: SlashCommand[],
   {
@@ -43,23 +35,35 @@ export const slashMenu = (
     classNameItemActive,
     classNameTitle,
     classNameContent,
+    openKey = '/',
   }: DefaultSlashMenuConfig,
 ) =>
   ViewPlugin.fromClass(
     class {
       view: EditorView;
       menu: HTMLDivElement | null = null;
+      content: HTMLDivElement | null = null;
       items: HTMLDivElement[] = [];
       selectedIndex = 0;
       menuVisible = false;
       classItemActiveCustom: string;
       classItemCustom: string;
+      slashRegex: RegExp;
 
       constructor(view: EditorView) {
         this.view = view;
         this.createMenu();
         this.classItemActiveCustom = classNameItemActive || '';
         this.classItemCustom = classNameItem || '';
+        this.slashRegex = new RegExp(`^\\s*\\${openKey}$`);
+      }
+
+      isSlashBeforeCursor(view: EditorView) {
+        const pos = view.state.selection.main.from;
+        if (pos === 0) return false;
+        const line = view.state.doc.lineAt(pos);
+        const textBeforeCursor = view.state.doc.sliceString(line.from, pos);
+        return this.slashRegex.test(textBeforeCursor);
       }
 
       createMenu() {
@@ -83,6 +87,7 @@ export const slashMenu = (
         const content = document.createElement('div');
         content.className = `${classContentCustom} ${slashMenuClass.slashMenuContent}`;
         this.menu.appendChild(content);
+        this.content = content;
 
         commands.forEach((cmd, index) => {
           const item = document.createElement('div');
@@ -108,7 +113,7 @@ export const slashMenu = (
 
       update(update: ViewUpdate) {
         const view = update.view;
-        if (isSlashBeforeCursor(view)) {
+        if (this.isSlashBeforeCursor(view)) {
           this.openMenu();
         } else {
           this.closeMenu();
@@ -131,7 +136,9 @@ export const slashMenu = (
           this.menu!.style.left = `${left}px`;
           this.menu!.style.display = 'block';
           this.selectedIndex = 0;
-          this.menu!.scrollTop = 0;
+          if (this.content) {
+            this.content.scrollTop = 0;
+          }
           this.highlightSelected();
         });
       }
