@@ -2,6 +2,10 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import { defineConfig } from 'vitepress';
 
+const pkg = JSON.parse(
+  readFileSync(path.resolve(__dirname, '../../../packages/core/package.json'), 'utf-8'),
+);
+
 const loadFileDefine = (file: string) => {
   return JSON.stringify(readFileSync(path.resolve(__dirname, file), { encoding: 'utf8' }));
 };
@@ -100,6 +104,15 @@ export default defineConfig({
     nav: [
       { text: 'Demo', link: '/introduction/demo' },
       { text: 'Document', link: '/introduction/' },
+      {
+        text: pkg.version,
+        items: [
+          {
+            text: 'Changelog',
+            link: 'https://github.com/luoluoqixi/purrmd/blob/main/packages/core/CHANGELOG.md',
+          },
+        ],
+      },
     ],
     sidebar: [
       {
