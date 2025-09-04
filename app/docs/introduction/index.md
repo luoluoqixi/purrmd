@@ -41,9 +41,9 @@ PurrMD provides the following shortcuts to improve editing efficiency:
 
 `Ctrl+I` - Italic
 
-`Ctrl+D` / Strikethrough
+`Ctrl+D` - Strikethrough
 
-`Ctrl+H` / Highlight
+`Ctrl+H` - Highlight
 
 ### 🔧 Slash Menu
 
