@@ -125,7 +125,7 @@ interface InlineCodeConfig {}
   - `'click'` 点击鼠标打开链接
   - `'none'` 不打开链接
 
-- `clickToOpenInSource` 预览模式下，链接打开方式
+- `clickToOpenInPreview` 预览模式下，链接打开方式
   - `'controlOrCommand'` 按住 Control 或 Command 键并点击鼠标打开链接
   - `'click'` 点击鼠标打开链接
   - `'none'` 不打开链接
