@@ -40,6 +40,15 @@ export default defineConfig({
         nav: [
           { text: '演示', link: '/zh/introduction/demo' },
           { text: '文档', link: '/zh/introduction/' },
+          {
+            text: `v${pkg.version}`,
+            items: [
+              {
+                text: 'Changelog',
+                link: 'https://github.com/luoluoqixi/purrmd/blob/main/packages/core/CHANGELOG.md',
+              },
+            ],
+          },
         ],
         sidebar: [
           {
@@ -105,7 +114,7 @@ export default defineConfig({
       { text: 'Demo', link: '/introduction/demo' },
       { text: 'Document', link: '/introduction/' },
       {
-        text: pkg.version,
+        text: `v${pkg.version}`,
         items: [
           {
             text: 'Changelog',
