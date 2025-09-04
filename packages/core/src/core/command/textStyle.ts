@@ -240,8 +240,11 @@ const toggleTextStyleCommand =
         const lineEnd = Math.min(range.to, line.to);
         if (lineStart < lineEnd) {
           let allMarkup = true;
-
-          for (let pos = lineStart; pos < lineEnd; pos++) {
+          const lineTextStart = line.text.trimStart();
+          const lineTextEnd = line.text.trimEnd();
+          const startOffset = line.text.length - lineTextStart.length;
+          const endOffset = line.text.length - lineTextEnd.length;
+          for (let pos = lineStart + startOffset; pos < lineEnd - endOffset; pos++) {
             if (!isCharInMarkup(tree, pos, nodeType)) {
               allMarkup = false;
               break;
@@ -285,7 +288,14 @@ const toggleTextStyleCommand =
 
         if (targetAddMarkup) {
           // add markup
-          const newText = `${config.markup}${lineText}${config.markup}`;
+          let newText;
+          const t = lineText.trimStart();
+          if (t.length < lineText.length) {
+            const s = lineText.substring(0, lineText.length - t.length);
+            newText = `${s}${config.markup}${t}${config.markup}`;
+          } else {
+            newText = `${config.markup}${lineText}${config.markup}`;
+          }
           rangeCalculator.addInsertion(from, config.markup.length);
           if (index < lineCount - 1) {
             rangeCalculator.addInsertion(to, config.markup.length);

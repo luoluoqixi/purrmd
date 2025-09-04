@@ -1,30 +1,13 @@
 import { EditorState, StateCommand } from '@codemirror/state';
 
-const emptyRegex = /^(\s*)/;
-const regexUnorderedList = /^(\s*)[-*+]\s+/;
-const regexOrderedList = /^(\s*)\d+\.\s+/;
-const regexTaskList = /^(\s*)(?:[-*+]\s+\[( |x|X)\]\s+|\d+\.\s+\[( |x|X)\]\s+)/;
-const clearAllListRegex =
-  /^(\s*)(?:[-*+]\s+\[( |x|X)\]\s+|\d+\.\s+\[( |x|X)\]\s+|\d+\.\s+|[-*+]\s+)/;
-
-function allMatch(state: EditorState, regex: RegExp): boolean {
-  const { doc, selection } = state;
-  const range = selection.main;
-  const fromLine = doc.lineAt(range.from);
-  const toLine = doc.lineAt(range.to);
-
-  for (let i = fromLine.number; i <= toLine.number; i++) {
-    const line = doc.line(i);
-    if (!regex.test(line.text)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function removeAnyListPrefix(lineText: string): string {
-  return lineText.replace(clearAllListRegex, (_, indent) => indent);
-}
+import {
+  allMatch,
+  emptyRegex,
+  regexOrderedList,
+  regexTaskList,
+  regexUnorderedList,
+  removeAnyListPrefix,
+} from './utils';
 
 /**
  * Check if all selected lines are unordered list items
