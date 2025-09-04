@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/luoluoqixi/purrmd/compare/v0.0.9...v0.0.10) (2025-09-04)
+
+
+### Features
+
+* slash menu add open key config ([fbe69fe](https://github.com/luoluoqixi/purrmd/commit/fbe69fe7f298119e58a68fade809dbee9732d1a5))
+
+
+### Bug Fixes
+
+* text style command when there is a space at the beginning of a line ([c59dfee](https://github.com/luoluoqixi/purrmd/commit/c59dfeeab3be41852243edc56074a150438e9609))
+
 ### [0.0.9](https://github.com/luoluoqixi/purrmd/compare/v0.0.8...v0.0.9) (2025-09-03)
 
 
