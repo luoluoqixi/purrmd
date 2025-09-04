@@ -13,8 +13,13 @@ export const defaultTheme = (config: {
 }): Extension => {
   const highlightStyle =
     config.mode === 'dark' ? vscodeDark : config.mode === 'dracula' ? dracula : vscodeLight;
-  const theme = EditorView.theme({
-    '&': { color: config.dark ? '#dadada' : '#383a42' },
-  });
+  const theme = EditorView.theme(
+    {
+      '&': { color: config.dark ? '#dadada' : '#383a42' },
+    },
+    {
+      dark: config.dark,
+    },
+  );
   return [theme, base(config), highlightStyle];
 };

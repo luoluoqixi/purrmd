@@ -182,7 +182,7 @@ export interface ImageConfig {
   imageAlwaysShow?: boolean;
   /** Label when no image available, @default 'No image available' */
   NoImageAvailableLabel?: string;
-  /** Label when image load failed, @default 'Image failed to load' */
+  /** Label when image load failed, @default (url) => `Image failed to load: ${url}` */
   ImageLoadFailedLabel?: (url: string) => string;
   /** on image down */
   onImageDown?: (

@@ -1,13 +1,53 @@
 # Introduction
 
-**PurrMD** is a WYSIWYG Markdown editing **plugin** for CodeMirror6. This project focuses on the Markdown editing plugin component rather than 
-being a complete editor.
+**PurrMD** is a WYSIWYG Markdown editing **plugin** for CodeMirror6. This project focuses on the Markdown editing plugin component rather than being a complete editor.
 
 
 ## ✨ Core Features
 
 - **WYSIWYG Editing** - Instant preview of Markdown rendering
 - **GFM Compatible** - Supports GitHub Flavored Markdown
+- **Shortcut Support** - Hotkeys to improve editing efficiency
+- **Slash Menu** - Quickly insert Markdown syntax elements
+
+
+## 📋 Supported Features
+
+### ✨ Basic Features
+
+| Feature | Syntax Example |
+|------|----------|
+| **Headings** | `# H1` ~ `###### H6` |
+| **Bold** | `**bold**` |
+| **Italic** | `*italic*` |
+| **Strikethrough** | `~~strikethrough~~` |
+| **Highlight** | `==highlight==` |
+| **Inline Code** | `` `code` `` |
+| **Link** | `[text](url)` |
+| **Image** | `![alt](src)` |
+| **Bullet List** | `- Bullet List` |
+| **Ordered List** | `1. Ordered List` |
+| **Bullet Task List** | `- [ ] Bullet Task List` |
+| **Ordered Task List** | `1. [ ] Ordered Task List` |
+| **Blockquote** | `> Blockquote` |
+| **Horizontal Rule** | `---` |
+| **Code Block** | ` ```javascript ` <br>`console.log("Hello PurrMD");`<br> ` ``` ` |
+
+### ⌨️ Shortcuts
+
+PurrMD provides the following shortcuts to improve editing efficiency:
+
+`Ctrl+B` - Bold
+
+`Ctrl+I` - Italic
+
+`Ctrl+D` / Strikethrough
+
+`Ctrl+H` / Highlight
+
+### 🔧 Slash Menu
+
+Typing the / character in the editor triggers a slash menu, allowing quick insertion of various Markdown syntax elements
 
 
 ## 🙏 Acknowledgments

@@ -58,6 +58,18 @@ export default defineConfig({
                 text: '功能',
                 link: '/zh/guide/',
               },
+              {
+                text: '功能配置',
+                link: '/zh/guide/feature-configs',
+              },
+              {
+                text: '斜线菜单配置',
+                link: '/zh/guide/slash-menu-config',
+              },
+              {
+                text: '主题配置',
+                link: '/zh/guide/theme-config',
+              },
             ],
           },
           {
@@ -109,6 +121,18 @@ export default defineConfig({
           {
             text: 'Features',
             link: '/guide/',
+          },
+          {
+            text: 'Feature Configs',
+            link: '/guide/feature-configs',
+          },
+          {
+            text: 'Slash Menu Config',
+            link: '/guide/slash-menu-config',
+          },
+          {
+            text: 'Theme Config',
+            link: '/guide/theme-config',
           },
         ],
       },

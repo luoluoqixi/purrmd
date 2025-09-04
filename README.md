@@ -49,7 +49,7 @@ const view = new EditorView({
 
 ## 📋 Supported Features
 
-### ✨基础功能
+### ✨ Basic Features
 
 | Feature | Syntax Example |
 |------|----------|

@@ -210,11 +210,11 @@ export interface PurrMDThemeConfig {
    */
   mode?: 'light' | 'dark' | 'dracula' | 'base';
   /**
-   * primary color, support 'light' or 'dark'
+   * primary color, support 'light' or 'dark' or 'dracula'
    */
   primaryColor?: string;
   /**
-   * formatting color, support 'light' or 'dark'
+   * formatting color, support 'light' or 'dark' or 'dracula'
    */
   formattingColor?: string;
   /**

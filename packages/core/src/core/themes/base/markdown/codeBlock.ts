@@ -46,11 +46,16 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
       opacity: 'var(--purrmd-formatting-code-opacity)',
     },
   });
-  const theme = EditorView.theme({
-    '.cm-content': {
-      '--purrmd-code-block-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
-      '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
+  const theme = EditorView.theme(
+    {
+      '.cm-content': {
+        '--purrmd-code-block-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
+        '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
+      },
     },
-  });
+    {
+      dark,
+    },
+  );
   return [theme, baseTheme];
 };

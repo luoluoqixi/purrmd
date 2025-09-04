@@ -37,10 +37,15 @@ export const imageBaseTheme = (dark: boolean): Extension => {
       padding: '0 1.5rem',
     },
   });
-  const theme = EditorView.theme({
-    '.cm-content': {
-      '--purrmd-image-fallback-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
+  const theme = EditorView.theme(
+    {
+      '.cm-content': {
+        '--purrmd-image-fallback-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
+      },
     },
-  });
+    {
+      dark,
+    },
+  );
   return [theme, baseTheme];
 };

@@ -51,13 +51,18 @@ export const slashMenuBaseTheme = (dark: boolean): Extension => {
       overflowY: 'auto',
     },
   });
-  const theme = EditorView.theme({
-    '&': {
-      '--purrmd-slash-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
-      '--purrmd-slash-text-color': dark ? '#f3f3f3' : '#2f2f2f',
-      '--purrmd-slash-hover-bg-color': 'var(--purrmd-primary-color)',
-      '--purrmd-slash-hover-color': '#f3f3f3',
+  const theme = EditorView.theme(
+    {
+      '&': {
+        '--purrmd-slash-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
+        '--purrmd-slash-text-color': dark ? '#f3f3f3' : '#2f2f2f',
+        '--purrmd-slash-hover-bg-color': 'var(--purrmd-primary-color)',
+        '--purrmd-slash-hover-color': '#f3f3f3',
+      },
     },
-  });
+    {
+      dark,
+    },
+  );
   return [theme, baseTheme];
 };
