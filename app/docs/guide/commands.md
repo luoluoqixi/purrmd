@@ -211,6 +211,21 @@ commands.clearAllTextFormattingCommand(view);
   `(view: EditorState) => boolean` - Checks if all selected lines are `task lists`.
 
 
+## Blockquote
+
+- `toggleBlockquoteCommand`
+
+  `(view: EditorView) => boolean` - Toggles `blockquote` for all selected lines.
+
+- `clearBlockquoteCommand`
+
+  `(view: EditorView) => boolean` - Clears `blockquote` for all selected lines.
+
+- `isBlockquote`
+
+  `(view: EditorState) => boolean` - Checks if all selected lines are `blockquote`.
+
+
 ## Insertion
 
 - `insertAnyText`

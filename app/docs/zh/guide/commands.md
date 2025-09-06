@@ -211,6 +211,21 @@ commands.clearAllTextFormattingCommand(view);
   `(view: EditorState) => boolean` - 检查选中的所有行是否都是 `任务列表`
 
 
+## 块引用
+
+- `toggleBlockquoteCommand`
+
+  `(view: EditorView) => boolean` - 清除选中的所有行的 `块引用`
+
+- `clearBlockquoteCommand`
+
+  `(view: EditorView) => boolean` - 清除选中的所有行的 `块引用`
+
+- `isBlockquote`
+
+  `(view: EditorState) => boolean` - 检查选中的所有行是否都是 `块引用`
+
+
 ## 插入
 
 - `insertAnyText`

@@ -1,5 +1,7 @@
 import { EditorState, StateCommand } from '@codemirror/state';
 
+import { removeAnyListPrefix } from './utils';
+
 const isBlockquoteAllLine = (state: EditorState): boolean => {
   const { doc, selection } = state;
   const range = selection.main;
@@ -17,7 +19,7 @@ const isBlockquoteAllLine = (state: EditorState): boolean => {
   return true;
 };
 
-const setBlockquote = (): StateCommand => {
+const toggleBlockquote = (): StateCommand => {
   return ({ state, dispatch }): boolean => {
     const { doc, selection } = state;
     const range = selection.main;
@@ -35,13 +37,15 @@ const setBlockquote = (): StateCommand => {
       const line = doc.line(i);
       let newText: string;
 
+      const lineText = removeAnyListPrefix(line.text);
+
       if (allBlockquote) {
-        newText = line.text.replace(regex1, '');
-        if (newText === line.text) {
-          newText = line.text.replace(regex2, '').trimStart();
+        newText = lineText.replace(regex1, '');
+        if (newText === lineText) {
+          newText = lineText.replace(regex2, '').trimStart();
         }
       } else {
-        const text = line.text;
+        const text = lineText;
         if (text.startsWith('>')) {
           newText = `>${text}`;
         } else {
@@ -49,7 +53,7 @@ const setBlockquote = (): StateCommand => {
         }
       }
 
-      if (newText !== line.text) {
+      if (newText !== lineText) {
         changes.push({
           from: line.from,
           to: line.to,
@@ -63,7 +67,7 @@ const setBlockquote = (): StateCommand => {
       state.update({
         changes,
         scrollIntoView: true,
-        userEvent: 'setBlockquote',
+        userEvent: 'toggleBlockquote',
       }),
     );
     return false;
@@ -109,7 +113,7 @@ const clearBlockquote = (): StateCommand => {
 /**
  * Command to set the current selection to blockquote
  */
-export const setBlockquoteCommand = setBlockquote();
+export const toggleBlockquoteCommand = toggleBlockquote();
 
 /**
  * Command to clear the current selection to blockquote

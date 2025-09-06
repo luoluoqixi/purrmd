@@ -1,7 +1,7 @@
 import { EditorState } from '@codemirror/state';
 
 export const emptyRegex = /^(\s*)/;
-export const regexUnorderedList = /^(\s*)[-*+]\s+/;
+export const regexUnorderedList = /^(\s*)[-*+]\s+(?!\[)/;
 export const regexOrderedList = /^(\s*)\d+\.\s+/;
 export const regexTaskList = /^(\s*)(?:[-*+]\s+\[( |x|X)\]\s+|\d+\.\s+\[( |x|X)\]\s+)/;
 export const clearAllListRegex =
