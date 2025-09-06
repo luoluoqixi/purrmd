@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/luoluoqixi/purrmd/compare/v0.0.11...v0.0.12) (2025-09-06)
+
+
+### Bug Fixes
+
+* incorrect judgment of unordered lists and task lists ([c3efe82](https://github.com/luoluoqixi/purrmd/commit/c3efe829446278337b478f2b95b4209707a3d764))
+
 ### [0.0.11](https://github.com/luoluoqixi/purrmd/compare/v0.0.10...v0.0.11) (2025-09-06)
 
 ### [0.0.10](https://github.com/luoluoqixi/purrmd/compare/v0.0.9...v0.0.10) (2025-09-04)
