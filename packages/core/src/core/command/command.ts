@@ -1,5 +1,5 @@
 export * from './newline';
-export * from './textStyle';
+export * from './textFormatting';
 export * from './heading';
 export * from './blockquote';
 export * from './list';

@@ -30,6 +30,15 @@ function insertBelow(text: string, userEvent: string): StateCommand {
 }
 
 /**
+ * Insert Any Text
+ * @param text text to insert
+ * @param userEvent userEvent for CM history
+ * @returns StateCommand
+ */
+export const insertAnyText = (text: string, userEvent?: string) =>
+  insertBelow(text, userEvent || 'insertAnyText');
+
+/**
  * Insert Heading1
  */
 export const insertHeading1 = insertBelow('# ', 'insertHeading1');
