@@ -80,6 +80,10 @@ export default defineConfig({
                 link: '/zh/guide/slash-menu-config',
               },
               {
+                text: '命令',
+                link: '/zh/guide/commands',
+              },
+              {
                 text: '主题配置',
                 link: '/zh/guide/theme-config',
               },
@@ -151,6 +155,10 @@ export default defineConfig({
           {
             text: 'Slash Menu Config',
             link: '/guide/slash-menu-config',
+          },
+          {
+            text: 'Commands',
+            link: '/guide/commands',
           },
           {
             text: 'Theme Config',

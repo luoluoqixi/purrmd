@@ -114,6 +114,10 @@ purrmd({
 })
 ```
 
+### Command
+
+See [Command](./commands.md)
+
 ### Theme Configuration
 
 See [Theme Configuration](./theme-config.md)
