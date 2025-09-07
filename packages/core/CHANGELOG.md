@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/luoluoqixi/purrmd/compare/v0.1.1...v0.1.2) (2025-09-07)
+
+
+### Bug Fixes
+
+* default horizontal rule set *** ([3d541da](https://github.com/luoluoqixi/purrmd/commit/3d541daf2d06ed87e5faf7b7960b793c0700fe22))
+
 ### [0.1.1](https://github.com/luoluoqixi/purrmd/compare/v0.1.0...v0.1.1) (2025-09-07)
 
 
