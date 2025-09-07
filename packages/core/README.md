@@ -4,6 +4,8 @@ A lightweight, modern Markdown editor plugin that provides a smooth editing expe
 
 **PurrMD** is a WYSIWYG Markdown editing **plugin** for CodeMirror6. This project focuses on the Markdown editing plugin component rather than being a complete editor.
 
+[![NPM version](https://img.shields.io/npm/v/purrmd.svg?style=flat-square)](https://npmjs.org/package/purrmd) [![Build Status](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml/badge.svg)](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml)
+
 [Live Demo](https://purrmd.luoluoqixi.com/introduction/demo.html) | [Documentation](https://purrmd.luoluoqixi.com/introduction/)
 
 [中文文档](./README_zh.md)

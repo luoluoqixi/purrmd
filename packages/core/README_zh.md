@@ -4,6 +4,8 @@
 
 **PurrMD** 是一个 CodeMirror6 的所见即所得 Markdown 编辑**插件**，此项目专注于 Markdown 编辑插件部分，而非完整的编辑器
 
+[![NPM version](https://img.shields.io/npm/v/purrmd.svg?style=flat-square)](https://npmjs.org/package/purrmd) [![Build Status](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml/badge.svg)](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml)
+
 [在线演示](https://purrmd.luoluoqixi.com/introduction/demo.html) | [文档](https://purrmd.luoluoqixi.com/introduction/)
 
 [English](./README.md)
