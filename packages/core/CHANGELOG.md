@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/luoluoqixi/purrmd/compare/v0.1.0...v0.1.1) (2025-09-07)
+
+
+### Bug Fixes
+
+* clear command ranges ([255273c](https://github.com/luoluoqixi/purrmd/commit/255273c3b3d18da38e7500ed59faa8e07ff31d9d))
+
 ## [0.1.0](https://github.com/luoluoqixi/purrmd/compare/v0.0.13...v0.1.0) (2025-09-07)
 
 
