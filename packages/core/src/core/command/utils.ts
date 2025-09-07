@@ -1,4 +1,4 @@
-import { EditorState } from '@codemirror/state';
+import { EditorSelection, EditorState, SelectionRange } from '@codemirror/state';
 
 export const emptyRegex = /^(\s*)/;
 export const regexUnorderedList = /^(\s*)[-*+]\s+(?!\[)/;
@@ -97,5 +97,47 @@ export class SelectionRangeCalculator {
 
   getAdjustedPos(originalPos: number): number {
     return originalPos + this.fromOffset;
+  }
+}
+
+export class LineSelectionRangeCalculator {
+  rangeCalculator: SelectionRangeCalculator;
+
+  lineFrom: number;
+  lineTo: number;
+  anchor: number;
+  head: number;
+
+  isOneLine: boolean;
+  newSelection: { anchor: number; head: number } | null = null;
+
+  constructor(range: SelectionRange, lineFrom: number, lineTo: number) {
+    this.rangeCalculator = new SelectionRangeCalculator(range.from, range.to);
+    this.lineFrom = lineFrom;
+    this.lineTo = lineTo;
+    this.anchor = range.anchor;
+    this.head = range.head;
+    this.isOneLine = lineFrom === lineTo;
+  }
+
+  addChange(from: number, to: number, newText: string) {
+    if (this.isOneLine) {
+      const lineLength = to - from;
+      const delta = newText.length - lineLength;
+      if (delta !== 0) {
+        this.newSelection = { anchor: this.anchor + delta, head: this.head + delta };
+      }
+    } else {
+      this.rangeCalculator.addChange(from, to, newText);
+    }
+  }
+
+  getSelection() {
+    if (this.isOneLine) {
+      return this.newSelection;
+    }
+    const range = this.rangeCalculator.getRange();
+    const newSelection = EditorSelection.range(range.from, range.to);
+    return newSelection;
   }
 }

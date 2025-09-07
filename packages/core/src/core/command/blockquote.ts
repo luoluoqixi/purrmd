@@ -1,6 +1,6 @@
 import { EditorState, StateCommand } from '@codemirror/state';
 
-import { removeAnyListPrefix, removeBlockquotePrefix } from './utils';
+import { LineSelectionRangeCalculator, removeAnyListPrefix, removeBlockquotePrefix } from './utils';
 
 const isBlockquoteAllLine = (state: EditorState): boolean => {
   const { doc, selection } = state;
@@ -32,8 +32,11 @@ const toggleBlockquote = (): StateCommand => {
     const regex2 = /^\s*>/;
 
     const allBlockquote = isBlockquoteAllLine(state);
-    let newSelection = null;
-    const isNoSelection = range.from === range.to;
+    const newLineCalculator = new LineSelectionRangeCalculator(
+      range,
+      fromLine.number,
+      toLine.number,
+    );
 
     for (let i = fromLine.number; i <= toLine.number; i++) {
       const line = doc.line(i);
@@ -53,9 +56,6 @@ const toggleBlockquote = (): StateCommand => {
         } else {
           newText = `> ${text}`;
         }
-        if (isNoSelection && line.text === '') {
-          newSelection = { anchor: line.from + newText.length };
-        }
       }
 
       if (newText !== lineText) {
@@ -64,10 +64,14 @@ const toggleBlockquote = (): StateCommand => {
           to: line.to,
           insert: newText,
         });
+
+        newLineCalculator.addChange(line.from, line.to, newText);
       }
     }
 
     if (changes.length === 0) return false;
+
+    const newSelection = newLineCalculator.getSelection();
     dispatch(
       state.update({
         changes,
@@ -88,6 +92,11 @@ const clearBlockquote = (): StateCommand => {
     const toLine = doc.lineAt(range.to);
 
     const changes = [];
+    const newLineCalculator = new LineSelectionRangeCalculator(
+      range,
+      fromLine.number,
+      toLine.number,
+    );
 
     for (let i = fromLine.number; i <= toLine.number; i++) {
       const line = doc.line(i);
@@ -99,13 +108,17 @@ const clearBlockquote = (): StateCommand => {
           to: line.to,
           insert: newText,
         });
+        newLineCalculator.addChange(line.from, line.to, newText);
       }
     }
 
     if (changes.length === 0) return false;
+
+    const newSelection = newLineCalculator.getSelection();
     dispatch(
       state.update({
         changes,
+        selection: newSelection || undefined,
         scrollIntoView: true,
         userEvent: 'clearBlockquote',
       }),

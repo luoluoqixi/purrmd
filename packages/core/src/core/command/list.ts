@@ -1,6 +1,7 @@
 import { EditorState, StateCommand } from '@codemirror/state';
 
 import {
+  LineSelectionRangeCalculator,
   allMatch,
   emptyRegex,
   regexOrderedList,
@@ -51,8 +52,7 @@ export const toggleUnorderedListCommand: StateCommand = ({ state, dispatch }) =>
   const toLine = doc.lineAt(range.to);
 
   const changes = [];
-  let newSelection = null;
-  const isNoSelection = range.from === range.to;
+  const newLineCalculator = new LineSelectionRangeCalculator(range, fromLine.number, toLine.number);
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
@@ -64,18 +64,16 @@ export const toggleUnorderedListCommand: StateCommand = ({ state, dispatch }) =>
       newText = removeBlockquotePrefix(lineText);
       newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}- `);
-
-      if (isNoSelection && lineText === '') {
-        newSelection = { anchor: line.from + newText.length };
-      }
     }
     if (newText !== lineText) {
       changes.push({ from: line.from, to: line.to, insert: newText });
+      newLineCalculator.addChange(line.from, line.to, newText);
     }
   }
 
   if (!changes.length) return false;
 
+  const newSelection = newLineCalculator.getSelection();
   dispatch(
     state.update({
       changes,
@@ -101,8 +99,7 @@ export const toggleOrderedListCommand: StateCommand = ({ state, dispatch }) => {
   const toLine = doc.lineAt(range.to);
 
   const changes = [];
-  let newSelection = null;
-  const isNoSelection = range.from === range.to;
+  const newLineCalculator = new LineSelectionRangeCalculator(range, fromLine.number, toLine.number);
 
   let counter = 1;
 
@@ -116,17 +113,17 @@ export const toggleOrderedListCommand: StateCommand = ({ state, dispatch }) => {
       newText = removeBlockquotePrefix(lineText);
       newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}${counter}. `);
-      if (isNoSelection && lineText === '') {
-        newSelection = { anchor: line.from + newText.length };
-      }
     }
     counter++;
     if (newText !== lineText) {
       changes.push({ from: line.from, to: line.to, insert: newText });
+      newLineCalculator.addChange(line.from, line.to, newText);
     }
   }
 
   if (!changes.length) return false;
+
+  const newSelection = newLineCalculator.getSelection();
   dispatch(
     state.update({
       changes,
@@ -152,8 +149,7 @@ export const toggleTaskListCommand: StateCommand = ({ state, dispatch }) => {
   const toLine = doc.lineAt(range.to);
 
   const changes = [];
-  let newSelection = null;
-  const isNoSelection = range.from === range.to;
+  const newLineCalculator = new LineSelectionRangeCalculator(range, fromLine.number, toLine.number);
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
@@ -165,16 +161,16 @@ export const toggleTaskListCommand: StateCommand = ({ state, dispatch }) => {
       newText = removeBlockquotePrefix(lineText);
       newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}- [ ] `);
-      if (isNoSelection && lineText === '') {
-        newSelection = { anchor: line.from + newText.length };
-      }
     }
     if (newText !== lineText) {
       changes.push({ from: line.from, to: line.to, insert: newText });
+      newLineCalculator.addChange(line.from, line.to, newText);
     }
   }
 
   if (!changes.length) return false;
+
+  const newSelection = newLineCalculator.getSelection();
   dispatch(
     state.update({
       changes,
@@ -197,17 +193,28 @@ export const clearUnorderedListCommand: StateCommand = ({ state, dispatch }) => 
 
   const regex = regexUnorderedList;
   const changes = [];
+  const newLineCalculator = new LineSelectionRangeCalculator(range, fromLine.number, toLine.number);
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
     const newText = line.text.replace(regex, (_, indent) => indent);
     if (newText !== line.text) {
       changes.push({ from: line.from, to: line.to, insert: newText });
+      newLineCalculator.addChange(line.from, line.to, newText);
     }
   }
 
   if (!changes.length) return false;
-  dispatch(state.update({ changes, scrollIntoView: true, userEvent: 'clearUnorderedList' }));
+
+  const newSelection = newLineCalculator.getSelection();
+  dispatch(
+    state.update({
+      changes,
+      selection: newSelection || undefined,
+      scrollIntoView: true,
+      userEvent: 'clearUnorderedList',
+    }),
+  );
   return true;
 };
 
@@ -222,17 +229,28 @@ export const clearOrderedListCommand: StateCommand = ({ state, dispatch }) => {
 
   const regex = regexOrderedList;
   const changes = [];
+  const newLineCalculator = new LineSelectionRangeCalculator(range, fromLine.number, toLine.number);
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
     const newText = line.text.replace(regex, (_, indent) => indent);
     if (newText !== line.text) {
       changes.push({ from: line.from, to: line.to, insert: newText });
+      newLineCalculator.addChange(line.from, line.to, newText);
     }
   }
 
   if (!changes.length) return false;
-  dispatch(state.update({ changes, scrollIntoView: true, userEvent: 'clearOrderedList' }));
+
+  const newSelection = newLineCalculator.getSelection();
+  dispatch(
+    state.update({
+      changes,
+      selection: newSelection || undefined,
+      scrollIntoView: true,
+      userEvent: 'clearOrderedList',
+    }),
+  );
   return true;
 };
 
@@ -247,17 +265,28 @@ export const clearTaskListCommand: StateCommand = ({ state, dispatch }) => {
 
   const regex = regexTaskList;
   const changes = [];
+  const newLineCalculator = new LineSelectionRangeCalculator(range, fromLine.number, toLine.number);
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
     const newText = line.text.replace(regex, (_, indent) => indent);
     if (newText !== line.text) {
       changes.push({ from: line.from, to: line.to, insert: newText });
+      newLineCalculator.addChange(line.from, line.to, newText);
     }
   }
 
   if (!changes.length) return false;
-  dispatch(state.update({ changes, scrollIntoView: true, userEvent: 'clearTaskList' }));
+
+  const newSelection = newLineCalculator.getSelection();
+  dispatch(
+    state.update({
+      changes,
+      selection: newSelection || undefined,
+      scrollIntoView: true,
+      userEvent: 'clearTaskList',
+    }),
+  );
   return true;
 };
 
@@ -271,16 +300,27 @@ export const clearAllListCommand: StateCommand = ({ state, dispatch }) => {
   const toLine = doc.lineAt(range.to);
 
   const changes = [];
+  const newLineCalculator = new LineSelectionRangeCalculator(range, fromLine.number, toLine.number);
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
     const newText = removeAnyListPrefix(line.text);
     if (newText !== line.text) {
       changes.push({ from: line.from, to: line.to, insert: newText });
+      newLineCalculator.addChange(line.from, line.to, newText);
     }
   }
 
   if (!changes.length) return false;
-  dispatch(state.update({ changes, scrollIntoView: true, userEvent: 'clearAllList' }));
+
+  const newSelection = newLineCalculator.getSelection();
+  dispatch(
+    state.update({
+      changes,
+      selection: newSelection || undefined,
+      scrollIntoView: true,
+      userEvent: 'clearAllList',
+    }),
+  );
   return true;
 };
