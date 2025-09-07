@@ -162,7 +162,7 @@ const isCharInMarkup = (
   nodeType: TextFormattingNodeType | TextFormattingNodeType[],
   to?: number,
 ) => {
-  to = to == null ? from + 1 : to;
+  to = to == null ? from : to;
   const isArray = Array.isArray(nodeType);
   let charInMarkup = false;
   tree.iterate({
@@ -208,7 +208,7 @@ const toggleTextFormattingCommand =
       if (charInMarkup) {
         const updateChanges: UpdataChange[] = [];
         const rangeCalculator = new SelectionRangeCalculator(pos, pos);
-        removeRangeMarkups(tree, pos, pos + 1, config, rangeCalculator, updateChanges);
+        removeRangeMarkups(tree, pos, pos, config, rangeCalculator, updateChanges);
         changes.push(...updateChanges);
         const to = rangeCalculator.getRange().to;
         newRanges.push({
@@ -345,7 +345,7 @@ const clearTextFormattingCommand = (nodeKeys: TextFormattingKeyType[]): StateCom
         for (let i = 0; i < nodeKeys.length; i++) {
           const nodeKey = nodeKeys[i];
           const config = textFormattingConfig[nodeKey];
-          removeRangeMarkups(tree, pos, pos + 1, config, rangeCalculator, updateChanges);
+          removeRangeMarkups(tree, pos, pos, config, rangeCalculator, updateChanges);
         }
         changes.push(...updateChanges);
         const to = rangeCalculator.getRange().to;
