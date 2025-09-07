@@ -7,6 +7,7 @@ import {
   regexTaskList,
   regexUnorderedList,
   removeAnyListPrefix,
+  removeBlockquotePrefix,
 } from './utils';
 
 /**
@@ -58,7 +59,8 @@ export const toggleUnorderedListCommand: StateCommand = ({ state, dispatch }) =>
     if (allUnordered) {
       newText = lineText.replace(regex, (_, indent) => indent);
     } else {
-      newText = removeAnyListPrefix(lineText);
+      newText = removeBlockquotePrefix(lineText);
+      newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}- `);
     }
     if (newText !== lineText) {
@@ -95,7 +97,8 @@ export const toggleOrderedListCommand: StateCommand = ({ state, dispatch }) => {
     if (allOrdered) {
       newText = lineText.replace(regex, (_, indent) => indent);
     } else {
-      newText = removeAnyListPrefix(lineText);
+      newText = removeBlockquotePrefix(lineText);
+      newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}${counter}. `);
     }
     counter++;
@@ -131,7 +134,8 @@ export const toggleTaskListCommand: StateCommand = ({ state, dispatch }) => {
     if (allTasks) {
       newText = lineText.replace(regex, (_, indent) => indent);
     } else {
-      newText = removeAnyListPrefix(lineText);
+      newText = removeBlockquotePrefix(lineText);
+      newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}- [ ] `);
     }
     if (newText !== lineText) {

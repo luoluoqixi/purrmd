@@ -1,6 +1,6 @@
 import { EditorState, StateCommand } from '@codemirror/state';
 
-import { removeAnyListPrefix } from './utils';
+import { removeAnyListPrefix, removeBlockquotePrefix } from './utils';
 
 const isBlockquoteAllLine = (state: EditorState): boolean => {
   const { doc, selection } = state;
@@ -83,11 +83,9 @@ const clearBlockquote = (): StateCommand => {
 
     const changes = [];
 
-    const regex = /^(\s*)>+\s*/;
-
     for (let i = fromLine.number; i <= toLine.number; i++) {
       const line = doc.line(i);
-      const newText = line.text.replace(regex, (_, indent) => indent);
+      const newText = removeBlockquotePrefix(line.text);
 
       if (newText !== line.text) {
         changes.push({

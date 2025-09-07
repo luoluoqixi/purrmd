@@ -7,8 +7,14 @@ export const regexTaskList = /^(\s*)(?:[-*+]\s+\[( |x|X)\]\s+|\d+\.\s+\[( |x|X)\
 export const clearAllListRegex =
   /^(\s*)(?:[-*+]\s+\[( |x|X)\]\s+|\d+\.\s+\[( |x|X)\]\s+|\d+\.\s+|[-*+]\s+)/;
 
+export const clearBlockquoteRegex = /^(\s*)>+\s*/;
+
 export function removeAnyListPrefix(lineText: string): string {
   return lineText.replace(clearAllListRegex, (_, indent) => indent);
+}
+
+export function removeBlockquotePrefix(lineText: string): string {
+  return lineText.replace(clearBlockquoteRegex, (_, indent) => indent);
 }
 
 export function allMatch(state: EditorState, regex: RegExp): boolean {
