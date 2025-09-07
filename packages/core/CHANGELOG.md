@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.13](https://github.com/luoluoqixi/purrmd/compare/v0.0.12...v0.0.13) (2025-09-07)
+
+
+### Bug Fixes
+
+* inline code in heading ([7a71d46](https://github.com/luoluoqixi/purrmd/commit/7a71d46dada57438c838b3c36129f58e9ddc15f5))
+* text style cursor pos +1 ([87efe64](https://github.com/luoluoqixi/purrmd/commit/87efe643a10bb1abd48f319bbf2d8e72606f8584))
+* toggle list empty line cursor pos ([d1633f9](https://github.com/luoluoqixi/purrmd/commit/d1633f9fe880e5dc576c57c3c87890e882719972))
+* toggle list remove blockquote ([fac6774](https://github.com/luoluoqixi/purrmd/commit/fac677423f0c29460e8d832302ceb0d4015a90b2))
+
 ### [0.0.12](https://github.com/luoluoqixi/purrmd/compare/v0.0.11...v0.0.12) (2025-09-06)
 
 
