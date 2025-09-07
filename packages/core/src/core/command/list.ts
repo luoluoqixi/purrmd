@@ -51,6 +51,8 @@ export const toggleUnorderedListCommand: StateCommand = ({ state, dispatch }) =>
   const toLine = doc.lineAt(range.to);
 
   const changes = [];
+  let newSelection = null;
+  const isNoSelection = range.from === range.to;
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
@@ -62,6 +64,10 @@ export const toggleUnorderedListCommand: StateCommand = ({ state, dispatch }) =>
       newText = removeBlockquotePrefix(lineText);
       newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}- `);
+
+      if (isNoSelection && lineText === '') {
+        newSelection = { anchor: line.from + newText.length };
+      }
     }
     if (newText !== lineText) {
       changes.push({ from: line.from, to: line.to, insert: newText });
@@ -69,7 +75,15 @@ export const toggleUnorderedListCommand: StateCommand = ({ state, dispatch }) =>
   }
 
   if (!changes.length) return false;
-  dispatch(state.update({ changes, scrollIntoView: true, userEvent: 'toggleUnorderedList' }));
+
+  dispatch(
+    state.update({
+      changes,
+      selection: newSelection || undefined,
+      scrollIntoView: true,
+      userEvent: 'toggleUnorderedList',
+    }),
+  );
   return true;
 };
 
@@ -87,6 +101,8 @@ export const toggleOrderedListCommand: StateCommand = ({ state, dispatch }) => {
   const toLine = doc.lineAt(range.to);
 
   const changes = [];
+  let newSelection = null;
+  const isNoSelection = range.from === range.to;
 
   let counter = 1;
 
@@ -100,6 +116,9 @@ export const toggleOrderedListCommand: StateCommand = ({ state, dispatch }) => {
       newText = removeBlockquotePrefix(lineText);
       newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}${counter}. `);
+      if (isNoSelection && lineText === '') {
+        newSelection = { anchor: line.from + newText.length };
+      }
     }
     counter++;
     if (newText !== lineText) {
@@ -108,7 +127,14 @@ export const toggleOrderedListCommand: StateCommand = ({ state, dispatch }) => {
   }
 
   if (!changes.length) return false;
-  dispatch(state.update({ changes, scrollIntoView: true, userEvent: 'toggleOrderedList' }));
+  dispatch(
+    state.update({
+      changes,
+      selection: newSelection || undefined,
+      scrollIntoView: true,
+      userEvent: 'toggleOrderedList',
+    }),
+  );
   return true;
 };
 
@@ -126,6 +152,8 @@ export const toggleTaskListCommand: StateCommand = ({ state, dispatch }) => {
   const toLine = doc.lineAt(range.to);
 
   const changes = [];
+  let newSelection = null;
+  const isNoSelection = range.from === range.to;
 
   for (let i = fromLine.number; i <= toLine.number; i++) {
     const line = doc.line(i);
@@ -137,6 +165,9 @@ export const toggleTaskListCommand: StateCommand = ({ state, dispatch }) => {
       newText = removeBlockquotePrefix(lineText);
       newText = removeAnyListPrefix(newText);
       newText = newText.replace(regex2, (_, indent) => `${indent}- [ ] `);
+      if (isNoSelection && lineText === '') {
+        newSelection = { anchor: line.from + newText.length };
+      }
     }
     if (newText !== lineText) {
       changes.push({ from: line.from, to: line.to, insert: newText });
@@ -144,7 +175,14 @@ export const toggleTaskListCommand: StateCommand = ({ state, dispatch }) => {
   }
 
   if (!changes.length) return false;
-  dispatch(state.update({ changes, scrollIntoView: true, userEvent: 'toggleTaskList' }));
+  dispatch(
+    state.update({
+      changes,
+      selection: newSelection || undefined,
+      scrollIntoView: true,
+      userEvent: 'toggleTaskList',
+    }),
+  );
   return true;
 };
 

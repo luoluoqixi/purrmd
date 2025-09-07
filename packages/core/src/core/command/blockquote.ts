@@ -32,6 +32,8 @@ const toggleBlockquote = (): StateCommand => {
     const regex2 = /^\s*>/;
 
     const allBlockquote = isBlockquoteAllLine(state);
+    let newSelection = null;
+    const isNoSelection = range.from === range.to;
 
     for (let i = fromLine.number; i <= toLine.number; i++) {
       const line = doc.line(i);
@@ -51,6 +53,9 @@ const toggleBlockquote = (): StateCommand => {
         } else {
           newText = `> ${text}`;
         }
+        if (isNoSelection && line.text === '') {
+          newSelection = { anchor: line.from + newText.length };
+        }
       }
 
       if (newText !== lineText) {
@@ -66,6 +71,7 @@ const toggleBlockquote = (): StateCommand => {
     dispatch(
       state.update({
         changes,
+        selection: newSelection || undefined,
         scrollIntoView: true,
         userEvent: 'toggleBlockquote',
       }),
