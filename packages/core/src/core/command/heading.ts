@@ -1,4 +1,6 @@
-import { EditorState, StateCommand } from '@codemirror/state';
+import { EditorSelection, EditorState, StateCommand } from '@codemirror/state';
+
+import { SelectionRangeCalculator } from './utils';
 
 const isHeadingAllLine = (state: EditorState, level?: number): boolean => {
   const { doc, selection } = state;
@@ -36,6 +38,9 @@ const setHeading = (level: number): StateCommand => {
     const toLine = doc.lineAt(range.to);
 
     const changes = [];
+    const isOneLine = fromLine.number === toLine.number;
+    let newSelection = null;
+    const rangeCalculator = isOneLine ? null : new SelectionRangeCalculator(range.from, range.to);
 
     for (let i = fromLine.number; i <= toLine.number; i++) {
       const line = doc.line(i);
@@ -49,13 +54,26 @@ const setHeading = (level: number): StateCommand => {
           to: line.to,
           insert: newText,
         });
+        if (isOneLine) {
+          const delta = newText.length - line.text.length;
+          if (delta !== 0) {
+            newSelection = { anchor: range.anchor + delta, head: range.head + delta };
+          }
+        } else {
+          rangeCalculator!.addChange(line.from, line.to, newText);
+        }
       }
+    }
+    if (rangeCalculator) {
+      const range = rangeCalculator.getRange();
+      newSelection = EditorSelection.range(range.from, range.to);
     }
 
     if (changes.length === 0) return false;
     dispatch(
       state.update({
         changes,
+        selection: newSelection || undefined,
         scrollIntoView: true,
         userEvent: 'setHeading',
       }),
