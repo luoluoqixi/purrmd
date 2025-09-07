@@ -89,7 +89,7 @@ export const insertBlockquote = insertBelow('> ', 'insertBlockquote');
 /**
  * Insert Horizontal Rule
  */
-export const insertHorizontalRule = insertBelow('---\n', 'insertHorizontalRule');
+export const insertHorizontalRule = insertBelow('***\n', 'insertHorizontalRule');
 
 /**
  * Insert Code Block
