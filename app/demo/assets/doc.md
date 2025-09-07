@@ -8,6 +8,10 @@ This tests **bold**, *italic*, ~~strikethrough~~, and `inline code`.
 
 ==highlight==
 
+## Inline Image
+
+[![NPM version](https://img.shields.io/npm/v/purrmd.svg?style=flat-square)](https://npmjs.org/package/purrmd) [![Build Status](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml/badge.svg)](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml)
+
 ## Headers
 
 # H1

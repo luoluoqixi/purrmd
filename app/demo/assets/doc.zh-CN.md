@@ -8,6 +8,10 @@
 
 ==高亮==
 
+## 行内图片
+
+[![NPM version](https://img.shields.io/npm/v/purrmd.svg?style=flat-square)](https://npmjs.org/package/purrmd) [![Build Status](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml/badge.svg)](https://github.com/luoluoqixi/purrmd/actions/workflows/release.yml)
+
 ## 标题
 
 # 一级标题
