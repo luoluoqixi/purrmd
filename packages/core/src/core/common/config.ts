@@ -29,6 +29,9 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
   defaultSlashMenu: {
     show: true,
   },
+  yamlFrontmatter: {
+    enable: true,
+  },
 });
 
 export const defaultThemeConfig = (): PurrMDThemeConfig => ({

@@ -173,6 +173,13 @@ export interface DefaultSlashMenuConfig {
   };
 }
 
+export interface YamlFrontmatterConfig {
+  /**
+   * whether to enable yaml frontmatter support, default is true
+   */
+  enable?: boolean;
+}
+
 export interface PurrMDConfig {
   /**
    * markdown extension config
@@ -206,6 +213,10 @@ export interface PurrMDConfig {
    * scroll end update delay time in ms, set to false to disable the feature @default 150ms
    */
   scrollEndUpdate?: number | boolean;
+  /**
+   * yaml frontmatter config, default enable yaml frontmatter support
+   */
+  yamlFrontmatter?: YamlFrontmatterConfig;
 }
 
 export interface PurrMDThemeConfig {

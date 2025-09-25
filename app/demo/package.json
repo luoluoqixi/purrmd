@@ -5,7 +5,7 @@
   "private": true,
   "main": "src/index.ts",
   "scripts": {
-    "dev": "vite --host"
+    "dev": "vite --host --force"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
@@ -14,7 +14,7 @@
     "vite": "^7.0.6"
   },
   "dependencies": {
-    "@codemirror/view": "^6.38.1",
+    "@codemirror/view": "^6.38.3",
     "codemirror": "^6.0.2",
     "purrmd": "workspace:*"
   },

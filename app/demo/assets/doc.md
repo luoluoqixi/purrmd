@@ -1,3 +1,10 @@
+---
+title: PurrMD Demo
+updated: 2025-09-25 23:09:00
+created: 2025-09-07 20:37:00
+state: PurrMD Demo
+---
+
 # PurrMD Demo - Markdown Test Document
 
 ## Text Formatting

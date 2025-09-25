@@ -1,4 +1,5 @@
 import { markdown } from '@codemirror/lang-markdown';
+import { yamlFrontmatter } from '@codemirror/lang-yaml';
 import { type Extension, Prec } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 import { merge } from 'ts-deepmerge';
@@ -56,11 +57,14 @@ export function purrmd(config?: PurrMDConfig): Extension {
   } else {
     scrollEndUpdate = mergedConfig.scrollEndUpdate || defaultScrollEndUpdate;
   }
+  const yamlConfig = mergedConfig.yamlFrontmatter;
+  const yamlIsEnable = yamlConfig?.enable !== false;
 
   return [
     focusState,
     focusListener,
-    markdown(mergedConfig.markdownExtConfig),
+    !yamlIsEnable && markdown(mergedConfig.markdownExtConfig),
+    yamlIsEnable && yamlFrontmatter({ content: markdown(mergedConfig.markdownExtConfig) }),
     mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
     addKeymap && Prec.high(keymap.of(markdownKeymap(mergedConfig.defaultKeymaps))),
     slashMenuConfig?.show && slashMenuPlugin(slashMenuConfig),
