@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/luoluoqixi/purrmd/compare/v0.1.2...v0.1.3) (2025-09-25)
+
+
+### Features
+
+* yaml frontmatter support ([e814fa1](https://github.com/luoluoqixi/purrmd/commit/e814fa1a2ce2d0e6b9128b49c06d9f5668002e60))
+
+
+### Bug Fixes
+
+* resolve marker update issues during fast scrolling on low-performance devices ([69fac57](https://github.com/luoluoqixi/purrmd/commit/69fac573a4e573e4d4ef149eca62b563091c25d2))
+* scroll end update set to false, plugin crash ([be86529](https://github.com/luoluoqixi/purrmd/commit/be86529901400e5900d00aabe9cb98534def3ce6))
+
 ### [0.1.2](https://github.com/luoluoqixi/purrmd/compare/v0.1.1...v0.1.2) (2025-09-07)
 
 
