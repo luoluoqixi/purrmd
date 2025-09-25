@@ -9,7 +9,7 @@ import {
   WidgetType,
 } from '@codemirror/view';
 
-import { isFocusEventState } from '../state';
+import { isFocusEventState, isForceUpdateEventState } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { findNodeURL, isSelectRange, selectRange } from '../utils';
 
@@ -158,7 +158,8 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
           update.docChanged ||
           update.viewportChanged ||
           update.selectionSet ||
-          isFocusEventState(update.startState, update.state)
+          isFocusEventState(update.startState, update.state) ||
+          isForceUpdateEventState(update.startState, update.state)
         ) {
           this.decorations = imageDecorations(mode, config, update.view, this.failedImageUrls);
           this.updateCount++;

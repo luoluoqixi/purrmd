@@ -2,7 +2,7 @@ import { syntaxTree } from '@codemirror/language';
 import { EditorState, Extension, type Range, StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { isFocusEvent } from '../state';
+import { isFocusEvent, isForceUpdateEvent } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { isSelectRange, setSubNodeHideDecorations } from '../utils';
 
@@ -30,7 +30,7 @@ export function highlight(mode: FormattingDisplayMode, config?: HighlightConfig)
     },
 
     update(deco, tr) {
-      if (tr.docChanged || tr.selection || isFocusEvent(tr)) {
+      if (tr.docChanged || tr.selection || isFocusEvent(tr) || isForceUpdateEvent(tr)) {
         return updateHighlightDecorations(mode, config, tr.state);
       }
       return deco.map(tr.changes);

@@ -3,7 +3,7 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { isFocusEvent } from '../state';
+import { isFocusEvent, isForceUpdateEvent } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { deviceIsDesktop, findNodeURL, isSelectRange, setSubNodeHideDecorations } from '../utils';
 
@@ -185,7 +185,7 @@ export function link(mode: FormattingDisplayMode, config?: LinkConfig): Extensio
     },
 
     update(deco, tr) {
-      if (tr.docChanged || tr.selection || isFocusEvent(tr)) {
+      if (tr.docChanged || tr.selection || isFocusEvent(tr) || isForceUpdateEvent(tr)) {
         return updateLinkDecorations(mode, config, tr.state);
       }
       return deco.map(tr.changes);

@@ -3,7 +3,7 @@ import { EditorState, Extension, type Range } from '@codemirror/state';
 import { StateField } from '@codemirror/state';
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 
-import { isFocusEvent } from '../state';
+import { isFocusEvent, isForceUpdateEvent } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { setSubNodeHideDecorationsLine } from '../utils';
 
@@ -51,7 +51,7 @@ export function blockquote(mode: FormattingDisplayMode, config?: BlockquoteConfi
     },
 
     update(deco, tr) {
-      if (tr.docChanged || tr.selection || isFocusEvent(tr)) {
+      if (tr.docChanged || tr.selection || isFocusEvent(tr) || isForceUpdateEvent(tr)) {
         return updateBlockquoteDecorations(mode, config, tr.state);
       }
       return deco.map(tr.changes);

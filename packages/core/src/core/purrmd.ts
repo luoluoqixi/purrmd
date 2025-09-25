@@ -19,7 +19,7 @@ import {
   strikethrough,
   strong,
 } from './markdown';
-import { focusListener, focusState } from './state/focus';
+import { debouncedScrollListener, focusListener, focusState } from './state';
 import { base, defaultTheme } from './themes';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 import { PurrMDFeatures } from './types';
@@ -49,6 +49,13 @@ export function purrmd(config?: PurrMDConfig): Extension {
   const features = mergedConfig.features;
   const featuresConfigs = mergedConfig.featuresConfigs;
   const slashMenuConfig = mergedConfig.defaultSlashMenu;
+  const defaultScrollEndUpdate = 150;
+  let scrollEndUpdate: number | null = defaultScrollEndUpdate;
+  if (typeof mergedConfig.scrollEndUpdate === 'boolean') {
+    scrollEndUpdate = mergedConfig.scrollEndUpdate ? defaultScrollEndUpdate : null;
+  } else {
+    scrollEndUpdate = mergedConfig.scrollEndUpdate || defaultScrollEndUpdate;
+  }
 
   return [
     focusState,
@@ -57,6 +64,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
     addKeymap && Prec.high(keymap.of(markdownKeymap(mergedConfig.defaultKeymaps))),
     slashMenuConfig?.show && slashMenuPlugin(slashMenuConfig),
+    scrollEndUpdate && debouncedScrollListener(scrollEndUpdate),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),
     features?.CodeBlock && codeBlock(mode, featuresConfigs?.[PurrMDFeatures.CodeBlock]),
     features?.Emphasis && emphasis(mode, featuresConfigs?.[PurrMDFeatures.Emphasis]),

@@ -3,7 +3,7 @@ import { EditorState, Extension, type Range, StateField } from '@codemirror/stat
 import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
 import { SyntaxNodeRef } from '@lezer/common';
 
-import { isFocusEvent } from '../state';
+import { isFocusEvent, isForceUpdateEvent } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { findNodeFromLine, isSelectRange, selectRange } from '../utils';
 
@@ -49,7 +49,7 @@ export function horizontalRule(
     },
 
     update(deco, tr) {
-      if (tr.docChanged || tr.selection || isFocusEvent(tr)) {
+      if (tr.docChanged || tr.selection || isFocusEvent(tr) || isForceUpdateEvent(tr)) {
         return updateHorizontalRuleDecorations(mode, config, tr.state);
       }
       return deco.map(tr.changes);

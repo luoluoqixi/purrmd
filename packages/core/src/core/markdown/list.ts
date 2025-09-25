@@ -9,7 +9,7 @@ import {
   WidgetType,
 } from '@codemirror/view';
 
-import { isFocusEventState } from '../state';
+import { isFocusEventState, isForceUpdateEventState } from '../state';
 import { FormattingDisplayMode } from '../types';
 import { isSelectRange } from '../utils';
 
@@ -237,7 +237,8 @@ export function list(mode: FormattingDisplayMode, config?: ListConfig): Extensio
         if (
           update.docChanged ||
           update.selectionSet ||
-          isFocusEventState(update.startState, update.state)
+          isFocusEventState(update.startState, update.state) ||
+          isForceUpdateEventState(update.startState, update.state)
         ) {
           this.decorations = updateListDecorations(mode, config, update.view);
         }

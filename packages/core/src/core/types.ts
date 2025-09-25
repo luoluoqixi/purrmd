@@ -202,6 +202,10 @@ export interface PurrMDConfig {
    * default slash menu config
    */
   defaultSlashMenu?: DefaultSlashMenuConfig;
+  /**
+   * scroll end update delay time in ms, set to false to disable the feature @default 150ms
+   */
+  scrollEndUpdate?: number | boolean;
 }
 
 export interface PurrMDThemeConfig {
