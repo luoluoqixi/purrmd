@@ -19,7 +19,7 @@ export const scrollState = StateField.define<number>({
   },
 });
 
-export const getScrollState = (state: EditorState) => state.field(scrollState);
+export const getScrollState = (state: EditorState) => state.field(scrollState, false) || 0;
 
 export const debouncedScrollListener = (delay = 150) => {
   let scrollTimeout: number | null = null;
