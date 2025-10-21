@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/luoluoqixi/purrmd/compare/v0.1.3...v0.1.4) (2025-10-21)
+
+
+### Features
+
+* escape support ([929ba45](https://github.com/luoluoqixi/purrmd/commit/929ba45c246a55a838904566d98be8f1458152c1))
+* yaml frontmatter hide config ([fc389e4](https://github.com/luoluoqixi/purrmd/commit/fc389e422ab03fb48b417d685e35c299db88ab0b))
+
 ### [0.1.3](https://github.com/luoluoqixi/purrmd/compare/v0.1.2...v0.1.3) (2025-09-25)
 
 
