@@ -4,6 +4,7 @@ import {
   BlockquoteConfig,
   CodeBlockConfig,
   EmphasisConfig,
+  EscapeConfig,
   HeadingConfig,
   HighlightConfig,
   HorizontalRuleConfig,
@@ -22,6 +23,7 @@ export enum PurrMDFeatures {
   Blockquote = 'Blockquote',
   CodeBlock = 'CodeBlock',
   Emphasis = 'Emphasis',
+  Escape = 'Escape',
   Heading = 'Heading',
   Highlight = 'Highlight',
   HorizontalRule = 'HorizontalRule',
@@ -37,6 +39,7 @@ export interface PurrMDFeatureConfig {
   [PurrMDFeatures.Blockquote]?: BlockquoteConfig;
   [PurrMDFeatures.CodeBlock]?: CodeBlockConfig;
   [PurrMDFeatures.Emphasis]?: EmphasisConfig;
+  [PurrMDFeatures.Escape]?: EscapeConfig;
   [PurrMDFeatures.Heading]?: HeadingConfig;
   [PurrMDFeatures.Highlight]?: HighlightConfig;
   [PurrMDFeatures.HorizontalRule]?: HorizontalRuleConfig;

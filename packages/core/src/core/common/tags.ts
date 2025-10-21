@@ -11,6 +11,9 @@ export const markdownTags = {
   emphasis: tags.emphasis,
   emphasisTag: Tag.define(),
 
+  escape: tags.escape,
+  escapeTag: Tag.define(),
+
   heading1: tags.heading1,
   heading2: tags.heading2,
   heading3: tags.heading3,

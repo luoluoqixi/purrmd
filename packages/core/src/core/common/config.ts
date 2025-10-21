@@ -1,6 +1,6 @@
 import { languages } from '@codemirror/language-data';
 import { styleTags } from '@lezer/highlight';
-import { GFM, MarkdownExtension } from '@lezer/markdown';
+import { GFM, InlineContext, MarkdownExtension } from '@lezer/markdown';
 
 import { PurrMDConfig, PurrMDThemeConfig } from '../types';
 import { markdownTags } from './tags';
@@ -14,6 +14,7 @@ export const defaultConfig = (extensions?: MarkdownExtension[]): PurrMDConfig =>
     Blockquote: true,
     CodeBlock: true,
     Emphasis: true,
+    Escape: true,
     Heading: true,
     Highlight: true,
     HorizontalRule: true,
@@ -82,6 +83,26 @@ const getMarkdownSyntaxTags = (): MarkdownExtension => {
           HighlightMark: markdownTags.emphasisTag,
           'Highlight/...': markdownTags.highlight,
         }),
+      ],
+    },
+    {
+      defineNodes: [
+        {
+          name: 'EscapeMark',
+          style: markdownTags.escapeTag,
+        },
+      ],
+      parseInline: [
+        {
+          name: 'EscapeMark',
+          parse: (cx: InlineContext, next: number, pos: number): number => {
+            if (next !== 92 /* \ */) return -1;
+            return cx.addElement(
+              cx.elt('Escape', pos, pos + 2, [cx.elt('EscapeMark', pos, pos + 1)]),
+            );
+          },
+          before: 'Escape',
+        },
       ],
     },
   ];

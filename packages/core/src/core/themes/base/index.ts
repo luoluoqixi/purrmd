@@ -7,6 +7,7 @@ import { blockquoteBaseTheme, blockquoteClass } from './markdown/blockquote';
 import { codeBaseTheme, codeClass } from './markdown/code';
 import { codeBlockBaseTheme, codeBlockClass } from './markdown/codeBlock';
 import { emphasisBaseTheme, emphasisClass } from './markdown/emphasis';
+import { escapeBaseTheme, escapeClass } from './markdown/escape';
 import { headingBaseTheme, headingClass } from './markdown/heading';
 import { highlightBaseTheme } from './markdown/highlight';
 import { horizontalRuleBaseTheme, horizontalRuleClass } from './markdown/horizontalRule';
@@ -60,6 +61,7 @@ export const base = (config: {
     blockquoteBaseTheme(config.dark),
     codeBaseTheme(config.dark),
     emphasisBaseTheme(config.dark),
+    escapeBaseTheme(config.dark),
     codeBlockBaseTheme(config.dark),
     headingBaseTheme(config.dark),
     highlightBaseTheme(config.dark),
@@ -79,6 +81,7 @@ export const themeClass = {
   code: codeClass,
   codeBlock: codeBlockClass,
   emphasis: emphasisClass,
+  escape: escapeClass,
   heading: headingClass,
   horizontalRule: horizontalRuleClass,
   inlineCode: inlineCodeClass,
