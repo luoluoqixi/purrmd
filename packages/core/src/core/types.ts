@@ -181,6 +181,14 @@ export interface YamlFrontmatterConfig {
    * whether to enable yaml frontmatter support, default is true
    */
   enable?: boolean;
+  /**
+   * whether to hide the frontmatter content in the editor
+   */
+  hideFrontmatter?: boolean;
+  /**
+   * custom class for frontmatter content, @default 'purrmd-cm-yaml-frontmatter'
+   */
+  customClass?: string;
 }
 
 export interface PurrMDConfig {

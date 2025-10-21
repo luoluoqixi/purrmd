@@ -23,6 +23,7 @@ import {
 } from './markdown';
 import { debouncedScrollListener, focusListener, focusState } from './state';
 import { base, defaultTheme } from './themes';
+import { yamlFrontmatterStyleExtension } from './themes/base/yamlFrontmatter';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
 import { PurrMDFeatures } from './types';
 import { slashMenuPlugin } from './view/slashMenu';
@@ -66,6 +67,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     focusListener,
     !yamlIsEnable && markdown(mergedConfig.markdownExtConfig),
     yamlIsEnable && yamlFrontmatter({ content: markdown(mergedConfig.markdownExtConfig) }),
+    yamlIsEnable && yamlFrontmatterStyleExtension(yamlConfig),
     mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
     addKeymap && Prec.high(keymap.of(markdownKeymap(mergedConfig.defaultKeymaps))),
     slashMenuConfig?.show && slashMenuPlugin(slashMenuConfig),
