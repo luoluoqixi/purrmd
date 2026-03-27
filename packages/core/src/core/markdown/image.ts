@@ -84,6 +84,10 @@ class Image extends WidgetType {
   ignoreEvent() {
     return false;
   }
+
+  eq(other: Image) {
+    return this.url === other.url && this.alt === other.alt;
+  }
 }
 
 function imageDecorations(
