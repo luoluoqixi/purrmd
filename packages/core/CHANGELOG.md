@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/luoluoqixi/purrmd/compare/v0.1.4...v0.1.5) (2026-09-12)
+
+
+### Bug Fixes
+
+* refresh initial viewport decorations after parsing ([62ca4e3](https://github.com/luoluoqixi/purrmd/commit/62ca4e34bfad621809a2ec4b19ae6e5d762ed947))
+
 ### [0.1.4](https://github.com/luoluoqixi/purrmd/compare/v0.1.3...v0.1.4) (2025-10-21)
 
 
