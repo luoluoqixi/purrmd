@@ -1,2 +1,2 @@
 #!/bin/bash
-python ./cli/build/release.py "$@"
+python3 ./cli/build/release.py "$@"
