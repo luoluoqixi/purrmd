@@ -21,7 +21,13 @@ import {
   strikethrough,
   strong,
 } from './markdown';
-import { debouncedScrollListener, focusListener, focusState } from './state';
+import {
+  debouncedScrollListener,
+  focusListener,
+  focusState,
+  initialParseUpdate,
+  scrollState,
+} from './state';
 import { base, defaultTheme } from './themes';
 import { yamlFrontmatterStyleExtension } from './themes/base/yamlFrontmatter';
 import type { PurrMDConfig, PurrMDThemeConfig } from './types';
@@ -71,6 +77,8 @@ export function purrmd(config?: PurrMDConfig): Extension {
     mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
     addKeymap && Prec.high(keymap.of(markdownKeymap(mergedConfig.defaultKeymaps))),
     slashMenuConfig?.show && slashMenuPlugin(slashMenuConfig),
+    scrollState,
+    initialParseUpdate(),
     scrollEndUpdate && debouncedScrollListener(scrollEndUpdate),
     features?.Escape && escape(mode, featuresConfigs?.[PurrMDFeatures.Escape]),
     features?.Blockquote && blockquote(mode, featuresConfigs?.[PurrMDFeatures.Blockquote]),
