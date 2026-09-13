@@ -14,11 +14,18 @@ import { FormattingDisplayMode } from '../types';
 import { findNodeURL, isSelectRange, selectRange } from '../utils';
 
 const defaultImageRetryDelay = 800;
-const retryFailedImagesEffect = StateEffect.define<readonly string[] | null>();
+const retryFailedImagesEffect = StateEffect.define<ImageRetryRequest>();
+
+type ImageRetryRequest = {
+  urls: readonly string[] | null;
+  reason: ImageRetryReason;
+};
 
 /** 请求图片插件重新加载当前失败的图片；不传 URLs 时重试全部失败图片。 */
 export const retryFailedImages = (view: EditorView, urls?: readonly string[]) => {
-  view.dispatch({ effects: [retryFailedImagesEffect.of(urls ?? null)] });
+  view.dispatch({
+    effects: [retryFailedImagesEffect.of({ urls: urls ?? null, reason: 'manual' })],
+  });
   return true;
 };
 
@@ -34,11 +41,12 @@ class Image extends WidgetType {
   constructor(
     readonly failedImageUrls: Set<string>,
     readonly url: string | null | undefined,
+    readonly requestUrl: string | null | undefined,
     readonly alt: string | null | undefined,
     readonly isImageLink: boolean,
     readonly onImageDown: ((e: MouseEvent) => void) | null,
-    readonly onImageLoad: ((url: string) => void) | null,
-    readonly onImageLoadFailed: ((url: string) => void) | null,
+    readonly onImageLoad: ((url: string, requestUrl: string) => void) | null,
+    readonly onImageLoadFailed: ((url: string, requestUrl: string) => void) | null,
     readonly noImageAvailableLabel?: string,
     readonly imageLoadFailedLabel?: (url: string) => string,
   ) {
@@ -48,8 +56,9 @@ class Image extends WidgetType {
   toDOM() {
     const el = document.createElement('span');
     el.className = this.isImageLink ? imageClass.imageLinkWrap : imageClass.imageWrap;
-    if (this.url) {
+    if (this.url && this.requestUrl) {
       const url = this.url;
+      const requestUrl = this.requestUrl;
       const hasFailed = this.failedImageUrls.has(url);
 
       const appendError = () => {
@@ -66,18 +75,18 @@ class Image extends WidgetType {
       } else {
         const img = document.createElement('img');
         img.className = imageClass.imageDom;
-        img.src = url;
+        img.src = requestUrl;
 
         if (this.alt) {
           img.alt = this.alt;
         }
 
-        img.onload = () => this.onImageLoad?.(url);
+        img.onload = () => this.onImageLoad?.(url, requestUrl);
         img.onerror = () => {
           this.failedImageUrls.add(url);
           img.style.display = 'none';
           appendError();
-          this.onImageLoadFailed?.(url);
+          this.onImageLoadFailed?.(url, requestUrl);
         };
 
         el.appendChild(img);
@@ -104,8 +113,9 @@ function imageDecorations(
   config: ImageConfig | undefined,
   view: EditorView,
   failedImageUrls: Set<string>,
-  onImageLoad: (url: string, rawUrl: string | null | undefined) => void,
-  onImageLoadFailed: (url: string, rawUrl: string | null | undefined) => void,
+  getImageRequestUrl: (url: string) => string,
+  onImageLoad: (url: string, requestUrl: string, rawUrl: string | null | undefined) => void,
+  onImageLoadFailed: (url: string, requestUrl: string, rawUrl: string | null | undefined) => void,
   onImageUrl: (url: string) => void,
 ): DecorationSet {
   const state = view.state;
@@ -130,17 +140,19 @@ function imageDecorations(
         if (url) {
           onImageUrl(url);
         }
+        const requestUrl = url ? getImageRequestUrl(url) : url;
         const image = new Image(
           failedImageUrls,
           url,
+          requestUrl,
           null,
           isImageLink,
           (e) => {
             selectRange(view, { from, to });
             config?.onImageDown?.(e, url, rawUrl);
           },
-          (loadedUrl) => onImageLoad(loadedUrl, rawUrl),
-          (failedUrl) => onImageLoadFailed(failedUrl, rawUrl),
+          (loadedUrl, loadedRequestUrl) => onImageLoad(loadedUrl, loadedRequestUrl, rawUrl),
+          (failedUrl, failedRequestUrl) => onImageLoadFailed(failedUrl, failedRequestUrl, rawUrl),
           config?.NoImageAvailableLabel,
           config?.ImageLoadFailedLabel,
         );
@@ -175,6 +187,8 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
       private readonly failedImageUrls = new Set<string>();
       private readonly automaticRetryCounts = new Map<string, number>();
       private readonly activeImageUrls = new Set<string>();
+      private readonly retryCounts = new Map<string, number>();
+      private readonly retryReasons = new Map<string, ImageRetryReason>();
       private automaticRetryTimeout: number | null = null;
       private destroyed = false;
       private updateCount = 0;
@@ -189,13 +203,25 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
           config,
           view,
           this.failedImageUrls,
-          (url, rawUrl) => config.onImageLoad?.({ url, rawUrl }),
-          (url, rawUrl) => {
+          (url) => {
+            const retryCount = this.retryCounts.get(url) ?? 0;
+            if (retryCount === 0 || loadRetryConfig?.getRetryUrl == null) return url;
+            try {
+              return loadRetryConfig.getRetryUrl(url, {
+                retryCount,
+                reason: this.retryReasons.get(url) ?? 'manual',
+              });
+            } catch {
+              return url;
+            }
+          },
+          (url, requestUrl, rawUrl) => config.onImageLoad?.({ url, requestUrl, rawUrl }),
+          (url, requestUrl, rawUrl) => {
             const retry = () => {
               if (this.destroyed || !this.activeImageUrls.has(url)) return false;
               return retryFailedImages(view, [url]);
             };
-            config.onImageLoadError?.({ url, rawUrl, retry });
+            config.onImageLoadError?.({ url, requestUrl, rawUrl, retry });
 
             if (loadRetryConfig == null) return;
             if ((this.automaticRetryCounts.get(url) ?? 0) >= maxAutomaticRetries) return;
@@ -213,11 +239,9 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
               );
               if (retryUrls.length === 0) return;
 
-              for (const failedUrl of retryUrls) {
-                const retryCount = this.automaticRetryCounts.get(failedUrl) ?? 0;
-                this.automaticRetryCounts.set(failedUrl, retryCount + 1);
-              }
-              view.dispatch({ effects: [retryFailedImagesEffect.of(retryUrls)] });
+              view.dispatch({
+                effects: [retryFailedImagesEffect.of({ urls: retryUrls, reason: 'automatic' })],
+              });
             }, retryDelay);
           },
           (url) => nextActiveImageUrls.add(url),
@@ -227,10 +251,18 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
         for (const url of nextActiveImageUrls) {
           this.activeImageUrls.add(url);
         }
-        for (const url of this.automaticRetryCounts.keys()) {
+        const trackedUrls = new Set([
+          ...this.failedImageUrls,
+          ...this.automaticRetryCounts.keys(),
+          ...this.retryCounts.keys(),
+          ...this.retryReasons.keys(),
+        ]);
+        for (const url of trackedUrls) {
           if (!this.activeImageUrls.has(url)) {
             this.automaticRetryCounts.delete(url);
             this.failedImageUrls.delete(url);
+            this.retryCounts.delete(url);
+            this.retryReasons.delete(url);
           }
         }
         return decorations;
@@ -239,22 +271,34 @@ export function image(mode: FormattingDisplayMode, config?: ImageConfig): Extens
         const forceUpdate = isForceUpdateEventState(update.startState, update.state);
         const scrollEndUpdate = isScrollEndUpdateEventState(update.startState, update.state);
         let retryRequested = false;
+        const prepareRetry = (url: string, reason: ImageRetryReason) => {
+          if (!this.activeImageUrls.has(url) || !this.failedImageUrls.has(url)) return;
+          this.failedImageUrls.delete(url);
+          this.retryCounts.set(url, (this.retryCounts.get(url) ?? 0) + 1);
+          this.retryReasons.set(url, reason);
+          if (reason === 'automatic') {
+            this.automaticRetryCounts.set(url, (this.automaticRetryCounts.get(url) ?? 0) + 1);
+          }
+          retryRequested = true;
+        };
         for (const transaction of update.transactions) {
           for (const effect of transaction.effects) {
             if (!effect.is(retryFailedImagesEffect)) continue;
-            retryRequested = true;
-            if (effect.value == null) {
-              this.failedImageUrls.clear();
+            if (effect.value.urls == null) {
+              for (const url of [...this.failedImageUrls]) {
+                prepareRetry(url, effect.value.reason);
+              }
             } else {
-              for (const url of effect.value) {
-                if (this.activeImageUrls.has(url)) this.failedImageUrls.delete(url);
+              for (const url of effect.value.urls) {
+                prepareRetry(url, effect.value.reason);
               }
             }
           }
         }
         if (scrollEndUpdate && loadRetryConfig?.retryOnScrollEnd) {
-          // 滚动结束等显式刷新需要重新请求失败图片，而不是永久保留 fallback。
-          this.failedImageUrls.clear();
+          for (const url of [...this.failedImageUrls]) {
+            prepareRetry(url, 'scroll-end');
+          }
         }
         if (
           update.docChanged ||
@@ -310,15 +354,19 @@ export interface ImageConfig {
 }
 
 export interface ImageLoadEvent {
-  /** 经过 proxyURL 转换、实际用于加载的 URL。 */
+  /** 经过 proxyURL 转换后的稳定 URL，用于识别同一图片。 */
   url: string;
+  /** 本次实际赋给 img.src 的 URL；重试策略可能对它做额外转换。 */
+  requestUrl: string;
   /** Markdown 中的原始 URL。 */
   rawUrl: string | null | undefined;
 }
 
 export interface ImageLoadErrorEvent {
-  /** 加载失败的实际 URL。 */
+  /** 经过 proxyURL 转换后的稳定 URL，用于识别同一图片。 */
   url: string;
+  /** 本次加载失败时实际赋给 img.src 的 URL。 */
+  requestUrl: string;
   /** Markdown 中的原始 URL。 */
   rawUrl: string | null | undefined;
   /** 仅当该 URL 仍在当前文档中时发起一次定向重试。 */
@@ -332,4 +380,17 @@ export interface ImageLoadRetryConfig {
   maxRetries?: number;
   /** 是否在滚动结束触发装饰刷新时重试失败图片。@default false */
   retryOnScrollEnd?: boolean;
+  /**
+   * 为一次重试生成实际请求 URL。默认继续使用稳定 URL。
+   * 可用于给存在失败缓存的平台添加 cache-busting query。
+   */
+  getRetryUrl?: (url: string, context: ImageRetryContext) => string;
+}
+
+export type ImageRetryReason = 'automatic' | 'manual' | 'scroll-end';
+
+export interface ImageRetryContext {
+  /** 当前稳定 URL 在本次编辑器会话中的累计重试次数，从 1 开始。 */
+  retryCount: number;
+  reason: ImageRetryReason;
 }

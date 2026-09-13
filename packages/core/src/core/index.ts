@@ -8,4 +8,6 @@ export type {
   ImageLoadErrorEvent,
   ImageLoadEvent,
   ImageLoadRetryConfig,
+  ImageRetryContext,
+  ImageRetryReason,
 } from './markdown/image';
