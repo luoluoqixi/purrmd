@@ -147,28 +147,60 @@ class CodeBlockInfoWidget extends WidgetType {
   }
   private async copyCode() {
     if (window.navigator.clipboard) {
-      await window.navigator.clipboard.writeText(this.code);
-      return;
+      try {
+        await window.navigator.clipboard.writeText(this.code);
+        return;
+      } catch {
+        // WebView 可能暴露 Clipboard API 但拒绝当前 origin，继续使用兼容复制。
+      }
     }
-    const textarea = document.createElement('textarea');
-    textarea.value = this.code;
-    document.body.appendChild(textarea);
-    textarea.select();
-    const copied = document.execCommand('copy');
-    document.body.removeChild(textarea);
+    const selection = window.getSelection();
+    if (!selection) throw new Error('Document selection is unavailable');
+
+    const previousRanges = Array.from({ length: selection.rangeCount }, (_, index) =>
+      selection.getRangeAt(index).cloneRange(),
+    );
+    const copyTarget = document.createElement('span');
+    copyTarget.textContent = this.code;
+    copyTarget.setAttribute('aria-hidden', 'true');
+    copyTarget.style.position = 'fixed';
+    copyTarget.style.left = '-10000px';
+    copyTarget.style.top = '0';
+    copyTarget.style.opacity = '0';
+    copyTarget.style.pointerEvents = 'none';
+    copyTarget.style.userSelect = 'text';
+    copyTarget.style.whiteSpace = 'pre';
+    document.body.appendChild(copyTarget);
+
+    const copyRange = document.createRange();
+    copyRange.selectNodeContents(copyTarget);
+    let copied = false;
+    try {
+      selection.removeAllRanges();
+      selection.addRange(copyRange);
+      copied = document.execCommand('copy');
+    } finally {
+      selection.removeAllRanges();
+      copyTarget.remove();
+      for (const range of previousRanges) selection.addRange(range);
+    }
     if (!copied) throw new Error('Copy command failed');
   }
   toDOM() {
     const dom = document.createElement('div');
     dom.className = codeBlockClass.codeBlockInfo;
     this.renderLabel(dom, false);
-    dom.tabIndex = -1;
+    // 在 click 之前阻止语言区域抢走 contenteditable 的焦点，避免移动端键盘工具栏闪现。
+    dom.onmousedown = (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+    };
     dom.onclick = (event) => {
+      event.stopPropagation();
+      event.preventDefault();
       if (this.config?.onCodeBlockInfoClick) {
         this.config.onCodeBlockInfoClick(this.lang, this.code, event);
       } else {
-        event.stopPropagation();
-        event.preventDefault();
         void this.copyCode()
           .then(() => {
             if (!dom.isConnected) return;
