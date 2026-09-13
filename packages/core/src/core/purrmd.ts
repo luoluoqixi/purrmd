@@ -26,6 +26,7 @@ import {
   focusListener,
   focusState,
   initialParseUpdate,
+  scrollEndState,
   scrollState,
 } from './state';
 import { base, defaultTheme } from './themes';
@@ -77,6 +78,7 @@ export function purrmd(config?: PurrMDConfig): Extension {
     mdAddKeymap && Prec.high(keymap.of(mdMarkdownKeymap())),
     addKeymap && Prec.high(keymap.of(markdownKeymap(mergedConfig.defaultKeymaps))),
     slashMenuConfig?.show && slashMenuPlugin(slashMenuConfig),
+    scrollEndState,
     scrollState,
     initialParseUpdate(),
     scrollEndUpdate && debouncedScrollListener(scrollEndUpdate),

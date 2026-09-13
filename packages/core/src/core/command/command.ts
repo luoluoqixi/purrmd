@@ -4,3 +4,4 @@ export * from './heading';
 export * from './blockquote';
 export * from './list';
 export * from './insert';
+export { retryFailedImages } from '../markdown/image';

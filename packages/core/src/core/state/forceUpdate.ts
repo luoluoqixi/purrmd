@@ -9,6 +9,7 @@ import {
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 
 export const forceUpdateEffect = StateEffect.define<void>();
+export const scrollEndUpdateEffect = StateEffect.define<void>();
 
 export const isForceUpdateEvent = (tr: Transaction) =>
   tr.effects.some((e) => e.is(forceUpdateEffect));
@@ -16,10 +17,13 @@ export const isForceUpdateEvent = (tr: Transaction) =>
 export const isForceUpdateEventState = (prev: EditorState, next: EditorState) =>
   getScrollState(prev) !== getScrollState(next);
 
+export const isScrollEndUpdateEventState = (prev: EditorState, next: EditorState) =>
+  getScrollEndState(prev) !== getScrollEndState(next);
+
 export const scrollState = StateField.define<number>({
   create: () => 0,
   update: (value, tr) => {
-    if (tr.effects.some((e) => e.is(forceUpdateEffect))) {
+    if (tr.effects.some((e) => e.is(forceUpdateEffect) || e.is(scrollEndUpdateEffect))) {
       return value + 1;
     }
     return value;
@@ -27,6 +31,18 @@ export const scrollState = StateField.define<number>({
 });
 
 export const getScrollState = (state: EditorState) => state.field(scrollState, false) || 0;
+
+export const scrollEndState = StateField.define<number>({
+  create: () => 0,
+  update: (value, tr) => {
+    if (tr.effects.some((e) => e.is(scrollEndUpdateEffect))) {
+      return value + 1;
+    }
+    return value;
+  },
+});
+
+export const getScrollEndState = (state: EditorState) => state.field(scrollEndState, false) || 0;
 
 /**
  * Refresh decorations once the asynchronously parsed initial viewport is available.
@@ -80,7 +96,7 @@ export const debouncedScrollListener = (delay = 150) => {
       scrollTimeout = window.setTimeout(() => {
         requestAnimationFrame(() => {
           view.dispatch({
-            effects: [forceUpdateEffect.of()],
+            effects: [scrollEndUpdateEffect.of()],
           });
         });
       }, delay);
