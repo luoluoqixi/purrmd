@@ -12,6 +12,7 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
     '.cm-content': {
       '--purrmd-code-block-border-radius': '0.5rem',
       '--purrmd-code-block-info-bg-color': 'transparent',
+      '--purrmd-code-block-info-bg-color-active': 'var(--purrmd-code-block-info-bg-color-hover)',
       '--purrmd-formatting-code-block-color': 'var(--purrmd-formatting-color)',
       '--purrmd-formatting-code-opacity': 'var(--purrmd-formatting-opacity)',
     },
@@ -53,6 +54,10 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
     [`.${codeBlockClass.codeBlockInfo}:hover`]: {
       backgroundColor: 'var(--purrmd-code-block-info-bg-color-hover)',
     },
+    [`.${codeBlockClass.codeBlockInfo}:active`]: {
+      backgroundColor: 'var(--purrmd-code-block-info-bg-color-active)',
+      transitionDuration: '0s',
+    },
     [`.${codeBlockClass.codeBlockFirstLine} .${codeClass.codeFormatting},
       .${codeBlockClass.codeBlockLastLine} .${codeClass.codeFormatting}`]: {
       color: 'var(--purrmd-formatting-code-block-color)',
@@ -63,7 +68,7 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
     {
       '.cm-content': {
         '--purrmd-code-block-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
-        '--purrmd-code-block-info-bg-color-hover': 'transparent',
+        '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
       },
     },
     {
