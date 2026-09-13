@@ -12,7 +12,7 @@ export const forceUpdateEffect = StateEffect.define<void>();
 export const scrollEndUpdateEffect = StateEffect.define<void>();
 
 export const isForceUpdateEvent = (tr: Transaction) =>
-  tr.effects.some((e) => e.is(forceUpdateEffect));
+  tr.effects.some((e) => e.is(forceUpdateEffect) || e.is(scrollEndUpdateEffect));
 
 export const isForceUpdateEventState = (prev: EditorState, next: EditorState) =>
   getScrollState(prev) !== getScrollState(next);
