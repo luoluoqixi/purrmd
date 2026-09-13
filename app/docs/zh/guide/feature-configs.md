@@ -42,13 +42,24 @@ interface BlockquoteConfig {}
 
 ### 代码块 - `CodeBlock`
 
+- `alwaysShowMarkdownMarks` 是否始终显示 fenced code 的 Markdown 标记。默认 `false`；全局 `formattingDisplayMode: 'show'` 仍会显示所有功能的 Markdown 标记
+
+- `copySuccessIcon` 内置复制成功反馈的图标。可传纯文本，或返回 DOM/SVG 的函数，默认 `💕`
+
+- `copySuccessDurationMs` 复制成功反馈持续时间，默认 `3000` ms
+
 - `onCodeBlockInfoClick` 代码块右上角的语言按钮点击事件
 
 ```ts
 interface CodeBlockConfig {
+  alwaysShowMarkdownMarks?: boolean;
+  copySuccessIcon?: string | ((context: { language: string; code: string }) => Node | null);
+  copySuccessDurationMs?: number;
   onCodeBlockInfoClick?: (lang: string, code: string, event: MouseEvent) => void;
 }
 ```
+
+设置 `onCodeBlockInfoClick` 后，点击行为、复制及成功反馈均由调用方接管。
 
 ### 斜体 - `Emphasis`
 

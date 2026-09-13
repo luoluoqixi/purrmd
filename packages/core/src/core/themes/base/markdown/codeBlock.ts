@@ -11,7 +11,7 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
   const baseTheme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-code-block-border-radius': '0.5rem',
-      '--purrmd-code-block-info-bg-color': 'transparent',
+      '--purrmd-code-block-info-bg-color': 'var(--purrmd-code-block-bg-color)',
       '--purrmd-formatting-code-block-color': 'var(--purrmd-formatting-color)',
       '--purrmd-formatting-code-opacity': 'var(--purrmd-formatting-opacity)',
     },
@@ -19,6 +19,7 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
       backgroundColor: 'var(--purrmd-code-block-bg-color)',
     },
     [`.${codeBlockClass.codeBlockFirstLine}`]: {
+      position: 'relative',
       borderTopLeftRadius: 'var(--purrmd-code-block-border-radius)',
       borderTopRightRadius: 'var(--purrmd-code-block-border-radius)',
     },
@@ -27,15 +28,27 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
       borderBottomRightRadius: 'var(--purrmd-code-block-border-radius)',
     },
     [`.${codeBlockClass.codeBlockInfo}`]: {
-      float: 'right',
-      marginRight: '2px',
-      marginTop: '2px',
+      position: 'absolute',
+      zIndex: '1',
+      top: '2px',
+      right: '2px',
+      display: 'flex',
       padding: '0.3rem 0.5rem',
       alignItems: 'center',
+      maxWidth: 'calc(100% - 4px)',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      boxSizing: 'border-box',
       cursor: 'default',
       borderRadius: '0.4rem',
       transition: 'background-color 0.2s ease',
-      backgroundColor: 'var(--purrmd-code-block-info-bg-color)',
+      backgroundColor: 'var(--purrmd-code-block-info-bg-color, var(--purrmd-code-block-bg-color))',
+    },
+    [`.${codeBlockClass.codeBlockCopySuccessIcon}`]: {
+      display: 'inline-flex',
+      marginRight: '0.25em',
+      flex: '0 0 auto',
     },
     [`.${codeBlockClass.codeBlockInfo}:hover`]: {
       backgroundColor: 'var(--purrmd-code-block-info-bg-color-hover)',

@@ -24,6 +24,7 @@ export const codeBlockClass = {
   codeBlockFirstLine: 'purrmd-cm-code-block-line-first',
   codeBlockLastLine: 'purrmd-cm-code-block-line-last',
   codeBlockInfo: 'purrmd-cm-code-block-info',
+  codeBlockCopySuccessIcon: 'purrmd-cm-code-block-copy-success-icon',
 };
 
 function updateCodeBlockHiddenDecorations(
@@ -34,7 +35,7 @@ function updateCodeBlockHiddenDecorations(
   const decorations: Range<Decoration>[] = [];
   syntaxTree(state).iterate({
     enter(node) {
-      if (mode === 'show' || isSelectRange(state, node)) return;
+      if (mode === 'show' || config?.alwaysShowMarkdownMarks || isSelectRange(state, node)) return;
       if (node.type.name === 'FencedCode') {
         setSubNodeHideDecorations(node.node, decorations, ['CodeMark', 'CodeInfo'], false);
       }
@@ -86,7 +87,7 @@ function decorateCodeBlock(config: CodeBlockConfig | undefined, view: EditorView
               widget: new CodeBlockInfoWidget(
                 lang,
                 view.state.doc.sliceString(line.to + 1, node.to - 4),
-                config?.onCodeBlockInfoClick,
+                config,
               ),
               side: -1, // 添加在行前
             }),
@@ -106,45 +107,91 @@ class CodeBlockInfoWidget extends WidgetType {
   constructor(
     readonly lang: string,
     readonly code: string,
-    readonly onClick?: (lang: string, code: string, event: MouseEvent) => void,
+    readonly config?: CodeBlockConfig,
   ) {
     super();
   }
   eq(other: CodeBlockInfoWidget) {
-    return other.lang === this.lang && other.code === this.code;
+    return (
+      other.lang === this.lang &&
+      other.code === this.code &&
+      other.config?.onCodeBlockInfoClick === this.config?.onCodeBlockInfoClick &&
+      other.config?.copySuccessIcon === this.config?.copySuccessIcon &&
+      other.config?.copySuccessDurationMs === this.config?.copySuccessDurationMs
+    );
+  }
+  private renderLabel(dom: HTMLElement, copied: boolean) {
+    dom.replaceChildren();
+    if (copied) {
+      const iconConfig = this.config?.copySuccessIcon ?? '💕';
+      const icon = document.createElement('span');
+      icon.className = codeBlockClass.codeBlockCopySuccessIcon;
+      try {
+        const content =
+          typeof iconConfig === 'function'
+            ? iconConfig({ language: this.lang, code: this.code })
+            : iconConfig;
+        if (typeof content === 'string') {
+          icon.textContent = content;
+        } else if (content != null) {
+          icon.appendChild(content);
+        }
+      } catch {
+        icon.textContent = '💕';
+      }
+      if (icon.childNodes.length > 0 || icon.textContent) {
+        dom.appendChild(icon);
+      }
+    }
+    dom.appendChild(document.createTextNode(this.lang));
+  }
+  private async copyCode() {
+    if (window.navigator.clipboard) {
+      await window.navigator.clipboard.writeText(this.code);
+      return;
+    }
+    const textarea = document.createElement('textarea');
+    textarea.value = this.code;
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    if (!copied) throw new Error('Copy command failed');
   }
   toDOM() {
     const dom = document.createElement('div');
     dom.className = codeBlockClass.codeBlockInfo;
-    dom.innerHTML = this.lang;
+    this.renderLabel(dom, false);
     dom.tabIndex = -1;
     dom.onclick = (event) => {
-      if (this.onClick) {
-        this.onClick(this.lang, this.code, event);
+      if (this.config?.onCodeBlockInfoClick) {
+        this.config.onCodeBlockInfoClick(this.lang, this.code, event);
       } else {
-        dom.innerHTML = `&#128149;${this.lang}`;
-        if (this.timeout) {
-          window.clearTimeout(this.timeout);
-        }
-        this.timeout = window.setTimeout(() => {
-          dom.innerHTML = this.lang;
-          this.timeout = undefined;
-        }, 3000);
-        if (window.navigator.clipboard) {
-          window.navigator.clipboard.writeText(this.code);
-        } else {
-          const textarea = document.createElement('textarea');
-          textarea.value = this.code;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-        }
         event.stopPropagation();
         event.preventDefault();
+        void this.copyCode()
+          .then(() => {
+            if (!dom.isConnected) return;
+            this.renderLabel(dom, true);
+            if (this.timeout) {
+              window.clearTimeout(this.timeout);
+            }
+            this.timeout = window.setTimeout(
+              () => {
+                this.renderLabel(dom, false);
+                this.timeout = undefined;
+              },
+              Math.max(this.config?.copySuccessDurationMs ?? 3000, 0),
+            );
+          })
+          .catch(() => undefined);
       }
     };
     return dom;
+  }
+  destroy() {
+    if (this.timeout) window.clearTimeout(this.timeout);
+    this.timeout = undefined;
   }
 }
 
@@ -186,5 +233,21 @@ export function codeBlock(mode: FormattingDisplayMode, config?: CodeBlockConfig)
 }
 
 export interface CodeBlockConfig {
+  /** 是否始终显示 fenced code 的 Markdown 标记；全局 show 模式下无论此值如何都会显示。@default false */
+  alwaysShowMarkdownMarks?: boolean;
+  /** 默认复制行为成功反馈的图标。字符串会按纯文本渲染；回调可返回自定义 DOM/SVG。@default '💕' */
+  copySuccessIcon?: CodeBlockCopySuccessIcon;
+  /** 复制成功反馈持续时间，单位 ms。@default 3000 */
+  copySuccessDurationMs?: number;
+  /** 自定义语言区域点击行为；设置后由调用方接管复制及成功反馈。 */
   onCodeBlockInfoClick?: (lang: string, code: string, event: MouseEvent) => void;
 }
+
+export interface CodeBlockCopySuccessContext {
+  language: string;
+  code: string;
+}
+
+export type CodeBlockCopySuccessIcon =
+  | string
+  | ((context: CodeBlockCopySuccessContext) => Node | null);

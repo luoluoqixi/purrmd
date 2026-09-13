@@ -42,13 +42,24 @@ interface BlockquoteConfig {}
 
 ### Code Block - `CodeBlock`
 
+- `alwaysShowMarkdownMarks` Whether fenced-code Markdown marks are always visible. Defaults to `false`; global `formattingDisplayMode: 'show'` still shows Markdown marks for every feature.
+
+- `copySuccessIcon` Icon used by the built-in copy-success feedback. Accepts plain text or a function returning DOM/SVG. Defaults to `💕`.
+
+- `copySuccessDurationMs` Duration of the copy-success feedback. Defaults to `3000` ms.
+
 - `onCodeBlockInfoClick` Click event for the language button in the upper right corner of the code block
 
 ```ts
 interface CodeBlockConfig {
+  alwaysShowMarkdownMarks?: boolean;
+  copySuccessIcon?: string | ((context: { language: string; code: string }) => Node | null);
+  copySuccessDurationMs?: number;
   onCodeBlockInfoClick?: (lang: string, code: string, event: MouseEvent) => void;
 }
 ```
+
+When `onCodeBlockInfoClick` is set, the caller takes ownership of the click behavior, copying, and success feedback.
 
 ### Emphasis - `Emphasis`
 
