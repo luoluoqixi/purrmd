@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/luoluoqixi/purrmd/compare/v0.1.5...v0.1.6) (2026-09-13)
+
+
+### Features
+
+* codeblock style ([45bd573](https://github.com/luoluoqixi/purrmd/commit/45bd57369e291792e842a79a52815902132153b0))
+* codeblock style ([c7a84e6](https://github.com/luoluoqixi/purrmd/commit/c7a84e63ddefb0ea4dbbb582197a9d406c500fb7))
+* codeblock style ([07ab9b7](https://github.com/luoluoqixi/purrmd/commit/07ab9b76494d906e8ee3c15cd04837bffa9e8863))
+* codeblock style ([c3abfdc](https://github.com/luoluoqixi/purrmd/commit/c3abfdc2123b367f96d476e18e3ec7c2eb85b1ef))
+* image retry ([c56e3d5](https://github.com/luoluoqixi/purrmd/commit/c56e3d5dfa5eb375baae929f01d4b17dbdc3e830))
+* image retry ([d5b3fca](https://github.com/luoluoqixi/purrmd/commit/d5b3fca1bc0be265c08bfce8399c8843900e75d6))
+
+
+### Bug Fixes
+
+* forceupdate ([bf5cc8d](https://github.com/luoluoqixi/purrmd/commit/bf5cc8d2b9867a73dbd5cab110701b3566dc3d9b))
+
 ### [0.1.5](https://github.com/luoluoqixi/purrmd/compare/v0.1.4...v0.1.5) (2026-09-12)
 
 
