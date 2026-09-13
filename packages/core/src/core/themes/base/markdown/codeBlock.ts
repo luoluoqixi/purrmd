@@ -11,7 +11,7 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
   const baseTheme = EditorView.baseTheme({
     '.cm-content': {
       '--purrmd-code-block-border-radius': '0.5rem',
-      '--purrmd-code-block-info-bg-color': 'var(--purrmd-code-block-bg-color)',
+      '--purrmd-code-block-info-bg-color': 'transparent',
       '--purrmd-formatting-code-block-color': 'var(--purrmd-formatting-color)',
       '--purrmd-formatting-code-opacity': 'var(--purrmd-formatting-opacity)',
     },
@@ -63,7 +63,7 @@ export const codeBlockBaseTheme = (dark: boolean): Extension => {
     {
       '.cm-content': {
         '--purrmd-code-block-bg-color': dark ? '#2f2f2f' : '#f3f3f3',
-        '--purrmd-code-block-info-bg-color-hover': dark ? '#ffffff1a' : '#0000001a',
+        '--purrmd-code-block-info-bg-color-hover': 'transparent',
       },
     },
     {

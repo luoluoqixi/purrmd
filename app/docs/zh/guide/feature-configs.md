@@ -107,6 +107,8 @@ interface HorizontalRuleConfig {
 
 - `onImageDown` 图片点击事件
 
+- `onImageTouchEnd` 触摸点击图片事件。purrmd 会在原始 `touchend` 中同步选中图片 Markdown；滚动手势不会触发
+
 ```ts
 interface ImageConfig {
   proxyURL?: (url: string) => string;
@@ -115,6 +117,11 @@ interface ImageConfig {
   ImageLoadFailedLabel?: (url: string) => string;
   onImageDown?: (
     e: MouseEvent,
+    url: string | null | undefined,
+    rawUrl: string | null | undefined,
+  ) => void;
+  onImageTouchEnd?: (
+    e: TouchEvent,
     url: string | null | undefined,
     rawUrl: string | null | undefined,
   ) => void;

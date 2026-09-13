@@ -107,6 +107,8 @@ interface HorizontalRuleConfig {
 
 - `onImageDown` Image click event
 
+- `onImageTouchEnd` Image touch-tap event. purrmd synchronously selects the image Markdown during the original `touchend`; scrolling gestures do not trigger it.
+
 ```ts
 interface ImageConfig {
   proxyURL?: (url: string) => string;
@@ -115,6 +117,11 @@ interface ImageConfig {
   ImageLoadFailedLabel?: (url: string) => string;
   onImageDown?: (
     e: MouseEvent,
+    url: string | null | undefined,
+    rawUrl: string | null | undefined,
+  ) => void;
+  onImageTouchEnd?: (
+    e: TouchEvent,
     url: string | null | undefined,
     rawUrl: string | null | undefined,
   ) => void;

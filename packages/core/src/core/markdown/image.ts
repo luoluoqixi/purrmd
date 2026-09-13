@@ -14,6 +14,7 @@ import { FormattingDisplayMode } from '../types';
 import { findNodeURL, isSelectRange, selectRange } from '../utils';
 
 const defaultImageRetryDelay = 800;
+const imageTapMaxMovement = 12;
 const retryFailedImagesEffect = StateEffect.define<ImageRetryRequest>();
 
 type ImageRetryRequest = {
@@ -38,6 +39,8 @@ export const imageClass = {
 };
 
 class Image extends WidgetType {
+  private activeTouch: { identifier: number; x: number; y: number; moved: boolean } | null = null;
+
   constructor(
     readonly failedImageUrls: Set<string>,
     readonly url: string | null | undefined,
@@ -45,6 +48,7 @@ class Image extends WidgetType {
     readonly alt: string | null | undefined,
     readonly isImageLink: boolean,
     readonly onImageDown: ((e: MouseEvent) => void) | null,
+    readonly onImageTouchEnd: ((e: TouchEvent) => void) | null,
     readonly onImageLoad: ((url: string, requestUrl: string) => void) | null,
     readonly onImageLoadFailed: ((url: string, requestUrl: string) => void) | null,
     readonly noImageAvailableLabel?: string,
@@ -99,6 +103,47 @@ class Image extends WidgetType {
     }
 
     el.onmousedown = this.onImageDown;
+    el.ontouchstart = (event) => {
+      if (event.touches.length !== 1 || event.changedTouches.length !== 1) {
+        this.activeTouch = null;
+        return;
+      }
+      const touch = event.changedTouches[0];
+      this.activeTouch = {
+        identifier: touch.identifier,
+        x: touch.clientX,
+        y: touch.clientY,
+        moved: false,
+      };
+    };
+    el.ontouchmove = (event) => {
+      if (!this.activeTouch) return;
+      const touch = Array.from(event.changedTouches).find(
+        (candidate) => candidate.identifier === this.activeTouch?.identifier,
+      );
+      if (!touch) return;
+      if (
+        Math.hypot(touch.clientX - this.activeTouch.x, touch.clientY - this.activeTouch.y) >
+        imageTapMaxMovement
+      ) {
+        this.activeTouch.moved = true;
+      }
+    };
+    el.ontouchend = (event) => {
+      const touch = event.changedTouches[0];
+      const isTap =
+        event.changedTouches.length === 1 &&
+        event.touches.length === 0 &&
+        this.activeTouch?.identifier === touch?.identifier &&
+        !this.activeTouch.moved;
+      this.activeTouch = null;
+      if (!isTap) return;
+      this.onImageTouchEnd?.(event);
+      event.stopPropagation();
+    };
+    el.ontouchcancel = () => {
+      this.activeTouch = null;
+    };
 
     return el;
   }
@@ -150,6 +195,10 @@ function imageDecorations(
           (e) => {
             selectRange(view, { from, to });
             config?.onImageDown?.(e, url, rawUrl);
+          },
+          (e) => {
+            view.dispatch({ selection: { anchor: to, head: from } });
+            config?.onImageTouchEnd?.(e, url, rawUrl);
           },
           (loadedUrl, loadedRequestUrl) => onImageLoad(loadedUrl, loadedRequestUrl, rawUrl),
           (failedUrl, failedRequestUrl) => onImageLoadFailed(failedUrl, failedRequestUrl, rawUrl),
@@ -348,6 +397,12 @@ export interface ImageConfig {
   /** on image down */
   onImageDown?: (
     e: MouseEvent,
+    url: string | null | undefined,
+    rawUrl: string | null | undefined,
+  ) => void;
+  /** 触摸点击图片事件。在原始 touchend 中同步选中图片 Markdown，滚动手势不会触发。 */
+  onImageTouchEnd?: (
+    e: TouchEvent,
     url: string | null | undefined,
     rawUrl: string | null | undefined,
   ) => void;
